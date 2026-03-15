@@ -650,10 +650,49 @@
         <div class="border-glow rounded-2xl p-8 bg-white/[0.02]">
           <h4 class="text-lg font-medium mb-6 font-mono"><span class="code-decoration">//</span> RESUME</h4>
           <div id="resumeContent" class="text-sm text-gray-400 leading-relaxed space-y-4 max-h-[500px] overflow-y-auto">
-            <!-- 简历内容占位 - 等用户提供 MD 内容后渲染 -->
-            <div class="text-center py-10 text-gray-600">
-              <p class="mb-2">📄 简历展示区</p>
-              <p class="text-xs">等待提供简历 MD 内容...</p>
+            <div class="border-b border-white/10 pb-4 mb-4">
+              <p class="text-white font-medium text-base">陈厚瑄 (Rock Chen)</p>
+              <p class="text-gray-500 text-xs mt-1">AI & 产品 | 数据分析 | 商业分析</p>
+            </div>
+
+            <div>
+              <p class="text-white font-medium mb-2">工作经历 Work Experience</p>
+              <div class="space-y-3">
+                <div>
+                  <p class="text-white">Data Analyst & AI Product Specialist</p>
+                  <p class="text-gray-500 text-xs">龙湖集团 Longfor Group | Apr 2024 – Present</p>
+                </div>
+                <div>
+                  <p class="text-white">AI 产品实习生 AI Product Intern</p>
+                  <p class="text-gray-500 text-xs">TCL 鸿鵠实验室 | Jul 2024 – Jun 2025</p>
+                </div>
+                <div>
+                  <p class="text-white">商业分析师 Business Analyst</p>
+                  <p class="text-gray-500 text-xs">核桃编程 Walnut Programming | Jul 2022 – Nov 2022</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-4">
+              <p class="text-white font-medium mb-2">项目 Projects</p>
+              <div class="space-y-2">
+                <p><span class="text-white">语音 AI 思维助手</span> · 个人项目</p>
+                <p><span class="text-white">美团商业分析</span> · 2024</p>
+                <p><span class="text-white">AI 驱动的企业估值系统</span></p>
+              </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-4">
+              <p class="text-white font-medium mb-2">技能 Skills</p>
+              <p class="text-gray-400">AI/产品: Prompt Engineering, LLM 微调, AI 产品评测</p>
+              <p class="text-gray-400">数据分析: Python, SQL, Tableau, PowerBI</p>
+              <p class="text-gray-400">语言: GRE 322, IELTS 7.5</p>
+            </div>
+
+            <div class="border-t border-white/10 pt-4">
+              <p class="text-white font-medium mb-2">教育 Education</p>
+              <p class="text-gray-400">商业分析硕士 · 南洋理工大学 (2024-2025)</p>
+              <p class="text-gray-400">经济学学士 · 对外经济贸易大学 (2019-2023)</p>
             </div>
           </div>
         </div>
@@ -803,6 +842,9 @@
       document.getElementById('companyModal').classList.add('hidden');
     }
 
+    // PDF 下载链接
+    const RESUME_PDF_URL = 'https://raw.githubusercontent.com/InvictusAutomation/voice-helper-portfolio/main/resume.pdf';
+
     // 确认选择并下载
     function confirmCompany() {
       if (!selectedCompany) return;
@@ -810,9 +852,13 @@
       // 记录下载埋点
       trackResumeDownload(selectedCompany);
 
-      // 触发下载 (替换为实际的 PDF 链接)
-      // window.location.href = '/resume.pdf';
-      alert(`简历将下载，公司: ${selectedCompany}\n\n(请提供 PDF 文件链接以完成下载功能)`);
+      // 触发 PDF 下载
+      const link = document.createElement('a');
+      link.href = RESUME_PDF_URL;
+      link.download = '陈厚瑄简历_Rock_Chen_Resume.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
       closeCompanyModal();
     }
