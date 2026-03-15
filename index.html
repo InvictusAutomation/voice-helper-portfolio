@@ -5,23 +5,119 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Voice Helper | AI 语音思考助手</title>
   <meta name="description" content="Voice Helper - 让想法现形，让思考延伸。本地 AI 语音助手，帮你把脑子里模糊的想法变成可讨论、可沉淀的文字。">
+
+  <!-- 引入特色字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    * { font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif; }
-    body { background: #050505; }
-
-    .elegant-border {
-      border: 1px solid rgba(255, 255, 255, 0.06);
+    /* 字体设置 */
+    :root {
+      --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
+    * {
+      font-family: var(--font-display);
+    }
+
+    body {
+      background: #030305;
+      overflow-x: hidden;
+    }
+
+    /* 装饰性背景图案 */
+    .bg-pattern {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    .bg-pattern::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(74, 85, 104, 0.15) 0%, transparent 50%);
+    }
+
+    .bg-grid {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+
+    /* 渐变文字 */
     .gradient-text {
-      background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+      background: linear-gradient(135deg, #fff 0%, #a1a1aa 50%, #71717a 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
+    .gradient-text-colorful {
+      background: linear-gradient(135deg, #fff 0%, #c4b5fd 25%, #67e8f9 50%, #fff 75%, #a1a1aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 200%;
+      animation: gradient-shift 5s ease infinite;
+    }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* 发光效果 */
     .glow {
-      box-shadow: 0 0 60px rgba(255, 255, 255, 0.05);
+      box-shadow:
+        0 0 60px rgba(255, 255, 255, 0.03),
+        0 0 120px rgba(167, 139, 250, 0.05);
+    }
+
+    .glow-hover {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glow-hover:hover {
+      box-shadow:
+        0 0 40px rgba(255, 255, 255, 0.08),
+        0 0 80px rgba(167, 139, 250, 0.1);
+    }
+
+    /* 边框发光 */
+    .border-glow {
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.4s ease;
+    }
+
+    .border-glow:hover {
+      border-color: rgba(167, 139, 250, 0.3);
+      box-shadow:
+        0 0 30px rgba(167, 139, 250, 0.1),
+        inset 0 0 30px rgba(167, 139, 250, 0.02);
+    }
+
+    /* 模块卡片 */
+    .module-card {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(10px);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .module-card:hover {
+      transform: translateY(-8px) scale(1.01);
+      background: rgba(255, 255, 255, 0.04);
     }
 
     /* 滚动导航 */
@@ -33,14 +129,14 @@
       z-index: 100;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 1.25rem;
     }
 
     .scroll-dot {
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.15);
       cursor: pointer;
       transition: all 0.3s ease;
       position: relative;
@@ -49,7 +145,7 @@
     .scroll-dot:hover,
     .scroll-dot.active {
       background: rgba(255, 255, 255, 0.8);
-      transform: scale(1.3);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
     }
 
     .scroll-dot::after {
@@ -59,41 +155,41 @@
       top: 50%;
       transform: translateY(-50%);
       white-space: nowrap;
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.5);
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.4);
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: all 0.3s ease;
       pointer-events: none;
     }
 
     .scroll-dot:hover::after {
       opacity: 1;
+      right: 20px;
     }
 
-    /* 模块卡片悬浮效果 */
-    .module-card {
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    /* 技能标签 */
+    .skill-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      transition: all 0.2s ease;
     }
 
-    .module-card:hover {
-      transform: translateY(-8px);
-      border-color: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    .skill-tag:hover {
+      transform: translateY(-2px);
+      border-color: rgba(167, 139, 250, 0.4);
+      box-shadow: 0 4px 20px rgba(167, 139, 250, 0.15);
     }
 
     /* 视频区域 */
     .video-container {
       position: relative;
-      border-radius: 16px;
+      border-radius: 20px;
       overflow: hidden;
-      background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+      background: linear-gradient(135deg, rgba(167, 139, 250, 0.05) 0%, rgba(0, 0, 0, 0.2) 100%);
       aspect-ratio: 16/9;
-    }
-
-    .video-container video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
     }
 
     .video-placeholder {
@@ -103,40 +199,31 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
       cursor: pointer;
       transition: all 0.3s ease;
     }
 
     .video-placeholder:hover {
-      background: linear-gradient(135deg, #222 0%, #111 100%);
-    }
-
-    .video-placeholder:hover .play-btn {
-      transform: scale(1.1);
-      border-color: rgba(255, 255, 255, 0.5);
+      background: linear-gradient(135deg, rgba(167, 139, 250, 0.08) 0%, rgba(0, 0, 0, 0.1) 100%);
     }
 
     .play-btn {
-      width: 80px;
-      height: 80px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all 0.3s ease;
-      margin-bottom: 1rem;
+      backdrop-filter: blur(10px);
     }
 
-    /* 技能标签动画 */
-    .skill-tag {
-      transition: all 0.2s ease;
-    }
-
-    .skill-tag:hover {
-      transform: scale(1.05);
-      border-color: rgba(255, 255, 255, 0.3);
+    .video-placeholder:hover .play-btn {
+      transform: scale(1.1);
+      border-color: rgba(167, 139, 250, 0.4);
+      box-shadow: 0 0 40px rgba(167, 139, 250, 0.2);
     }
 
     /* 章节标题 */
@@ -147,56 +234,111 @@
     .section-title::before {
       content: '';
       position: absolute;
-      left: -1.5rem;
+      left: -2rem;
       top: 50%;
       transform: translateY(-50%);
-      width: 4px;
-      height: 60%;
-      background: linear-gradient(to bottom, #fff, transparent);
+      width: 3px;
+      height: 70%;
+      background: linear-gradient(to bottom, #c4b5fd, transparent);
       border-radius: 2px;
     }
 
-    /* 响应式调整 */
+    /* 动画 */
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .stagger-1 { animation-delay: 0.1s; }
+    .stagger-2 { animation-delay: 0.2s; }
+    .stagger-3 { animation-delay: 0.3s; }
+    .stagger-4 { animation-delay: 0.4s; }
+    .stagger-5 { animation-delay: 0.5s; }
+    .stagger-6 { animation-delay: 0.6s; }
+
+    /* 打字机效果 */
+    .typewriter {
+      overflow: hidden;
+      border-right: 2px solid rgba(255, 255, 255, 0.5);
+      white-space: nowrap;
+      animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: rgba(255, 255, 255, 0.5) }
+    }
+
+    /* 响应式 */
     @media (max-width: 768px) {
       .scroll-nav {
         display: none;
       }
-
-      .module-grid {
-        grid-template-columns: 1fr;
-      }
     }
 
-    /* 平滑滚动 */
     html {
       scroll-behavior: smooth;
+    }
+
+    /* 代码风格装饰 */
+    .code-decoration {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* 浮动的装饰元素 */
+    .floating {
+      animation: floating 6s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
     }
   </style>
 </head>
 <body class="text-white">
+  <!-- 背景装饰 -->
+  <div class="bg-pattern bg-grid"></div>
+
   <!-- 滚动导航 -->
   <nav class="scroll-nav">
-    <div class="scroll-dot active" data-label="首页" onclick="scrollToSection('hero')"></div>
-    <div class="scroll-dot" data-label="视频演示" onclick="scrollToSection('demo')"></div>
-    <div class="scroll-dot" data-label="核心能力" onclick="scrollToSection('features')"></div>
-    <div class="scroll-dot" data-label="产品理念" onclick="scrollToSection('philosophy')"></div>
-    <div class="scroll-dot" data-label="产品闭环" onclick="scrollToSection('loop')"></div>
-    <div class="scroll-dot" data-label="关于我" onclick="scrollToSection('about')"></div>
+    <div class="scroll-dot active" data-label="HOME" onclick="scrollToSection('hero')"></div>
+    <div class="scroll-dot" data-label="DEMO" onclick="scrollToSection('demo')"></div>
+    <div class="scroll-dot" data-label="FEATURES" onclick="scrollToSection('features')"></div>
+    <div class="scroll-dot" data-label="PHILOSOPHY" onclick="scrollToSection('philosophy')"></div>
+    <div class="scroll-dot" data-label="LOOP" onclick="scrollToSection('loop')"></div>
+    <div class="scroll-dot" data-label="ABOUT" onclick="scrollToSection('about')"></div>
   </nav>
 
   <!-- Hero / 首页概览 -->
-  <section id="hero" class="min-h-screen flex items-center justify-center px-8 py-20 relative overflow-hidden">
-    <!-- 背景装饰 -->
-    <div class="absolute inset-0 grid-pattern opacity-50"></div>
-    <div class="absolute top-1/4 -left-20 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-white/3 rounded-full blur-3xl"></div>
+  <section id="hero" class="min-h-screen flex items-center justify-center px-6 py-20 relative overflow-hidden">
+    <!-- 装饰性发光球 -->
+    <div class="absolute top-1/4 -left-32 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl floating"></div>
+    <div class="absolute bottom-1/4 -right-32 w-80 h-80 bg-cyan-500/8 rounded-full blur-3xl floating" style="animation-delay: -3s"></div>
 
-    <div class="max-w-6xl mx-auto relative z10">
+    <div class="max-w-6xl mx-auto relative z-10">
       <!-- 标题区 -->
       <div class="text-center mb-16">
-        <p class="text-gray-500 text-sm tracking-widest uppercase mb-6">AI × 思考延伸</p>
-        <h1 class="text-5xl md:text-8xl font-light mb-6">
-          让想法<span class="gradient-text">现形</span>
+        <p class="text-gray-500 text-sm tracking-[0.3em] uppercase mb-6 font-mono">
+          <span class="code-decoration">//</span> AI × Thinking Extension
+        </p>
+        <h1 class="text-5xl md:text-8xl font-light mb-6 leading-tight">
+          让想法<span class="gradient-text-colorful">现形</span>
         </h1>
         <p class="text-gray-400 text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed">
           「我发现人们一闪而过的想法很难抓住，语音是最自然的捕捉方式」
@@ -204,68 +346,68 @@
       </div>
 
       <!-- 模块导航卡片 -->
-      <div class="module-grid grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- 模块 1: 视频演示 -->
-        <a href="#demo" class="module-card elegant-border rounded-2xl p-8 bg-white/[0.02] block group">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- 模块 1 -->
+        <a href="#demo" class="module-card border-glow rounded-2xl p-7 block group">
           <div class="flex items-start gap-4">
             <div class="text-4xl">🎬</div>
             <div>
-              <h3 class="text-lg font-medium mb-2 group-hover:text-white transition-colors">视频演示</h3>
+              <h3 class="text-lg font-medium mb-2 group-hover:text-purple-300 transition-colors">Demo</h3>
               <p class="text-gray-500 text-sm">30 秒了解产品功能</p>
             </div>
           </div>
         </a>
 
-        <!-- 模块 2: 核心能力 -->
-        <a href="#features" class="module-card elegant-border rounded-2xl p-8 bg-white/[0.02] block group">
+        <!-- 模块 2 -->
+        <a href="#features" class="module-card border-glow rounded-2xl p-7 block group">
           <div class="flex items-start gap-4">
             <div class="text-4xl">✨</div>
             <div>
-              <h3 class="text-lg font-medium mb-2 group-hover:text-white transition-colors">核心能力</h3>
+              <h3 class="text-lg font-medium mb-2 group-hover:text-purple-300 transition-colors">Features</h3>
               <p class="text-gray-500 text-sm">AI 延伸思维的设计</p>
             </div>
           </div>
         </a>
 
-        <!-- 模块 3: 产品理念 -->
-        <a href="#philosophy" class="module-card elegant-border rounded-2xl p-8 bg-white/[0.02] block group">
+        <!-- 模块 3 -->
+        <a href="#philosophy" class="module-card border-glow rounded-2xl p-7 block group">
           <div class="flex items-start gap-4">
             <div class="text-4xl">💡</div>
             <div>
-              <h3 class="text-lg font-medium mb-2 group-hover:text-white transition-colors">产品理念</h3>
+              <h3 class="text-lg font-medium mb-2 group-hover:text-purple-300 transition-colors">Philosophy</h3>
               <p class="text-gray-500 text-sm">从人性洞察出发</p>
             </div>
           </div>
         </a>
 
-        <!-- 模块 4: 产品闭环 -->
-        <a href="#loop" class="module-card elegant-border rounded-2xl p-8 bg-white/[0.02] block group">
+        <!-- 模块 4 -->
+        <a href="#loop" class="module-card border-glow rounded-2xl p-7 block group">
           <div class="flex items-start gap-4">
             <div class="text-4xl">🔄</div>
             <div>
-              <h3 class="text-lg font-medium mb-2 group-hover:text-white transition-colors">产品闭环</h3>
+              <h3 class="text-lg font-medium mb-2 group-hover:text-purple-300 transition-colors">Product Loop</h3>
               <p class="text-gray-500 text-sm">问题 → 假设 → 方案 → 迭代</p>
             </div>
           </div>
         </a>
 
-        <!-- 模块 5: 关于我 -->
-        <a href="#about" class="module-card elegant-border rounded-2xl p-8 bg-white/[0.02] block group">
+        <!-- 模块 5 -->
+        <a href="#about" class="module-card border-glow rounded-2xl p-7 block group">
           <div class="flex items-start gap-4">
             <div class="text-4xl">👤</div>
             <div>
-              <h3 class="text-lg font-medium mb-2 group-hover:text-white transition-colors">关于我</h3>
-              <p class="text-gray-500 text-sm">产品思维与工程能力的结合</p>
+              <h3 class="text-lg font-medium mb-2 group-hover:text-purple-300 transition-colors">About</h3>
+              <p class="text-gray-500 text-sm">产品思维与工程能力</p>
             </div>
           </div>
         </a>
 
-        <!-- 模块 6: 联系方式 -->
-        <a href="#contact" class="module-card elegant-border rounded-2xl p-8 bg-white/[0.02] block group">
+        <!-- 模块 6 -->
+        <a href="#contact" class="module-card border-glow rounded-2xl p-7 block group">
           <div class="flex items-start gap-4">
             <div class="text-4xl">📮</div>
             <div>
-              <h3 class="text-lg font-medium mb-2 group-hover:text-white transition-colors">联系我</h3>
+              <h3 class="text-lg font-medium mb-2 group-hover:text-purple-300 transition-colors">Contact</h3>
               <p class="text-gray-500 text-sm">合作机会 · 交流探讨</p>
             </div>
           </div>
@@ -274,41 +416,40 @@
 
       <!-- 快速跳转 -->
       <div class="text-center mt-16">
-        <a href="https://github.com/InvictusAutomation/20260306s-voice-helper" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-black rounded-full font-medium hover:bg-gray-200 transition-colors">
+        <a href="https://github.com/InvictusAutomation/20260306s-voice-helper" target="_blank" class="inline-flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-medium hover:bg-gray-200 transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/20">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          查看源码
+          <span class="font-mono text-sm">VIEW_SOURCE</span>
         </a>
       </div>
     </div>
   </section>
 
   <!-- 视频演示 -->
-  <section id="demo" class="min-h-screen flex items-center px-8 py-20 border-t border-white/5">
+  <section id="demo" class="min-h-screen flex items-center px-6 py-20 border-t border-white/5 relative">
     <div class="max-w-6xl mx-auto w-full">
       <div class="grid lg:grid-cols-2 gap-16 items-center">
         <div>
           <h2 class="section-title text-4xl md:text-5xl font-light mb-6 pl-8">
-            直观<span class="gradient-text">演示</span>
+            Demo<span class="gradient-text">Show</span>
           </h2>
           <p class="text-gray-400 text-lg leading-relaxed mb-8">
             30 秒了解 Voice Helper 如何帮你捕捉一闪而过的想法。
-            语音输入 → 实时转写 → AI 整理 → 沉淀知识。
+            <span class="text-purple-300 font-mono">语音输入 → 转写 → AI 整理 → 沉淀</span>
           </p>
           <div class="flex flex-wrap gap-3">
-            <span class="skill-tag px-4 py-2 bg-white/5 rounded-full text-sm">实时语音转写</span>
-            <span class="skill-tag px-4 py-2 bg-white/5 rounded-full text-sm">AI 内容整理</span>
-            <span class="skill-tag px-4 py-2 bg-white/5 rounded-full text-sm">本地部署</span>
-            <span class="skill-tag px-4 py-2 bg-white/5 rounded-full text-sm">隐私保护</span>
+            <span class="skill-tag px-4 py-2 bg-white/5 rounded-full border border-white/5">实时转写</span>
+            <span class="skill-tag px-4 py-2 bg-white/5 rounded-full border border-white/5">AI 整理</span>
+            <span class="skill-tag px-4 py-2 bg-white/5 rounded-full border border-white/5">本地部署</span>
+            <span class="skill-tag px-4 py-2 bg-white/5 rounded-full border border-white/5">隐私保护</span>
           </div>
         </div>
 
-        <div class="video-container glow">
-          <!-- 视频占位符 - 之后替换为真实视频 -->
+        <div class="video-container glow glow-hover">
           <div class="video-placeholder" onclick="alert('视频待添加，请提供视频后我来嵌入')">
             <div class="play-btn">
-              <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             </div>
-            <p class="text-gray-400 text-sm">点击播放演示视频</p>
+            <p class="text-gray-400 text-sm mt-4 font-mono">// 点击播放演示</p>
             <p class="text-gray-600 text-xs mt-2">(视频待添加)</p>
           </div>
         </div>
@@ -317,46 +458,47 @@
   </section>
 
   <!-- 核心能力 -->
-  <section id="features" class="min-h-screen flex items-center px-8 py-20 border-t border-white/5 bg-white/[0.02]">
-    <div class="max-w-6xl mx-auto w-full">
+  <section id="features" class="min-h-screen flex items-center px-6 py-20 border-t border-white/5 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-purple-500/3 to-transparent"></div>
+    <div class="max-w-6xl mx-auto w-full relative z-10">
       <h2 class="section-title text-4xl md:text-5xl font-light mb-16 pl-8">
-        核心<span class="gradient-text">能力</span>
+        Core<span class="gradient-text">Capabilities</span>
       </h2>
 
-      <div class="grid md:grid-cols-3 gap-8">
+      <div class="grid md:grid-cols-3 gap-6">
         <!-- 能力 1 -->
-        <div class="module-card elegant-border rounded-2xl p-8 bg-black/20">
+        <div class="module-card border-glow rounded-2xl p-8 glow-hover">
           <div class="text-5xl mb-6">🧠</div>
           <h3 class="text-xl font-light mb-4">AI 延伸思维</h3>
           <p class="text-gray-400 leading-relaxed">
             这个助手不是帮你查答案，是帮你把脑子里模糊的想法变成可讨论、可沉淀的东西。
           </p>
-          <p class="text-gray-600 text-sm mt-4">
-            想法自动分类的背后，是「人的思维有不同形态，不该用统一格式框住」的产品判断。
+          <p class="text-gray-600 text-sm mt-4 font-mono">
+            <span class="code-decoration">//</span> 想法自动分类 = 「人的思维有不同形态，不该用统一格式框住」
           </p>
         </div>
 
         <!-- 能力 2 -->
-        <div class="module-card elegant-border rounded-2xl p-8 bg-black/20">
+        <div class="module-card border-glow rounded-2xl p-8 glow-hover">
           <div class="text-5xl mb-6">🎙️</div>
           <h3 class="text-xl font-light mb-4">语音优先</h3>
           <p class="text-gray-400 leading-relaxed">
             「想说话的时候，手是来不及记的」——语音是最自然的捕捉方式。
           </p>
-          <p class="text-gray-600 text-sm mt-4">
-            我故意限制了 AI 直接给答案，先让用户把想法说清楚，这才是思考助手该有的样子。
+          <p class="text-gray-600 text-sm mt-4 font-mono">
+            <span class="code-decoration">//</span> 故意限制 AI 直接给答案，先让用户把想法说清楚
           </p>
         </div>
 
         <!-- 能力 3 -->
-        <div class="module-card elegant-border rounded-2xl p-8 bg-black/20">
+        <div class="module-card border-glow rounded-2xl p-8 glow-hover">
           <div class="text-5xl mb-6">🔧</div>
           <h3 class="text-xl font-light mb-4">Prompt 工程</h3>
           <p class="text-gray-400 leading-relaxed">
             把用户模糊的语音想法，转化成 AI 能正确理解的 Prompt。
           </p>
-          <p class="text-gray-600 text-sm mt-4">
-            这正好是在龙湖练出来的本事——在有限 AI 能力下做产品。
+          <p class="text-gray-600 text-sm mt-4 font-mono">
+            <span class="code-decoration">//</span> 在龙湖积累的「有限 AI 能力下做产品」经验
           </p>
         </div>
       </div>
@@ -364,15 +506,15 @@
   </section>
 
   <!-- 产品理念 -->
-  <section id="philosophy" class="min-h-screen flex items-center px-8 py-20 border-t border-white/5">
+  <section id="philosophy" class="min-h-screen flex items-center px-6 py-20 border-t border-white/5">
     <div class="max-w-4xl mx-auto w-full">
       <h2 class="section-title text-4xl md:text-5xl font-light mb-16 pl-8">
-        产品<span class="gradient-text">理念</span>
+        Product<span class="gradient-text">Philosophy</span>
       </h2>
 
-      <div class="space-y-12">
+      <div class="space-y-16">
         <div class="flex md:flex-row flex-col gap-8 items-start">
-          <span class="text-5xl text-gray-700">01</span>
+          <span class="text-5xl text-gray-700 font-mono">01</span>
           <div>
             <h3 class="text-2xl font-light mb-4">从人性洞察出发，不是从功能出发</h3>
             <p class="text-gray-400 leading-relaxed">
@@ -383,7 +525,7 @@
         </div>
 
         <div class="flex md:flex-row flex-col gap-8 items-start">
-          <span class="text-5xl text-gray-700">02</span>
+          <span class="text-5xl text-gray-700 font-mono">02</span>
           <div>
             <h3 class="text-2xl font-light mb-4">桥接 AI 技术与用户感性需求</h3>
             <p class="text-gray-400 leading-relaxed">
@@ -394,7 +536,7 @@
         </div>
 
         <div class="flex md:flex-row flex-col gap-8 items-start">
-          <span class="text-5xl text-gray-700">03</span>
+          <span class="text-5xl text-gray-700 font-mono">03</span>
           <div>
             <h3 class="text-2xl font-light mb-4">AI × 人文表达的定位</h3>
             <p class="text-gray-400 leading-relaxed">
@@ -408,48 +550,49 @@
   </section>
 
   <!-- 产品闭环 -->
-  <section id="loop" class="min-h-screen flex items-center px-8 py-20 border-t border-white/5 bg-white/[0.02]">
-    <div class="max-w-4xl mx-auto w-full">
+  <section id="loop" class="min-h-screen flex items-center px-6 py-20 border-t border-white/5 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/3 to-transparent"></div>
+    <div class="max-w-4xl mx-auto w-full relative z-10">
       <h2 class="section-title text-4xl md:text-5xl font-light mb-16 pl-8">
-        产品<span class="gradient-text">闭环</span>
+        Product<span class="gradient-text">Loop</span>
       </h2>
 
-      <div class="grid md:grid-cols-4 gap-6 mb-16">
-        <div class="text-center p-6">
-          <div class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center mx-auto mb-4 text-xl font-light">1</div>
+      <div class="grid md:grid-cols-4 gap-4 mb-16">
+        <div class="text-center p-6 border-glow rounded-2xl">
+          <div class="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center mx-auto mb-4 text-lg font-mono">01</div>
           <h3 class="font-medium mb-2">问题</h3>
           <p class="text-gray-500 text-sm">人们一闪而过的想法难以捕捉</p>
         </div>
-        <div class="text-center p-6">
-          <div class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center mx-auto mb-4 text-xl font-light">2</div>
+        <div class="text-center p-6 border-glow rounded-2xl">
+          <div class="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center mx-auto mb-4 text-lg font-mono">02</div>
           <h3 class="font-medium mb-2">假设</h3>
           <p class="text-gray-500 text-sm">语音是最自然的捕捉方式</p>
         </div>
-        <div class="text-center p-6">
-          <div class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center mx-auto mb-4 text-xl font-light">3</div>
+        <div class="text-center p-6 border-glow rounded-2xl">
+          <div class="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center mx-auto mb-4 text-lg font-mono">03</div>
           <h3 class="font-medium mb-2">方案</h3>
           <p class="text-gray-500 text-sm">语音转写 + AI 整理</p>
         </div>
-        <div class="text-center p-6">
-          <div class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center mx-auto mb-4 text-xl font-light">4</div>
+        <div class="text-center p-6 border-glow rounded-2xl">
+          <div class="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center mx-auto mb-4 text-lg font-mono">04</div>
           <h3 class="font-medium mb-2">迭代</h3>
           <p class="text-gray-500 text-sm">验证想法自动分类假设</p>
         </div>
       </div>
 
-      <div class="p-8 border border-white/10 rounded-2xl bg-black/20">
-        <h3 class="text-xl font-light mb-6">如果继续做，我会先验证：</h3>
-        <div class="grid md:grid-cols-3 gap-6">
+      <div class="p-8 border-glow rounded-2xl bg-white/[0.02]">
+        <h3 class="text-xl font-light mb-6 font-mono"><span class="code-decoration">//</span> 如果继续做，我会先验证：</h3>
+        <div class="grid md:grid-cols-3 gap-4">
           <div class="flex items-start gap-3">
-            <span class="text-green-500">✓</span>
+            <span class="text-purple-400 font-mono">✓</span>
             <p class="text-gray-300">用户是否真的愿意用语音而不是打字？</p>
           </div>
           <div class="flex items-start gap-3">
-            <span class="text-green-500">✓</span>
+            <span class="text-purple-400 font-mono">✓</span>
             <p class="text-gray-300">AI 整理后的内容是否符合用户预期？</p>
           </div>
           <div class="flex items-start gap-3">
-            <span class="text-green-500">✓</span>
+            <span class="text-purple-400 font-mono">✓</span>
             <p class="text-gray-300">本地部署的隐私保护是否足够？</p>
           </div>
         </div>
@@ -458,10 +601,10 @@
   </section>
 
   <!-- 关于我 -->
-  <section id="about" class="min-h-screen flex items-center px-8 py-20 border-t border-white/5">
+  <section id="about" class="min-h-screen flex items-center px-6 py-20 border-t border-white/5">
     <div class="max-w-6xl mx-auto w-full">
       <h2 class="section-title text-4xl md:text-5xl font-light mb-16 pl-8">
-        关于<span class="gradient-text">我</span>
+        About<span class="gradient-text">Me</span>
       </h2>
 
       <div class="grid lg:grid-cols-2 gap-16">
@@ -483,21 +626,21 @@
           </div>
 
           <div class="mt-10">
-            <p class="text-gray-500 text-sm mb-4">技术栈</p>
+            <p class="text-gray-500 text-sm mb-4 font-mono"><span class="code-decoration">//</span> TECH_STACK</p>
             <div class="flex flex-wrap gap-2">
-              <span class="skill-tag px-4 py-2 bg-white/5 rounded-full text-sm">Python</span>
-              <span class="skill-tag px-4 py-2 bg-white/5 rounded-full text-sm">TypeScript</span>
-              <span class="skill-tag px-4 py-2 bg-white/5 rounded-full text-sm">FastAPI</span>
-              <span class="skill-tag px-4 py-2 bg-white/5 rounded-full text-sm">AI/ML</span>
-              <span class="skill-tag px-4 py-2 bg-white/5 rounded-full text-sm">Prompt Engineering</span>
-              <span class="skill-tag px-4 py-2 bg-white/5 rounded-full text-sm">Product Design</span>
+              <span class="skill-tag px-4 py-2 bg-white/5 rounded-full border border-white/5">Python</span>
+              <span class="skill-tag px-4 py-2 bg-white/5 rounded-full border border-white/5">TypeScript</span>
+              <span class="skill-tag px-4 py-2 bg-white/5 rounded-full border border-white/5">FastAPI</span>
+              <span class="skill-tag px-4 py-2 bg-white/5 rounded-full border border-white/5">AI/ML</span>
+              <span class="skill-tag px-4 py-2 bg-white/5 rounded-full border border-white/5">Prompt</span>
+              <span class="skill-tag px-4 py-2 bg-white/5 rounded-full border border-white/5">Product</span>
             </div>
           </div>
         </div>
 
-        <div class="elegant-border rounded-2xl p-8 bg-white/[0.02]">
-          <h4 class="text-lg font-medium mb-6">其他项目</h4>
-          <div class="space-y-4">
+        <div class="border-glow rounded-2xl p-8 bg-white/[0.02]">
+          <h4 class="text-lg font-medium mb-6 font-mono"><span class="code-decoration">//</span> OTHER_PROJECTS</h4>
+          <div class="space-y-3">
             <a href="https://github.com/InvictusAutomation/20260310s-social-media-tools-opclw" target="_blank" class="block p-4 border border-white/5 rounded-xl hover:bg-white/5 transition-colors">
               <p class="font-medium">社交媒体运营工具集</p>
               <p class="text-gray-500 text-sm">小红书/抖音自动化</p>
@@ -517,20 +660,21 @@
   </section>
 
   <!-- 联系方式 -->
-  <section id="contact" class="min-h-[50vh] flex items-center px-8 py-20 border-t border-white/5 bg-white/[0.02]">
-    <div class="max-w-2xl mx-auto w-full text-center">
+  <section id="contact" class="min-h-[50vh] flex items-center px-6 py-20 border-t border-white/5 relative">
+    <div class="absolute inset-0 bg-gradient-to-t from-purple-500/5 to-transparent"></div>
+    <div class="max-w-2xl mx-auto w-full text-center relative z-10">
       <h2 class="text-4xl md:text-5xl font-light mb-6">
-        Let's work<span class="gradient-text"> together</span>
+        Let's<span class="gradient-text-colorful">Together</span>
       </h2>
       <p class="text-gray-400 text-lg mb-10">
         对 Voice Helper 感兴趣或有合作意向，欢迎联系。
       </p>
       <div class="flex flex-wrap gap-4 justify-center">
-        <a href="https://github.com/InvictusAutomation/20260306s-voice-helper" class="inline-flex items-center gap-2 px-8 py-3 bg-white text-black rounded-full font-medium hover:bg-gray-200 transition-colors">
+        <a href="https://github.com/InvictusAutomation/20260306s-voice-helper" class="inline-flex items-center gap-2 px-8 py-3 bg-white text-black rounded-full font-medium hover:bg-gray-200 transition-all hover:scale-105">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           GitHub
         </a>
-        <a href="mailto:example@email.com" class="inline-flex items-center gap-2 px-8 py-3 border border-white/20 rounded-full font-medium hover:bg-white/10 transition-colors">
+        <a href="mailto:example@email.com" class="inline-flex items-center gap-2 px-8 py-3 border border-white/20 rounded-full font-medium hover:bg-white/10 transition-all hover:scale-105">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
           Email
         </a>
@@ -538,8 +682,8 @@
     </div>
   </section>
 
-  <footer class="py-12 px-8 border-t border-white/5 text-center text-gray-600 text-sm">
-    <p>© 2026 Voice Helper · Built with ❤️ for thinkers</p>
+  <footer class="py-12 px-8 border-t border-white/5 text-center text-gray-600 text-sm font-mono">
+    <p><span class="code-decoration">//</span> © 2026 Voice Helper · Built with ❤️ for thinkers</p>
   </footer>
 
   <script>
@@ -572,17 +716,26 @@
 
     function getSectionName(id) {
       const names = {
-        'hero': '首页',
-        'demo': '视频演示',
-        'features': '核心能力',
-        'philosophy': '产品理念',
-        'loop': '产品闭环',
-        'about': '关于我'
+        'hero': 'HOME',
+        'demo': 'DEMO',
+        'features': 'FEATURES',
+        'philosophy': 'PHILOSOPHY',
+        'loop': 'LOOP',
+        'about': 'ABOUT'
       };
       return names[id] || '';
     }
 
     window.addEventListener('scroll', updateActiveDot);
+
+    // 添加页面加载动画
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.style.opacity = '0';
+      document.body.style.transition = 'opacity 0.5s ease';
+      setTimeout(() => {
+        document.body.style.opacity = '1';
+      }, 100);
+    });
   </script>
 </body>
 </html>
