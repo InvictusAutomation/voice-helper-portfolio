@@ -636,11 +636,31 @@
               <span class="skill-tag px-4 py-2 bg-white/5 rounded-full border border-white/5">Product</span>
             </div>
           </div>
+
+          <!-- 简历下载按钮 -->
+          <div class="mt-10">
+            <button id="downloadBtn" onclick="openCompanyModal()" class="inline-flex items-center gap-2 px-6 py-3 border border-white/20 rounded-full font-medium hover:bg-white/10 transition-all">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              <span class="font-mono text-sm">DOWNLOAD_RESUME</span>
+            </button>
+          </div>
         </div>
 
+        <!-- 简历展示区 -->
         <div class="border-glow rounded-2xl p-8 bg-white/[0.02]">
+          <h4 class="text-lg font-medium mb-6 font-mono"><span class="code-decoration">//</span> RESUME</h4>
+          <div id="resumeContent" class="text-sm text-gray-400 leading-relaxed space-y-4 max-h-[500px] overflow-y-auto">
+            <!-- 简历内容占位 - 等用户提供 MD 内容后渲染 -->
+            <div class="text-center py-10 text-gray-600">
+              <p class="mb-2">📄 简历展示区</p>
+              <p class="text-xs">等待提供简历 MD 内容...</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-glow rounded-2xl p-8 bg-white/[0.02] lg:col-span-2">
           <h4 class="text-lg font-medium mb-6 font-mono"><span class="code-decoration">//</span> OTHER_PROJECTS</h4>
-          <div class="space-y-3">
+          <div class="grid md:grid-cols-3 gap-4">
             <a href="https://github.com/InvictusAutomation/20260310s-social-media-tools-opclw" target="_blank" class="block p-4 border border-white/5 rounded-xl hover:bg-white/5 transition-colors">
               <p class="font-medium">社交媒体运营工具集</p>
               <p class="text-gray-500 text-sm">小红书/抖音自动化</p>
@@ -686,8 +706,148 @@
     <p><span class="code-decoration">//</span> © 2026 Voice Helper · Built with ❤️ for thinkers</p>
   </footer>
 
+  <!-- 公司选择弹窗 -->
+  <div id="companyModal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeCompanyModal()"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-6">
+      <div class="border-glow rounded-2xl bg-[#0a0a0f] p-6">
+        <h3 class="text-xl font-light mb-4">选择您所在的公司</h3>
+        <p class="text-gray-500 text-sm mb-4">请选择公司后下载简历</p>
+
+        <!-- 搜索框 -->
+        <div class="relative mb-4">
+          <input
+            type="text"
+            id="companySearch"
+            placeholder="搜索公司..."
+            class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50"
+            oninput="filterCompanies(this.value)"
+          >
+          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+
+        <!-- 公司列表 -->
+        <div id="companyList" class="max-h-60 overflow-y-auto space-y-1 mb-4">
+          <!-- 公司选项由 JS 渲染 -->
+        </div>
+
+        <!-- 按钮 -->
+        <div class="flex gap-3">
+          <button onclick="closeCompanyModal()" class="flex-1 px-4 py-3 border border-white/20 rounded-xl hover:bg-white/5 transition-colors">
+            取消
+          </button>
+          <button id="confirmCompanyBtn" onclick="confirmCompany()" disabled class="flex-1 px-4 py-3 bg-gray-600 rounded-xl text-gray-400 cursor-not-allowed transition-colors">
+            确认
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // 滚动导航高亮
+    // 公司列表
+    const companies = [
+      "字节跳动", "阿里巴巴", "腾讯", "百度", "美团",
+      "京东", "拼多多", "网易", "快手", "小红书",
+      "滴滴", "B站", "蔚来", "理想汽车", "小鹏汽车",
+      "米哈游", "商汤科技", "旷视科技", "依图科技", "寒武纪", "其他"
+    ];
+
+    let selectedCompany = null;
+    let filteredCompanies = [...companies];
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCompanies(companies);
+      trackPageView(); // 页面浏览统计
+    });
+
+    // 渲染公司列表
+    function renderCompanies(list) {
+      const container = document.getElementById('companyList');
+      container.innerHTML = list.map(company => `
+        <div
+          class="px-4 py-3 rounded-lg cursor-pointer hover:bg-white/10 transition-colors ${selectedCompany === company ? 'bg-purple-500/20 border border-purple-500/50' : ''}"
+          onclick="selectCompany('${company}')"
+        >
+          ${company}
+        </div>
+      `).join('');
+    }
+
+    // 搜索过滤
+    function filterCompanies(query) {
+      filteredCompanies = companies.filter(c => c.includes(query));
+      renderCompanies(filteredCompanies);
+    }
+
+    // 选择公司
+    function selectCompany(company) {
+      selectedCompany = company;
+      renderCompanies(filteredCompanies);
+      document.getElementById('confirmCompanyBtn').disabled = false;
+      document.getElementById('confirmCompanyBtn').classList.remove('bg-gray-600', 'cursor-not-allowed', 'text-gray-400');
+      document.getElementById('confirmCompanyBtn').classList.add('bg-purple-600', 'hover:bg-purple-500', 'text-white');
+    }
+
+    // 打开弹窗
+    function openCompanyModal() {
+      document.getElementById('companyModal').classList.remove('hidden');
+      document.getElementById('companySearch').value = '';
+      filteredCompanies = [...companies];
+      renderCompanies(filteredCompanies);
+    }
+
+    // 关闭弹窗
+    function closeCompanyModal() {
+      document.getElementById('companyModal').classList.add('hidden');
+    }
+
+    // 确认选择并下载
+    function confirmCompany() {
+      if (!selectedCompany) return;
+
+      // 记录下载埋点
+      trackResumeDownload(selectedCompany);
+
+      // 触发下载 (替换为实际的 PDF 链接)
+      // window.location.href = '/resume.pdf';
+      alert(`简历将下载，公司: ${selectedCompany}\n\n(请提供 PDF 文件链接以完成下载功能)`);
+
+      closeCompanyModal();
+    }
+
+    // ========== 埋点统计 ==========
+    // 使用 localStorage 本地存储统计
+    const STATS_KEY = 'voice_helper_portfolio_stats';
+
+    function getStats() {
+      const stats = localStorage.getItem(STATS_KEY);
+      return stats ? JSON.parse(stats) : { pageViews: 0, downloads: {} };
+    }
+
+    function saveStats(stats) {
+      localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+    }
+
+    function trackPageView() {
+      const stats = getStats();
+      stats.pageViews = (stats.pageViews || 0) + 1;
+      saveStats(stats);
+      console.log('Page view tracked. Total:', stats.pageViews);
+    }
+
+    function trackResumeDownload(company) {
+      const stats = getStats();
+      stats.downloads[company] = (stats.downloads[company] || 0) + 1;
+      saveStats(stats);
+      console.log('Resume download tracked. Company:', company, 'Total:', stats.downloads[company]);
+    }
+
+    // 导出统计供调试
+    window.getStats = getStats;
+
+    // ========== 滚动导航 ==========
     const sections = document.querySelectorAll('section[id]');
     const dots = document.querySelectorAll('.scroll-dot');
 
@@ -728,7 +888,7 @@
 
     window.addEventListener('scroll', updateActiveDot);
 
-    // 添加页面加载动画
+    // 页面加载动画
     document.addEventListener('DOMContentLoaded', () => {
       document.body.style.opacity = '0';
       document.body.style.transition = 'opacity 0.5s ease';
