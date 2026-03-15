@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Helper | AI 语音思考助手</title>
+  <meta name="description" content="Voice Helper - 让想法现形，让思考延伸。本地 AI 语音助手，帮你把脑子里模糊的想法变成可讨论、可沉淀的文字。">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif; }
+    body { background: #050505; }
+
+    .elegant-border {
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .text-balance {
+      text-wrap: balance;
+    }
+
+    .grid-pattern {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="text-white">
+  <!-- Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 px-8 py-6 flex justify-between items-center border-b border-white/5 backdrop-blur-sm bg-black/50">
+    <div class="text-lg tracking-tight font-medium">Voice Helper</div>
+    <div class="flex gap-8 text-sm text-gray-500">
+      <a href="#product" class="hover:text-white transition-colors">产品</a>
+      <a href="#philosophy" class="hover:text-white transition-colors">理念</a>
+      <a href="#demo" class="hover:text-white transition-colors">演示</a>
+      <a href="https://github.com/InvictusAutomation/20260306s-voice-helper" target="_blank" class="hover:text-white transition-colors">GitHub</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="min-h-screen grid-pattern flex items-center justify-center px-8">
+    <div class="max-w-3xl text-center">
+      <p class="text-gray-500 text-sm tracking-widest uppercase mb-6">AI × 思考延伸</p>
+      <h1 class="text-5xl md:text-7xl font-light mb-8 text-balance">
+        让想法<span class="gradient-text">现形</span>
+      </h1>
+      <p class="text-gray-400 text-lg mb-12 max-w-xl mx-auto">
+        「我发现人们一闪而过的想法很难抓住，语音是最自然的捕捉方式，但现有工具都只是"录音转文字"，没有帮你留住想法本身。」
+      </p>
+      <div class="flex gap-4 justify-center">
+        <a href="#demo" class="inline-block px-8 py-3 border border-white/20 rounded-full text-sm hover:bg-white hover:text-black transition-all">
+          查看演示 →
+        </a>
+        <a href="https://github.com/InvictusAutomation/20260306s-voice-helper" target="_blank" class="inline-block px-8 py-3 bg-white/10 rounded-full text-sm hover:bg-white/20 transition-all">
+          GitHub →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product: 核心能力 -->
+  <section id="product" class="py-32 px-8 border-t border-white/5">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-gray-500 text-sm tracking-widest uppercase mb-4">Product</p>
+      <h2 class="text-3xl md:text-4xl font-light mb-12 text-balance">不是帮你查信息，是帮你把想法说清楚</h2>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <div class="elegant-border rounded-2xl p-8">
+          <div class="text-3xl mb-4">🧠</div>
+          <h3 class="text-xl font-light mb-3">AI 延伸思维</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            这个助手不是帮你查答案，是帮你把脑子里模糊的想法变成可讨论、可沉淀的东西。
+          </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="elegant-border rounded-2xl p-8">
+          <div class="text-3xl mb-4">🎙️</div>
+          <h3 class="text-xl font-light mb-3">语音优先</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            「想说话的时候，手是来不及记的」——语音是最自然的捕捉方式。
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="elegant-border rounded-2xl p-8">
+          <div class="text-3xl mb-4">🔧</div>
+          <h3 class="text-xl font-light mb-3">Prompt 工程</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            把用户模糊的语音想法，转化成 AI 能正确理解的 Prompt。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Philosophy: 产品思维 -->
+  <section id="philosophy" class="py-32 px-8 border-t border-white/5 bg-white/[0.02]">
+    <div class="max-w-4xl mx-auto">
+      <p class="text-gray-500 text-sm tracking-widest uppercase mb-12">Philosophy</p>
+
+      <div class="space-y-16">
+        <div class="flex md:flex-row flex-col gap-8 items-start">
+          <span class="text-4xl text-gray-600">01</span>
+          <div>
+            <h3 class="text-2xl font-light mb-4">从人性洞察出发，不是从功能出发</h3>
+            <p class="text-gray-400 leading-relaxed">
+              想法自动分类的背后，是「人的思维有不同形态，不该用统一格式框住」的产品判断。
+              我故意限制了 AI 直接给答案，先让用户把想法说清楚，这才是思考助手该有的样子。
+            </p>
+          </div>
+        </div>
+
+        <div class="flex md:flex-row flex-col gap-8 items-start">
+          <span class="text-4xl text-gray-600">02</span>
+          <div>
+            <h3 class="text-2xl font-light mb-4">桥接 AI 技术与用户感性需求</h3>
+            <p class="text-gray-400 leading-relaxed">
+              在有限 AI 能力下做产品——这是我在龙湖积累的经验。语音输入为什么比打字好？
+              因为「想说话的时候，手是来不及记的」，这种细节就是你懂用户的证明。
+            </p>
+          </div>
+        </div>
+
+        <div class="flex md:flex-row flex-col gap-8 items-start">
+          <span class="text-4xl text-gray-600">03</span>
+          <div>
+            <h3 class="text-2xl font-light mb-4">AI × 人文表达的定位</h3>
+            <p class="text-gray-400 leading-relaxed">
+              我的定位是「让人的思想、感受和审美被更好呈现」，这个语音助手就是一个微型的
+              「AI × 思考延伸」产品——直接匹配我对同类产品（得到 Get 笔记、Ima 知识库）的观察。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo -->
+  <section id="demo" class="py-32 px-8 border-t border-white/5">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-gray-500 text-sm tracking-widest uppercase mb-12">Demo</p>
+
+      <div class="elegant-border rounded-2xl overflow-hidden">
+        <div class="h-96 bg-gray-900 relative overflow-hidden flex items-center justify-center">
+          <div class="absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-900 to-black"></div>
+          <div class="relative z-10 text-center">
+            <div class="text-8xl mb-6">🎙️</div>
+            <p class="text-gray-400">语音输入 · 实时转写 · AI 整理</p>
+          </div>
+        </div>
+        <div class="p-8">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h2 class="text-2xl font-light mb-2">Voice Helper</h2>
+              <p class="text-gray-500">本地 AI 语音助手 · macOS/Windows/Linux</p>
+            </div>
+            <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-400">2026</span>
+          </div>
+          <p class="text-gray-400 max-w-xl mb-6">
+            面向开发者和知识工作者的本地语音助手，解决思考过程中的上下文切换痛点。
+            支持实时语音转写、AI 内容整理、本地部署保护隐私。
+          </p>
+          <div class="flex gap-4">
+            <a href="https://github.com/InvictusAutomation/20260306s-voice-helper" target="_blank" class="inline-block px-6 py-2 bg-white text-black rounded-full text-sm hover:bg-gray-200 transition-colors">
+              查看源码
+            </a>
+            <a href="#" class="inline-block px-6 py-2 border border-white/20 rounded-full text-sm hover:bg-white/10 transition-colors">
+              继续完善中...
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Loop: 产品闭环 -->
+  <section class="py-32 px-8 border-t border-white/5 bg-white/[0.02]">
+    <div class="max-w-4xl mx-auto">
+      <p class="text-gray-500 text-sm tracking-widest uppercase mb-12">Product Loop</p>
+
+      <div class="grid md:grid-cols-4 gap-8">
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center mx-auto mb-4">1</div>
+          <h3 class="font-medium mb-2">问题</h3>
+          <p class="text-gray-500 text-sm">人们一闪而过的想法难以捕捉</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center mx-auto mb-4">2</div>
+          <h3 class="font-medium mb-2">假设</h3>
+          <p class="text-gray-500 text-sm">语音是最自然的捕捉方式</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center mx-auto mb-4">3</div>
+          <h3 class="font-medium mb-2">方案</h3>
+          <p class="text-gray-500 text-sm">语音转写 + AI 整理</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center mx-auto mb-4">4</div>
+          <h3 class="font-medium mb-2">迭代</h3>
+          <p class="text-gray-500 text-sm">验证想法自动分类假设</p>
+        </div>
+      </div>
+
+      <div class="mt-16 p-6 border border-white/10 rounded-xl bg-white/[0.02]">
+        <p class="text-gray-400 text-sm mb-4">如果继续做，我会先验证：</p>
+        <ul class="space-y-2 text-gray-300">
+          <li>✓ 用户是否真的愿意用语音而不是打字？</li>
+          <li>✓ AI 整理后的内容是否符合用户预期？</li>
+          <li>✓ 本地部署的隐私保护是否足够？</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="py-32 px-8 border-t border-white/5">
+    <div class="max-w-2xl mx-auto text-center">
+      <p class="text-gray-500 text-sm tracking-widest uppercase mb-6">Get in Touch</p>
+      <h2 class="text-4xl font-light mb-6">Let's work together</h2>
+      <p class="text-gray-400 mb-8">
+        对 Voice Helper 感兴趣或有合作意向，欢迎联系。
+      </p>
+      <a href="https://github.com/InvictusAutomation/20260306s-voice-helper" class="inline-block px-8 py-3 bg-white text-black rounded-full font-medium hover:bg-gray-200 transition-colors">
+        View on GitHub
+      </a>
+    </div>
+  </section>
+
+  <footer class="py-12 px-8 border-t border-white/5 text-center text-gray-600 text-sm">
+    <p>© 2026 Voice Helper · Built with ❤️ for thinkers</p>
+  </footer>
+</body>
+</html>
