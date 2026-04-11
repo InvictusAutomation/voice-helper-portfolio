@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Chen — Voice Helper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0A1628;--navy-mid:#0F2847;
+  --teal:#0D9488;--teal-light:#14B8A6;
+  --amber:#F59E0B;--amber-light:#FBBF24;
+  --text-light:rgba(255,255,255,.88);
+  --text-dim:rgba(255,255,255,.55);
+  --fh:'Cormorant Garamond',Georgia,serif;
+  --fb:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overflow-x:hidden;line-height:1.7;-webkit-font-smoothing:antialiased}
+#ambient-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 120% 80% at 50% 50%,var(--navy-mid),var(--navy));transition:background 1.2s ease}
+#ambient-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(circle 600px at var(--mx,50%) var(--my,40%),rgba(13,148,136,.12),transparent 70%);transition:background .6s ease}
+#timeline{position:fixed;left:32px;top:0;height:100vh;width:2px;z-index:100;background:rgba(255,255,255,.06)}
+#timeline-progress{width:100%;background:linear-gradient(180deg,var(--teal),var(--amber));border-radius:0 0 2px 2px;transition:height .15s ease;box-shadow:0 0 12px rgba(13,148,136,.5)}
+#timeline-dots{position:fixed;left:25px;top:0;height:100vh;z-index:101;pointer-events:none}
+.tl-dot{position:absolute;width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.15);background:var(--navy);transition:all .4s ease;transform:translateX(-50%)}
+.tl-dot.active{border-color:var(--teal-light);background:var(--teal);box-shadow:0 0 16px rgba(13,148,136,.6)}
+.tl-dot.warm{border-color:var(--amber);background:var(--amber);box-shadow:0 0 16px rgba(245,158,11,.5)}
+.scene{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;z-index:1;overflow:hidden;padding:80px 60px 80px 100px}
+.reveal{opacity:0;transform:translateY(60px);transition:opacity .9s cubic-bezier(.23,1,.32,1),transform .9s cubic-bezier(.23,1,.32,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-80px);transition:opacity .9s cubic-bezier(.23,1,.32,1),transform .9s cubic-bezier(.23,1,.32,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(80px);transition:opacity .9s cubic-bezier(.23,1,.32,1),transform .9s cubic-bezier(.23,1,.32,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .8s ease,transform .8s cubic-bezier(.23,1,.32,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-float{opacity:0;transform:translateY(100px);transition:1s ease .2s,transform 1s cubic-bezier(.23,1,.32,1) .2s}
+.reveal-float.visible{opacity:1;transform:translateY(0)}
+.chapter-card{position:absolute;top:50%;transform:translateY(-50%) translateX(-120%);padding:24px 40px;border-left:3px solid var(--teal-light);background:rgba(255,255,255,.04);backdrop-filter:blur(20px);transition:transform 1s cubic-bezier(.23,1,.32,1),opacity 1s ease;opacity:0;z-index:10}
+.chapter-card.slide-in{transform:translateY(-50%) translateX(0);opacity:1}
+.chapter-card h2{font-family:var(--fh);font-size:2.4rem;font-weight:300;letter-spacing:.02em;margin-bottom:8px}
+.chapter-card .ch-num{font-family:var(--fb);font-size:.7rem;text-transform:uppercase;letter-spacing:.25em;color:var(--teal-light);margin-bottom:12px}
+.quote-float{position:relative;padding:32px 40px;margin:48px 0;border-left:2px solid var(--teal-light);background:linear-gradient(135deg,rgba(13,148,136,.06),transparent);font-family:var(--fh);font-size:1.35rem;font-style:italic;line-height:1.8;color:rgba(255,255,255,.82);max-width:680px}
+.quote-float::before{content:'\201C';position:absolute;top:-10px;left:16px;font-size:4rem;color:var(--teal-light);opacity:.4;font-style:normal}
+.sound-wave{display:flex;align-items:center;gap:3px;height:60px}
+.sound-wave span{width:4px;border-radius:4px;background:var(--teal-light);animation:wave 1.2s ease-in-out infinite}
+@keyframes wave{0%,100%{height:8px;opacity:.3}50%{height:var(--h,40px);opacity:1}}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border:1px solid rgba(255,255,255,.25);border-radius:40px;color:var(--text-light);text-decoration:none;font-family:var(--fb);font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;transition:all .4s ease;cursor:pointer;background:transparent}
+.btn-outline:hover{border-color:var(--teal-light);background:rgba(13,148,136,.1);transform:translateY(-2px)}
+.btn-warm{border-color:var(--amber);color:var(--amber-light)}
+.btn-warm:hover{background:rgba(245,158,11,.1);border-color:var(--amber-light)}
+.scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.5;animation:sp 2.5s ease-in-out infinite}
+.scroll-indicator span{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim)}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--teal-light),transparent);animation:sl 2s ease-in-out infinite}
+@keyframes sp{0%,100%{opacity:.3;transform:translateX(-50%) translateY(0)}50%{opacity:.7;transform:translateX(-50%) translateY(8px)}}
+@keyframes sl{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.scene-opening{flex-direction:column;text-align:center}
+.scene-opening h1{font-family:var(--fh);font-size:clamp(2.8rem,6vw,5rem);font-weight:300;line-height:1.15;margin-bottom:16px}
+.scene-opening .subtitle{font-size:1.05rem;color:var(--text-dim);max-width:520px;margin:0 auto 40px}
+.scene-content{max-width:860px}
+.scene-content h2{font-family:var(--fh);font-size:clamp(2rem,4vw,3.2rem);font-weight:300;line-height:1.25;margin-bottom:24px}
+.scene-content p{font-size:1rem;line-height:1.9;color:rgba(255,255,255,.75);margin-bottom:20px;max-width:640px}
+.section-divider{width:60px;height:1px;background:linear-gradient(90deg,var(--teal-light),transparent);margin:48px 0}
+.framework-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin:40px 0}
+.fw-card{padding:28px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.02);transition:all .5s ease}
+.fw-card:hover{border-color:var(--teal);background:rgba(13,148,136,.05);transform:translateY(-4px)}
+.fw-card h4{font-family:var(--fh);font-size:1.25rem;margin-bottom:8px;color:var(--text-light)}
+.fw-card p{font-size:.85rem;color:var(--text-dim);line-height:1.7}
+.vision-tag{display:inline-block;padding:6px 16px;border:1px solid rgba(245,158,11,.3);border-radius:20px;font-size:.75rem;letter-spacing:.1em;color:var(--amber-light);margin:4px}
+.scene-epilogue{text-align:center;flex-direction:column}
+.epilogue-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.scene-warm{background:linear-gradient(180deg,transparent,rgba(245,158,11,.03) 50%,rgba(245,158,11,.06))}
+.scene-warm .quote-float{border-left-color:var(--amber)}
+.scene-warm .quote-float::before{color:var(--amber)}
+.scene-warm .chapter-card{border-left-color:var(--amber)}
+.scene-warm .chapter-card .ch-num{color:var(--amber-light)}
+.scene-warm .sound-wave span{background:var(--amber-light)}
+.scene-warm .section-divider{background:linear-gradient(90deg,var(--amber),transparent)}
+
+/* Architecture diagram */
+.arch-diagram{width:100%;max-width:700px;margin:36px 0;padding:28px;border:1px solid rgba(13,148,136,.15);border-radius:14px;background:rgba(13,148,136,.03);position:relative;overflow:hidden}
+.arch-diagram::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(13,148,136,.06),transparent 70%)}
+.arch-layer{text-align:center;padding:18px 22px;margin:10px 0;border-radius:10px;position:relative;z-index:1}
+.arch-layer-ui{background:linear-gradient(135deg,rgba(13,148,136,.15),rgba(13,148,106,.08));border:1px solid rgba(13,148,136,.25)}
+.arch-layer-engine{background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.05));border:1px solid rgba(245,158,11,.2)}
+.arch-layer-ext{background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.15)}
+.arch-label{font-family:var(--fb);font-size:.72rem;text-transform:uppercase;letter-spacing:.18em;color:var(--text-dim);margin-bottom:8px}
+.arch-title{font-family:var(--fh);font-size:1.15rem;font-weight:400;color:var(--text-light)}
+.arch-modules{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.arch-module{font-size:.72rem;padding:3px 10px;border-radius:12px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);white-space:nowrap}
+.arch-arrow{display:flex;justify-content:center;padding:4px 0;color:var(--text-dim);font-size:1.2rem}
+
+/* Code block */
+.code-block{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:20px 24px;margin:28px 0;overflow-x:auto;font-family:'SF Mono',Menlo,monospace;font-size:.78rem;line-height:1.7;color:#a5f3fc}
+.code-block .c-cmt{color:rgba(255,255,255,.35);font-style:italic}
+.code-block .c-kw{color:#fbbf24}
+.code-block .c-str{color:#34d399}
+.code-block .c-fn{color:#93c5fd}
+.code-block .c-var{color:#f9a8d4}
+
+/* Stats row */
+.stats-row{display:flex;gap:32px;margin:32px 0;flex-wrap:wrap}
+.stat-item{text-align:center;flex:1;min-width:100px}
+.stat-number{font-family:var(--fh);font-size:2.4rem;font-weight:300;color:var(--teal-light)}
+.stat-label{font-size:.7rem;color:var(--text-dim);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+
+@media(max-width:768px){
+  .scene{padding:60px 24px}
+  #timeline,#timeline-dots{display:none}
+  .chapter-card{position:relative;top:auto;transform:translateX(-120%);padding:16px 24px;margin-bottom:32px}
+  .chapter-card.slide-in{transform:translateX(0)}
+  .scene-content h2{font-size:1.8rem}
+  .sound-wave{justify-content:center}
+  .framework-grid{grid-template-columns:1fr}
+  .epilogue-links{flex-direction:column;align-items:center}
+  .arch-diagram{padding:16px}
+  .arch-modules{flex-direction:column;align-items:center}
+  .stats-row{flex-direction:row;justify-content:center}
+}
+#grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px}
+
+/* Demo widget area */
+#voice-helper-demo{margin:32px auto;max-width:640px;width:100%}
+</style>
+</head>
+<body>
+<div id="ambient-bg"></div>
+<div id="grain"></div>
+<div id="timeline"><div id="timeline-progress" style="height:0%"></div></div>
+<div id="timeline-dots"></div>
+
+<!-- ═══════════════ SCENE 1: OPENING ═══════════════ -->
+<section class="scene scene-opening" data-scene="opening">
+  <div>
+    <p class="reveal" style="font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--teal-light);margin-bottom:20px">Voice First AI · Proactive &amp; Context-Aware</p>
+    <h1 class="reveal" style="transition-delay:.15s">Voice Helper</h1>
+    <p class="subtitle reveal" style="transition-delay:.3s">一个会成长的 AI 伙伴<br>从线性对话中提取结构化知识，拥有自己的「主体性」</p>
+    <div class="sound-wave reveal" style="justify-content:center;transition-delay:.5s" id="hero-wave"></div>
+  </div>
+  <div class="scroll-indicator reveal" style="transition-delay:.8s">
+    <span>Scroll to explore</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ SCENE 2: THE IDEA ═══════════════ -->
+<section class="scene" data-scene="idea">
+  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 01</div><h2>The Idea</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal-left">传统 AI 助手是「问一句答一句」<br>但真正的伙伴不是这样。</h2>
+    <div class="section-divider reveal"></div>
+    <p class="reveal" style="transition-delay:.2s">市面上的语音助手本质上都是「快速搜索引擎」——你问，它答。对话结束，上下文清零。它们没有记忆、没有主动性，更不理解你的世界。</p>
+    <p class="reveal" style="transition-delay:.35s">Voice Helper 的出发点很简单：<strong>如果 AI 能像真正关心你的人一样——记住你说过的、理解你没说的、在你需要时主动出现——那会是怎样的体验？</strong></p>
+    <div class="quote-float reveal-float">"最好的界面不是等待你操作的那个，而是预判你需求的那个。"</div>
+
+    <!-- Key stats -->
+    <div class="stats-row reveal" style="transition-delay:.45s">
+      <div class="stat-item"><div class="stat-number">4</div><div class="stat-label">State Machine</div></div>
+      <div class="stat-item"><div class="stat-number">&lt;1.5s</div><div class="stat-label">Voice Latency</div></div>
+      <div class="stat-item"><div class="stat-number">2</div><div class="stat-label">Realtime Providers</div></div>
+      <div class="stat-item"><div class="stat-number">∞</div><div class="stat-label">Memory Growth</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SCENE 3: CORE PRINCIPLES ═══════════════ -->
+<section class="scene" data-scene="principles">
+  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 02</div><h2>Core Principles</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal-right">四大核心理念<br><span style="font-size:.55em;color:var(--text-dim)">定义了 Voice Helper 与传统助手的所有区别</span></h2>
+    <div class="section-divider reveal"></div>
+    <div class="framework-grid reveal" style="transition-delay:.15s">
+      <div class="fw-card">
+        <h4>主动性 Proactive</h4>
+        <p>不只回答问题，还会主动关心、提醒、分享。基于学习到的模式和上下文信号，在用户需要之前就提供帮助。</p>
+      </div>
+      <div class="fw-card">
+        <h4>记忆性 Memory</h4>
+        <p>记住对话中的重要信息，通过 Mem0 向量化存储形成长期知识积累，支持语义检索和跨会话回忆。</p>
+      </div>
+      <div class="fw-card">
+        <h4>成长性 Growth</h4>
+        <p>从每次交互中学习，不断优化对用户的理解和回复质量。越用越懂你。</p>
+      </div>
+      <div class="fw-card">
+        <h4>关系性 Relational</h4>
+        <p>理解人际关系网络，记住用户重视的人事物，在合适的时机主动提及和关怀。</p>
+      </div>
+    </div>
+
+    <!-- Code glimpse -->
+    <p class="reveal" style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);margin:40px 0 16px">Architecture Glimpse</p>
+    <div class="code-block reveal" style="transition-delay:.3s">
+<span class="c-cmt"># Hybrid scheme: OpenAI voice + DashScope brain</span>
+<span class="c-kw">class</span> <span class="c-var">Brain</span>:
+    <span class="c-cmt"># Background intelligence — never blocks hot path</span>
+    <span class="c-kw">async def</span> <span class="c-fn">process_input</span>(<span class="c-var">self</span>, text):
+        <span class="c-var">self</span>.memory.<span class="c-fn">add_conversation</span>(<span class="c-str">"user"</span>, text)
+        memories = <span class="c-var">self</span>.memory.<span class="c-fn">search</span>(text, limit=<span class="c-str">5</span>)
+        switch = <span class="c-kw">await</span> <span class="c-var">self</span>.sm.<span class="c-fn">_detect_state_switch</span>(text)
+        <span class="c-cmt"># Fire-and-forget: never blocks audio pipeline</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SCENE 4: TECH STACK DEEP DIVE ═══════════════ -->
+<section class="scene" data-scene="tech">
+  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 03</div><h2>Tech Stack</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal-left">双模型架构<br><span style="font-size:.55em;color:var(--text-dim)">OpenAI Realtime Voice + DashScope Qwen Intelligence Brain</span></h2>
+    <div class="section-divider reveal"></div>
+    <p class="reveal">Voice Helper 采用独特的双模型混合架构：语音交互层使用 OpenAI/DashScope Realtime API 实现超低延迟（&lt;1.5s），而智能决策层（状态机、记忆检索、意图判断）全部由阿里云 DashScope Qwen 驱动，兼顾速度与中文能力。</p>
+
+    <div class="framework-grid reveal" style="transition-delay:.2s">
+      <div class="fw-card">
+        <h4>Realtime Voice Layer</h4>
+        <p><strong>OpenAI gpt-4o-mini-realtime</strong> 或 <strong>DashScope qwen3.5-omni-plus-realtime</strong> · Server-side VAD · 打断机制 (Barge-in) · 长篇模式自动切换</p>
+      </div>
+      <div class="fw-card">
+        <h4>Intelligence Engine</h4>
+        <p>DashScope <strong>qwen-plus</strong> 对话 + <strong>qwen-turbo</strong> 判断决策 · 异步后台处理管线 · 不阻塞音频热路径</p>
+      </div>
+      <div class="fw-card">
+        <h4>Memory System</h4>
+        <p><strong>Mem0</strong> + Qdrant 向量存储 + <strong>text-embedding-v3</strong> · 结构化事实提取 · 跨会话语义检索</p>
+      </div>
+      <div class="fw-card">
+        <h4>MCP Tool Extension</h4>
+        <p>Model Context Protocol via FastMCP · Web 搜索工具 · SSE 工具服务器架构 · 可插拔扩展设计</p>
+      </div>
+      <div class="fw-card">
+        <h4>State Machine</h4>
+        <p>IDLE → ENGAGED → FADING → SILENT 四态模型 · LLM 驱动的状态转换检测 · 渐进式自主性调节</p>
+      </div>
+      <div class="fw-card">
+        <h4>Voice Configuration</h4>
+        <p><code>voice_config.yaml</code> 驱动 · 音色/VAD 参数/token 上限/打断关键词 全部可配置 · 热加载无需改代码</p>
+      </div>
+    </div>
+
+    <div class="research-viz reveal-scale" id="research-viz-tech"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ SCENE 5: ARCHITECTURE ═══════════════ -->
+<section class="scene scene-warm" data-scene="architecture">
+  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 04</div><h2>Architecture</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal-right">三层解耦架构<br>热路径与冷路径分离</h2>
+    <div class="section-divider reveal"></div>
+    <p class="reveal">整个系统被清晰地分为三层：用户交互层（语音/文本）、核心引擎层（对话/记忆/推理）、外部服务层（LLM API/MCP 工具）。关键设计决策：**Brain 引擎的所有 LLM 调用都在异步后台执行，绝不阻塞音频热路径**。</p>
+
+    <div class="arch-diagram reveal-scale">
+      <div class="arch-layer arch-layer-ui">
+        <div class="arch-label">Layer 1 · User Interface</div>
+        <div class="arch-title">交互层</div>
+        <div class="arch-modules">
+          <span class="arch-module">Realtime WebSocket</span>
+          <span class="arch-module">Text Terminal</span>
+          <span class="arch-module">Server VAD</span>
+          <span class="arch-module">Audio Stream</span>
+        </div>
+      </div>
+      <div class="arch-arrow">▼</div>
+      <div class="arch-layer arch-layer-engine">
+        <div class="arch-label">Layer 2 · Core Engine</div>
+        <div class="arch-title">核心引擎 (Async Background)</div>
+        <div class="arch-modules">
+          <span class="arch-module">🧠 Brain (process_input)</span>
+          <span class="arch-module">💾 MemoryManager (Mem0+Qdrant)</span>
+          <span class="arch-machine">⚡ StateMachine (4-state)</span>
+          <span class="arch-module">🔔 Trigger (proactive)</span>
+          <span class="arch-module">🔗 MCPBridge (tools)</span>
+        </div>
+      </div>
+      <div class="arch-arrow">▼</div>
+      <div class="arch-layer arch-layer-ext">
+        <div class="arch-label">Layer 3 · External Services</div>
+        <div class="arch-title">外部服务</div>
+        <div class="arch-modules">
+          <span class="arch-module">OpenAI Realtime API</span>
+          <span class="arch-module">DashScope (Qwen + Embedding)</span>
+          <span class="arch-module">MCP SSE Servers</span>
+          <span class="arch-module">Qdrant Vector DB</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-float reveal-float">"热路径只做一件事：收音频 → 发音频。所有思考都在冷路径的 Brain 里异步完成。"</div>
+  </div>
+</section>
+
+<!-- ═══════════════ SCENE 6: THE PRODUCT — INTERACTIVE DEMO ═══════════════ -->
+<section class="scene scene-warm" data-scene="product">
+  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 05</div><h2>Try It</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal-left">Voice Helper<br><span style="font-size:.65em;color:var(--text-dim);font-weight:300">可交互 Demo · 直接体验</span></h2>
+    <div class="section-divider reveal"></div>
+    <p class="reveal">下方是一个真实的交互式 Demo。你可以直接输入消息与 Voice Helper 对话。当前运行在<strong>模拟模式</strong>（无需后端即可体验），部署 Render 后端后将自动切换到真实 AI 对话模式。</p>
+
+    <!-- Interactive Chat Widget -->
+    <div id="voice-helper-demo" data-api-url="" class="reveal-scale"></div>
+
+    <!-- Current capabilities -->
+    <p class="reveal" style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);margin:36px 0 16px">Phase 1 Capabilities</p>
+    <div class="framework-grid reveal" style="transition-delay:.15s">
+      <div class="fw-card">
+        <h4>三种运行模式</h4>
+        <p><code>--mode realtime</code> 超低延迟语音 (~1s) · <code>--mode fast</code> Agents SDK 低延迟 · <code>--mode agents</code> 全功能含 MCP 搜索</p>
+      </div>
+      <div class="fw-card">
+        <h4>SILENT Mode</h4>
+        <p>LLM 驱动的静默模式切换 · 在 SILENT 中仅倾听不回应 · 支持静默指令执行（设闹钟/记笔记）· Beep 确认反馈</p>
+      </div>
+      <div class="fw-card">
+        <h4>Proactive Trigger</h4>
+        <p>IDLE 状态下的定时扫描 · 基于记忆和上下文判断是否值得主动说话 · 智能退避算法避免打扰</p>
+      </div>
+      <div class="fw-card">
+        <h4>Barge-in Interrupt</h4>
+        <p>用户可在 AI 说话时插话中断 · 触发词列表可配置（"别讲了""停下""算了"等）· 中断后立即停止并等待新输入</p>
+      </div>
+      <div class="fw-card">
+        <h4>Long Mode Detection</h4>
+        <p>自动检测故事/分析请求 → 动态提升 token 上限至 300 · 口语化长输出 · 故事有头尾、分析有观点</p>
+      </div>
+      <div class="fw-card">
+        <h4>Time Injection</h4>
+        <p>识别时间相关提问 → 注入精确日期/星期/时间 → AI 能准确回答"现在几点""今天星期几"</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SCENE 7: ROADMAP ═══════════════ -->
+<section class="scene scene-warm" data-scene="roadmap">
+  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 06</div><h2>Roadmap</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal-right">From Assistant<br>to Companion</h2>
+    <div class="section-divider reveal"></div>
+
+    <p class="reveal" style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal-light);margin-bottom:16px">Phase 1 ✅ — Now (Current State)</p>
+    <div class="framework-grid reveal" style="transition-delay:.1s">
+      <div class="fw-card" style="border-left:3px solid var(--teal)">
+        <h4>✅ 双 Provider 语音</h4><p>OpenAI + DashScope Realtime，Server VAD，&lt;1.5s 延迟</p>
+      </div>
+      <div class="fw-card" style="border-left:3px solid var(--teal)">
+        <h4>✅ 四态状态机</h4><p>IDLE / ENGAGED / FADING / SILENT，LLM 驱动转换</p>
+      </div>
+      <div class="fw-card" style="border-left:3px solid var(--teal)">
+        <h4>✅ 记忆系统</h4><p>Mem0 + Qdrant，向量存储 + 语义检索</p>
+      </div>
+      <div class="fw-card" style="border-left:3px solid var(--teal)">
+        <h4>✅ 主动性触发</h4><p>IDLE 扫描 + 智能判断 + 退避算法</p>
+      </div>
+    </div>
+
+    <p class="reveal" style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber-light);margin:36px 0 16px">Phase 2 🔮 — Memory & Analysis</p>
+    <div class="framework-grid reveal" style="transition-delay:.2s">
+      <div class="fw-card"><h4>对话解构</h4><p>从每次对话中提取结构化知识：核心论点、论证结构、隐含前提、情绪基调</p></div>
+      <div class="fw-card"><h4>知识图谱</h4><p>关系型记忆存储：人、事、物之间的关联网络可视化</p></div>
+      <div class="fw-card"><h4>记忆 UI</h4><p>查看/编辑/删除记忆条目的 Web 界面，让用户完全掌控 AI 的记忆</p></div>
+    </div>
+
+    <p class="reveal" style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber-light);margin:36px 0 16px">Phase 3 🚀 — Social & Autonomous</p>
+    <div class="framework-grid reveal" style="transition-delay:.3s">
+      <div class="fw-card"><h4>社会关系建模</h4><p>自动推断关系类型（亲密/家人/同事/朋友），追踪关系强度变化</p></div>
+      <div class="fw-card"><h4>主动提醒系统</h4><p>生日追踪、承诺提醒、关系维护建议 —— 真正"会来事儿"</p></div>
+      <div class="fw-card"><h4>个性化人格</h4><p>好奇心、同理心、幽默感等多维度性格配置 + 兴趣领域主动推送</p></div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin:36px 0" class="reveal">
+      <span class="vision-tag">Proactive AI</span><span class="vision-tag">Voice-First</span><span class="vision-tag">Contextual Memory</span>
+      <span class="vision-tag">Dual-Model Arch</span><span class="vision-tag">State Machine</span><span class="vision-tag">Human-Centered</span>
+      <span class="vision-tag">Open Source</span><span class="vision-tag">MCP Compatible</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SCENE 8: EPILOGUE ═══════════════ -->
+<section class="scene scene-epilogue scene-warm" data-scene="epilogue">
+  <div class="scene-content" style="text-align:center">
+    <p class="reveal" style="font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--amber-light);margin-bottom:20px">End of Voyage</p>
+    <h2 class="reveal" style="transition-delay:.1s">Build AI that truly understands you.</h2>
+    <p class="reveal" style="transition-delay:.25s;margin:20px auto 40px;max-width:500px;color:var(--text-dim)">Voice Helper 是一个开源项目。欢迎查看源码、提出建议、或一起构建下一代人机交互方式。</p>
+    <div class="epilogue-links reveal" style="transition-delay:.4s">
+      <a href="https://github.com/rockchen/20260306s-voice-helper" target="_blank" rel="noopener" class="btn-outline btn-warm">View Source on GitHub ↗</a>
+      <a href="#" onclick="document.getElementById('voice-helper-demo').scrollIntoView({behavior:'smooth'});return false" class="btn-outline btn-warm">Try the Demo ↑</a>
+      <a href="#" class="btn-outline btn-warm">Get in Touch</a>
+    </div>
+    <div class="sound-wave reveal" style="justify-content:center;margin-top:48px;transition-delay:.6s" id="outro-wave"></div>
+  </div>
+</section>
+
+<script src="demo-widget.js"></script>
+<script>
+(function(){
+/* Sound waves */
+function mkWave(id,n){var w=document.getElementById(id);if(!w)return;for(var i=0;i<n;i++){var b=document.createElement('span');b.style.setProperty('--h',(12+Math.random()*36)+'px');b.style.animationDelay=(i*.04)+'s';b.style.animationDuration=(.8+Math.random()*.8)+'s';w.appendChild(b)}}
+mkWave('hero-wave',50);mkWave('outro-wave',20);
+
+/* Scroll reveal */
+var rObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');rObs.unobserve(e.target)}})},{threshold:.15,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-float').forEach(function(el){rObs.observe(el)});
+
+/* Chapter cards */
+var cObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('slide-in');else e.target.classList.remove('slide-in')})},{threshold:.3});
+document.querySelectorAll('[data-chapter]').forEach(function(el){cObs.observe(el)});
+
+/* Timeline */
+var scenes=document.querySelectorAll('[data-scene]'),dotsC=document.getElementById('timeline-dots'),prog=document.getElementById('timeline-progress'),dots=[];
+scenes.forEach(function(s){var d=document.createElement('div');d.className='tl-dot';d.style.top=(s.offsetTop+s.offsetHeight/2)+'px';d._warm=s.classList.contains('scene-warm');dotsC.appendChild(d);dots.push(d)});
+
+/* Scroll handler */
+var ambient=document.getElementById('ambient-bg');
+var navy={r:10,g:22,b:40},tealC={r:13,g:148,b:136},amberC={r:245,g:158,b:11};
+function lerp(a,b,t){return a+(b-a)*t}
+function lerpC(c1,c2,t){return 'rgb('+Math.round(lerp(c1.r,c2.r,t))+','+Math.round(lerp(c1.g,c2.g,t))+','+Math.round(lerp(c1.b,c2.b,t))+')'}
+var ticking=false;
+window.addEventListener('scroll',function(){if(ticking)return;ticking=true;requestAnimationFrame(function(){
+  var sy=window.scrollY,ms=document.documentElement.scrollHeight-window.innerHeight,p=Math.min(sy/Math.max(ms,1),1);
+  prog.style.height=(p*100)+'%';
+  dots.forEach(function(d,i){var sT=scenes[i].offsetTop,sH=scenes[i].offsetHeight;if(sy>=sT-200&&sy<sT+sH-200){d.classList.add('active');if(d._warm)d.classList.add('warm')}else{d.classList.remove('active','warm')}});
+  var c;if(p<.5)c=lerpC(navy,tealC,p*2);else c=lerpC(tealC,amberC,(p-.5)*2);
+  ambient.style.background='radial-gradient(ellipse 120% 80% at 50% 50%,'+c+',#0A1628)';ticking=false})},{passive:true});
+
+/* Mouse parallax */
+document.addEventListener('mousemove',function(e){ambient.style.setProperty('--mx',(e.clientX/window.innerWidth*100)+'%');ambient.style.setProperty('--my',(e.clientY/window.innerHeight*100)+'%')});
+
+/* Research viz canvas for tech scene */
+(function(){
+  var el=document.getElementById('research-viz-tech');if(!el)return;
+  var cv=document.createElement('canvas');el.appendChild(cv);
+  var ctx=cv.getContext('2d');
+  // Tech stack particles
+  var labels=['Python','FastAPI','WebSocket','Mem0','Qdrant','DashScope','OpenAI','MCP','async/await','VAD','State Machine','Embedding'];
+  var particles=[];for(var i=0;i<50;i++){particles.push({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.0008,vy:(Math.random()-.5)*.0008,r:Math.random()*2+1,l:labels[i%labels.length]})}
+  function rsz(){var r=el.getBoundingClientRect(),dp=window.devicePixelRatio||1;cv.width=r.width*dp;cv.height=r.height*dp;ctx.setTransform(dp,0,0,dp,0,0);cv.style.width=r.width+'px';cv.style.height=r.height+'px'}
+  rsz();window.addEventListener('resize',rsz);
+  function draw(){var w=cv.width/(window.devicePixelRatio||1),h=cv.height/(window.devicePixelRatio||1);ctx.clearRect(0,0,w,h);
+  particles.forEach(function(p){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>1)p.vx*=-1;if(p.y<0||p.y>1)p.vy*=-1});
+  particles.forEach(function(a,i){particles.slice(i+1).forEach(function(b){var dx=(a.x-b.x)*w,dy=(a.y-b.y)*h,d=Math.sqrt(dx*dx+dy*dy);if(d<70){ctx.beginPath();ctx.moveTo(a.x*w,a.y*h);ctx.lineTo(b.x*w,b.y*h);ctx.strokeStyle='rgba(245,158,11,'+(0.12*(1-d/70))+')';ctx.lineWidth=.5;ctx.stroke()}});
+  ctx.beginPath();ctx.arc(a.x*w,a.y*h,a.r,0,Math.PI*2);ctx.fillStyle='rgba(245,158,11,0.5)';ctx.fill()});
+  requestAnimationFrame(draw)}draw()})();
+
+})();
+</script>
+</body>
+</html>
