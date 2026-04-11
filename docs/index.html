@@ -6,7 +6,7 @@
 <title>Rock Chen — Voice Helper</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -15,8 +15,9 @@
   --amber:#F59E0B;--amber-light:#FBBF24;
   --text-light:rgba(255,255,255,.88);
   --text-dim:rgba(255,255,255,.55);
-  --fh:'Cormorant Garamond',Georgia,serif;
-  --fb:'Inter',system-ui,sans-serif;
+  --fh:'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --fb:'Space Grotesk', system-ui, sans-serif;
+  --fm:'JetBrains Mono', monospace;
 }
 html{scroll-behavior:smooth;overflow-x:hidden}
 body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overflow-x:hidden;line-height:1.7;-webkit-font-smoothing:antialiased}
@@ -124,6 +125,25 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 
 /* Demo widget area */
 #voice-helper-demo{margin:32px auto;max-width:640px;width:100%}
+
+/* About Me / Resume section */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:32px 0}
+@media(max-width:768px){.about-grid{grid-template-columns:1fr}}
+.about-intro p{font-size:.92rem;line-height:1.85;color:rgba(255,255,255,.72);margin-bottom:16px}
+.skill-tags{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}
+.skill-tag{padding:6px 16px;border-radius:20px;font-size:.75rem;background:rgba(13,148,136,.08);border:1px solid rgba(13,148,136,.18);color:var(--teal-light)}
+.resume-card{padding:28px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.02);position:relative;overflow:hidden}
+.resume-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--teal-light),var(--amber))}
+.resume-card h4{font-family:var(--fb);font-size:.78rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text-dim);margin-bottom:16px;padding-left:12px}
+.resume-card .r-name{font-size:1.05rem;color:#fff;font-weight:500;margin-bottom:2px}
+.resume-card .r-subtitle{font-size:.75rem;color:var(--text-dim);margin-bottom:14px}
+.resume-section{margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}
+.resume-section h5{font-size:.82rem;color:var(--text-light);margin-bottom:10px}
+.resume-item{margin-bottom:10px}
+.resume-item .ri-title{color:var(--text-light);font-size:.84rem}
+.resume-item .ri-meta{color:var(--text-dim);font-size:.72rem;font-family:var(--fm)}
+.resume-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.resume-tag{font-size:.7px;padding:3px 10px;border-radius:10px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.12);color:rgba(255,255,255,.65)}
 </style>
 </head>
 <body>
@@ -380,7 +400,75 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
   </div>
 </section>
 
-<!-- ═══════════════ SCENE 8: EPILOGUE ═══════════════ -->
+<!-- ═══════════════ SCENE 8: ABOUT ME & RESUME ═══════════════ -->
+<section class="scene" data-scene="about">
+  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 07</div><h2>About Me</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal-left">Engineer &amp;<br>Product Creator</h2>
+    <div class="section-divider reveal"></div>
+
+    <div class="about-grid reveal" style="transition-delay:.15s">
+      <!-- Left: Intro + Skills -->
+      <div class="about-intro">
+        <p>我是一名软件工程师，相信技术应该服务于真实需求。从 0 到 1 打造过多个项目，注重产品体验和技术架构的平衡。</p>
+        <p>Voice Helper 是我的第一个独立作品，从需求调研到开发上线，全程亲力亲为。这个过程让我深刻体会到产品思维和工程能力的结合有多么重要。</p>
+        <p>我的定位是「让人的思想、感受和审美被更好呈现」，这个语音助手就是一个微型的「AI × 思维延伸」产品。</p>
+
+        <p style="font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);margin:20px 0 10px;font-family:var(--fm)">// TECH_STACK</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">TypeScript</span>
+          <span class="skill-tag">FastAPI</span>
+          <span class="skill-tag">AI/ML</span>
+          <span class="skill-tag">Prompt Engineering</span>
+          <span class="skill-tag">Product</span>
+          <span class="skill-tag">Data Analysis</span>
+        </div>
+      </div>
+
+      <!-- Right: Resume Card -->
+      <div class="resume-card">
+        <h4>&#47;&nbsp; RESUME</h4>
+        <div class="r-name">陈厚瑄 (Rock Chen)</div>
+        <div class="r-subtitle">AI &amp; 产品 | 数据分析 | 商业分析</div>
+
+        <div class="resume-section">
+          <h5>工作经历 Work Experience</h5>
+          <div class="resume-item"><div class="ri-title">Data Analyst &amp; AI Product Specialist</div><div class="ri-meta">龙湖集团 Longfor Group · Apr 2024 – Present</div></div>
+          <div class="resume-item"><div class="ri-title">AI 产品实习生 AI Product Intern</div><div class="ri-meta">TCL 鸿鵠实验室 · Jul 2024 – Jun 2025</div></div>
+          <div class="resume-item"><div class="ri-title">商业分析师 Business Analyst</div><div class="ri-meta">核桃编程 Walnut Programming · Jul 2022 – Nov 2022</div></div>
+        </div>
+
+        <div class="resume-section">
+          <h5>项目 Projects</h5>
+          <div class="resume-row">
+            <span class="resume-tag">Voice Helper · 语音 AI 助手</span>
+            <span class="resume-tag">美团商业分析 · 2024</span>
+            <span class="resume-tag">AI 驱动的企业估值系统</span>
+          </div>
+        </div>
+
+        <div class="resume-section">
+          <h5>技能 Skills</h5>
+          <div class="resume-row">
+            <span class="resume-tag">Prompt Engineering</span>
+            <span class="resume-tag">LLM 微调</span>
+            <span class="resume-tag">Python / SQL / Tableau</span>
+            <span class="resume-tag">GRE 322 / IELTS 7.5</span>
+          </div>
+        </div>
+
+        <div class="resume-section" style="border-bottom:none;padding-bottom:0;margin-bottom:0">
+          <h5>教育 Education</h5>
+          <div class="resume-item" style="margin-bottom:4px"><div class="ri-title">商业分析硕士</div><div class="ri-meta">南洋理工大学 NTU (2024-2025)</div></div>
+          <div class="resume-item"><div class="ri-title">经济学学士</div><div class="ri-meta">对外经济贸易大学 UIBE (2019-2023)</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SCENE 9: EPILOGUE ═══════════════ -->
 <section class="scene scene-epilogue scene-warm" data-scene="epilogue">
   <div class="scene-content" style="text-align:center">
     <p class="reveal" style="font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--amber-light);margin-bottom:20px">End of Voyage</p>
