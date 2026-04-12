@@ -156,14 +156,13 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 }
 @media(max-width:768px){#scene-nav{display:none}}
 
-/* Walking character */
-#walker{position:fixed;z-index:5;pointer-events:none;will-change:transform,opacity;
-  width:80px;height:140px;opacity:0;transition:opacity .4s ease;
-  filter:drop-shadow(0 8px 24px rgba(0,0,0,.5))}
-#walker video{width:100%;height:100%;object-fit:cover;object-position:center bottom;
-  -webkit-mask-image:linear-gradient(to top,black 60%,transparent 100%);
-  mask-image:linear-gradient(to top,black 60%,transparent 100%)}
-@media(max-width:768px){#walker{width:50px;height:88px}}
+/* Walking character — auto horizontal walk */
+#walker{position:fixed;z-index:5;pointer-events:none;
+  width:320px;height:560px;top:55%;
+  filter:drop-shadow(0 10px 30px rgba(0,0,0,.5));
+  will-change:transform,left,top}
+#walker img{width:100%;height:100%;object-fit:contain;object-position:center bottom}
+@media(max-width:768px){#walker{width:200px;height:350px}}
 
 /* Demo widget area */
 #voice-helper-demo{margin:32px auto;max-width:640px;width:100%}
@@ -210,7 +209,7 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 </nav>
 
 <!-- Walking character -->
-<div id="walker"><video src="design/guy.mp4" muted loop playsinline preload="auto"></div>
+<div id="walker"><img src="design/assembled.gif" alt="Demo preview"></div>
 
 <!-- ═══════════════ SCENE 1: OPENING ═══════════════ -->
 <section class="scene scene-opening" data-scene="opening">
@@ -621,51 +620,78 @@ document.addEventListener('mousemove',function(e){ambient.style.setProperty('--m
   ctx.beginPath();ctx.arc(a.x*w,a.y*h,a.r,0,Math.PI*2);ctx.fillStyle='rgba(245,158,11,0.28)';ctx.fill()});
   requestAnimationFrame(draw)}draw()})();
 
-/* Walking character — scroll-driven journey */
+/* Walking character — auto horizontal walk + 1:1 scroll + viewport refresh */
 (function(){
   var w=document.getElementById('walker');if(!w)return;
-  var vid=w.querySelector('video');
   var ww=window.innerWidth,wh=window.innerHeight;
-  // Walk stages: [scrollStart(0-1), scrollEnd(0-1), xStart(%), xEnd(%), yStart(px), yEnd(px), scaleStart, scaleEnd]
-  // Direction: xStart<xEnd = walks right (no flip), xStart>xEnd = walks left (flip)
-  var S=[
-    [.02,.14, -10,105, wh*.35, wh*.25, .35,.55],   // Stage 1: tiny, top-left→top-right
-    [.20,.32, 108,-8,  wh*.55, wh*.45, .55,.80],    // Stage 2: med, right→left, middle
-    [.42,.55, -12,110,  wh*.65, wh*.60, .70,1.05],   // Stage 3: large, left→right, lower-mid
-    [.64,.78, 112,-10, wh*.75, wh*.70, .90,1.15],    // Stage 4: xl, right→left, bottom area
-    [.85,.96, -8, 105, wh*.85, wh*.82, .65,.50],     // Stage 5: shrinking again, left→right bottom
-  ];
-  function getStage(p){
-    for(var i=0;i<S.length;i++){if(p>=S[i][0]&&p<S[i][1])return{idx:i,s:S[i],lp:(p-S[i][0])/(S[i][1]-S[i][0])}}
-    return null
+
+  // Auto-walk state
+  var x=-420;
+  var speed=0.8;
+  var direction=1;
+  var currentScale=1;
+  // Current Y position in page coordinates
+  var baseY=wh*0.55 + window.scrollY;
+  // Track which side we entered from, to alternate
+  var enterFromLeft=true;
+
+  function resize(){ww=window.innerWidth;wh=window.innerHeight}
+  window.addEventListener('resize',resize);
+
+  w.style.opacity='1';
+
+  function step(){
+    var sy=window.scrollY;
+
+    // Horizontal auto-walk
+    x += speed * direction;
+    var imgWidth=w.offsetWidth||320;
+
+    if(x > ww + 40){
+      enterFromLeft=false;  // next time enter from right side
+      x = -(imgWidth + 40);
+      direction=1;
+    } else if(x < -(imgWidth + 40)){
+      enterFromLeft=true;   // next time enter from left side
+      x = ww + 40;
+      direction=-1;
+    }
+
+    // Calculate current screen-Y position
+    var screenY = baseY - sy;
+
+    // Viewport refresh check
+    var margin = wh * 0.3;
+    if(screenY < -margin || screenY > wh + margin){
+      // Reset to fresh position in current viewport
+      baseY = sy + wh * (0.35 + Math.random() * 0.35);
+      // Random scale: 90% chance ±20% (0.8~1.2), 10% chance 200%
+      currentScale = Math.random() < 0.1 ? 2.0 : (0.8 + Math.random() * 0.4);
+
+      // Alternate entry edge: left ↔ right
+      if(enterFromLeft){
+        x = -(imgWidth + 40);
+        direction=1;
+        enterFromLeft=false;  // next refresh will use opposite side
+      } else {
+        x = ww + 40;
+        direction=-1;
+        enterFromLeft=true;  // next refresh will use opposite side
+      }
+      screenY = baseY - sy;
+    }
+
+    // Render — combine scaleX(direction) with random scale
+    var totalScale = direction * currentScale;
+    w.style.left=x+'px';
+    w.style.top=screenY+'px';
+    w.style.bottom='auto';
+    w.style.transform='scaleX('+totalScale+')';
+
+    rafId=requestAnimationFrame(step);
   }
-  // Start video on first user interaction (mobile needs it)
-  function tryPlay(){if(vid)vid.play().catch(function(){})}
-  window.addEventListener('scroll',tryPlay,{once:true,passive:true});
-  window.addEventListener('mousemove',tryPlay,{once:true,passive:true});
 
-  var _wt=false;
-  window.addEventListener('scroll',function(){if(_wt)return;_wt=true;requestAnimationFrame(function(){
-    var sy=window.scrollY,ms=document.documentElement.scrollHeight-window.innerHeight;
-    var p=Math.min(sy/Math.max(ms,1),1);
-    if(p<.01||p>.99){w.style.opacity='0';_wt=false;return}
-    w.style.opacity='1';
-    var st=getStage(p);
-    if(!st){w.style.opacity='0';_wt=false;return}
-    var s=st.s,lp=st.lp;
-    var ex=s[2]+(s[3]-s[2])*lp;
-    var ey=s[4]+(s[5]-s[4])*lp;
-    var es=s[6]+(s[7]-s[6])*lp;
-    var flip=s[3]<s[2]; // true if walking left
-    // Smooth easing for natural feel
-    var e=lp<.5?2*lp*lp:1-Math.pow(-2*lp+2,2)/2;
-    var cx=ex*ww/100,cy=ey;
-    w.style.transform='translateX('+cx+'px) translateY('+cy+'px) scale('+es+(flip?'':'')+')';
-    if(flip){var cur=w.style.transform;if(cur.indexOf('scale')>0)w.style.transform=cur.replace('scale(','scale(-')}
-    _wt=false})},{passive:true})();
-
-  // Ensure video loops seamlessly
-  if(vid){vid.playbackRate=1;vid.addEventListener('ended',function(){vid.currentTime=0;vid.play()})}
+  rafId=requestAnimationFrame(step);
 })();
 
 })();
