@@ -681,12 +681,13 @@ document.addEventListener('mousemove',function(e){ambient.style.setProperty('--m
       screenY = baseY - sy;
     }
 
-    // Render — combine scaleX(direction) with random scale
-    var totalScale = direction * currentScale;
+    // Render — uniform scale (preserve aspect ratio), horizontal flip via negative X
+    var sx = direction * currentScale;
+    var sy = currentScale;
     w.style.left=x+'px';
     w.style.top=screenY+'px';
     w.style.bottom='auto';
-    w.style.transform='scaleX('+totalScale+')';
+    w.style.transform='scale('+sx+', '+sy+')';
 
     rafId=requestAnimationFrame(step);
   }
