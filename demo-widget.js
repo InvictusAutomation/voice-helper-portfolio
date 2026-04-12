@@ -123,7 +123,7 @@
       ".vh-input-area{padding:10px 16px 14px;border-top:1px solid rgba(255,255,255,.06);z-index:1}" +
       ".vh-input-wrap{display:flex;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:28px;padding:4px 6px 4px 16px;transition:border-color .2s}" +
       ".vh-input-wrap:focus-within{border-color:rgba(13,148,136,.4)}" +
-      ".vh-input{flex:1;background:none;border:none;outline:none;color:#e2e8f0;font-size:.83rem;font-family:inherit}" +
+      ".vh-input{flex:1;background:transparent;border:none;outline:none;color:rgba(255,255,255,.55);font-size:.83rem;font-family:inherit;-webkit-appearance:none;-moz-appearance:none;appearance:none}" +
       ".vh-input::placeholder{color:rgba(255,255,255,.3)}" +
       "#vh-send{background:none;border:none;color:#0D9488;cursor:pointer;padding:6px 8px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s}" +
       "#vh-send:hover{color:#14B8A6;background:rgba(13,148,136,.1)}" +
