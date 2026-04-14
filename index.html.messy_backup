@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rock Chen — Voice Helper</title>
+<title>Rock Chen 陈厚瑄 — AI × 产品 × 工程</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -15,20 +15,25 @@
   --amber:#F59E0B;--amber-light:#FBBF24;
   --text-light:rgba(255,255,255,.88);
   --text-dim:rgba(255,255,255,.55);
-  --fh:'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-  --fb:'Space Grotesk', system-ui, sans-serif;
-  --fm:'JetBrains Mono', monospace;
+  --fh:'Space Grotesk',sans-serif;
+  --fb:'Space Grotesk',system-ui,sans-serif;
+  --fm:'JetBrains Mono',monospace;
 }
 html{scroll-behavior:smooth;overflow-x:hidden}
 body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overflow-x:hidden;line-height:1.7;-webkit-font-smoothing:antialiased}
+
+/* ── AMBIENT BG ── */
 #ambient-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 120% 80% at 50% 50%,var(--navy-mid),var(--navy));transition:background 1.2s ease}
 #ambient-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(circle 500px at var(--mx,50%) var(--my,40%),rgba(13,148,136,.22) 0%,rgba(13,148,136,.10) 30%,transparent 65%);transition:background .6s ease}
-#timeline{position:fixed;left:32px;top:0;height:100vh;width:2px;z-index:100;background:rgba(255,255,255,.06)}
+#ambient-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 120% 80% at 50% 50%,var(--navy-mid),var(--navy));transition:background 1.2s ease}
+#ambient-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(circle 500px at var(--mx,50%) var(--my,40%),rgba(13,148,136,.22) 0%,rgba(13,148,136,.10) 30%,transparent 65%);transition:background .6s ease}
+/* ── TIMELINE ── */
+#timeline{position:fixed;left:52px;top:0;height:100vh;width:2px;z-index:100;background:rgba(255,255,255,.06)}
 #timeline-progress{width:100%;background:linear-gradient(180deg,var(--teal),var(--amber));border-radius:0 0 2px 2px;transition:height .15s ease;box-shadow:0 0 12px rgba(13,148,136,.5)}
-#timeline-dots{position:fixed;left:25px;top:0;height:100vh;z-index:101;pointer-events:none}
-.tl-dot{position:absolute;width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.15);background:var(--navy);transition:all .4s ease;transform:translateX(-50%)}
-.tl-dot.active{border-color:var(--teal-light);background:var(--teal);box-shadow:0 0 16px rgba(13,148,136,.6)}
-.tl-dot.warm{border-color:var(--amber);background:var(--amber);box-shadow:0 0 16px rgba(245,158,11,.5)}
+#timeline-dots{position:fixed;left:52px;top:0;height:100vh;z-index:101;pointer-events:none}
+.tl-dot{position:absolute;width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(255,255,255,.18);background:var(--navy);transition:all .5s cubic-bezier(.23,1,.32,1);transform:translate(-50%,-50%);cursor:pointer;pointer-events:auto}
+.tl-dot.active{border-color:var(--teal-light);background:var(--teal);box-shadow:0 0 22px rgba(13,148,136,.6),0 0 6px rgba(13,148,136,.8);transform:translate(-50%,-50%) scale(1.15)}
+.tl-dot.warm{border-color:var(--amber-light);background:var(--amber);box-shadow:0 0 22px rgba(245,158,11,.5),0 0 6px rgba(245,158,11,.7)}
 .scene{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;z-index:1;overflow:hidden;padding:80px 60px 80px 100px}
 .reveal{opacity:0;transform:translateY(60px);transition:opacity .9s cubic-bezier(.23,1,.32,1),transform .9s cubic-bezier(.23,1,.32,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -116,6 +121,30 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 .stat-number{font-family:var(--fh);font-size:2.4rem;font-weight:300;color:var(--teal-light)}
 .stat-label{font-size:.7rem;color:var(--text-dim);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
 
+
+/* ═══════════════ EPILOGUE ═══════════════ */
+.scene-epilogue{text-align:center;flex-direction:column}
+.epilogue-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ═══════════════ NAV ═══════════════ */
+#scene-nav{position:fixed;top:24px;left:72px;z-index:200;display:flex;align-items:center;gap:20px;padding:8px 16px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(10,22,40,.7);backdrop-filter:blur(12px);transition:opacity .4s ease,transform .4s ease}
+.nav-brand{font-family:var(--fh);font-size:.85rem;font-weight:600;color:var(--teal-light);letter-spacing:.08em}
+.nav-links{display:flex;gap:2px;list-style:none;margin:0;padding:0}
+.nav-links li a{display:flex;align-items:center;gap:5px;padding:6px 10px;text-decoration:none;font-family:var(--fm);font-size:.65rem;letter-spacing:.08em;color:var(--text-dim);border-radius:6px;transition:all .25s ease;white-space:nowrap}
+.nav-links li a:hover{color:var(--text-light);background:rgba(13,148,136,.1)}
+.nav-links li a.active{color:var(--teal-light);background:rgba(13,148,136,.12)}
+.nav-num{font-size:.55rem;opacity:.45;font-family:var(--fb)}
+
+/* ═══════════════ WALKER (GIF) ═══════════════ */
+#walker{position:fixed;z-index:5;pointer-events:none;width:320px;height:560px;top:55%;filter:drop-shadow(0 10px 30px rgba(0,0,0,.5));will-change:transform,left,top}
+#walker img{width:100%;height:100%;object-fit:contain;object-position:center bottom}
+
+/* ═══════════════ GRAIN ═══════════════ */
+#grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px}
+
+/* Code block */
+.code-block{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:20px 24px;margin:20px 0;overflow-x:auto;font-family:'SF Mono',Menlo,monospace;font-size:.78rem;line-height:1.7;color:#a5f3fc}
+
 @media(max-width:768px){
   .scene{padding:60px 24px}
   #timeline,#timeline-dots{display:none}
@@ -148,28 +177,123 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 .nav-num{font-size:.55rem;opacity:.45;font-family:var(--fb)}
 .nav-links li a.active .nav-num{opacity:1}
 
+
+/* ═══════════════ EPILOGUE ═══════════════ */
+.scene-epilogue{text-align:center;flex-direction:column}
+.epilogue-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ═══════════════ NAV ═══════════════ */
+#scene-nav{position:fixed;top:24px;left:72px;z-index:200;display:flex;align-items:center;gap:20px;padding:8px 16px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(10,22,40,.7);backdrop-filter:blur(12px);transition:opacity .4s ease,transform .4s ease}
+.nav-brand{font-family:var(--fh);font-size:.85rem;font-weight:600;color:var(--teal-light);letter-spacing:.08em}
+.nav-links{display:flex;gap:2px;list-style:none;margin:0;padding:0}
+.nav-links li a{display:flex;align-items:center;gap:5px;padding:6px 10px;text-decoration:none;font-family:var(--fm);font-size:.65rem;letter-spacing:.08em;color:var(--text-dim);border-radius:6px;transition:all .25s ease;white-space:nowrap}
+.nav-links li a:hover{color:var(--text-light);background:rgba(13,148,136,.1)}
+.nav-links li a.active{color:var(--teal-light);background:rgba(13,148,136,.12)}
+.nav-num{font-size:.55rem;opacity:.45;font-family:var(--fb)}
+
+/* ═══════════════ WALKER (GIF) ═══════════════ */
+#walker{position:fixed;z-index:5;pointer-events:none;width:320px;height:560px;top:55%;filter:drop-shadow(0 10px 30px rgba(0,0,0,.5));will-change:transform,left,top}
+#walker img{width:100%;height:100%;object-fit:contain;object-position:center bottom}
+
+/* ═══════════════ GRAIN ═══════════════ */
+#grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px}
+
+/* Code block */
+.code-block{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:20px 24px;margin:20px 0;overflow-x:auto;font-family:'SF Mono',Menlo,monospace;font-size:.78rem;line-height:1.7;color:#a5f3fc}
+
 @media(max-width:900px){
   #scene-nav{left:12px;top:12px;padding:6px 10px;flex-direction:column;align-items:flex-start;gap:4px;max-width:160px}
   .nav-brand{display:none}
   .nav-links{flex-direction:column;gap:1px}
   .nav-links li a{padding:5px 8px;font-size:.62rem}
 }
+
+/* ═══════════════ EPILOGUE ═══════════════ */
+.scene-epilogue{text-align:center;flex-direction:column}
+.epilogue-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ═══════════════ NAV ═══════════════ */
+#scene-nav{position:fixed;top:24px;left:72px;z-index:200;display:flex;align-items:center;gap:20px;padding:8px 16px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(10,22,40,.7);backdrop-filter:blur(12px);transition:opacity .4s ease,transform .4s ease}
+.nav-brand{font-family:var(--fh);font-size:.85rem;font-weight:600;color:var(--teal-light);letter-spacing:.08em}
+.nav-links{display:flex;gap:2px;list-style:none;margin:0;padding:0}
+.nav-links li a{display:flex;align-items:center;gap:5px;padding:6px 10px;text-decoration:none;font-family:var(--fm);font-size:.65rem;letter-spacing:.08em;color:var(--text-dim);border-radius:6px;transition:all .25s ease;white-space:nowrap}
+.nav-links li a:hover{color:var(--text-light);background:rgba(13,148,136,.1)}
+.nav-links li a.active{color:var(--teal-light);background:rgba(13,148,136,.12)}
+.nav-num{font-size:.55rem;opacity:.45;font-family:var(--fb)}
+
+/* ═══════════════ WALKER (GIF) ═══════════════ */
+#walker{position:fixed;z-index:5;pointer-events:none;width:320px;height:560px;top:55%;filter:drop-shadow(0 10px 30px rgba(0,0,0,.5));will-change:transform,left,top}
+#walker img{width:100%;height:100%;object-fit:contain;object-position:center bottom}
+
+/* ═══════════════ GRAIN ═══════════════ */
+#grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px}
+
+/* Code block */
+.code-block{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:20px 24px;margin:20px 0;overflow-x:auto;font-family:'SF Mono',Menlo,monospace;font-size:.78rem;line-height:1.7;color:#a5f3fc}
+
 @media(max-width:768px){#scene-nav{display:none}}
 
-/* Walking character */
-#walker{position:fixed;z-index:5;pointer-events:none;will-change:transform,opacity;
-  width:80px;height:140px;opacity:0;transition:opacity .4s ease;
-  filter:drop-shadow(0 8px 24px rgba(0,0,0,.5))}
-#walker video{width:100%;height:100%;object-fit:cover;object-position:center bottom;
-  -webkit-mask-image:linear-gradient(to top,black 60%,transparent 100%);
-  mask-image:linear-gradient(to top,black 60%,transparent 100%)}
-@media(max-width:768px){#walker{width:50px;height:88px}}
+/* Walking character — auto horizontal walk */
+#walker{position:fixed;z-index:5;pointer-events:none;
+  width:320px;height:560px;top:55%;
+  filter:drop-shadow(0 10px 30px rgba(0,0,0,.5));
+  will-change:transform,left,top}
+#walker img{width:100%;height:100%;object-fit:contain;object-position:center bottom}
+
+/* ═══════════════ EPILOGUE ═══════════════ */
+.scene-epilogue{text-align:center;flex-direction:column}
+.epilogue-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ═══════════════ NAV ═══════════════ */
+#scene-nav{position:fixed;top:24px;left:72px;z-index:200;display:flex;align-items:center;gap:20px;padding:8px 16px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(10,22,40,.7);backdrop-filter:blur(12px);transition:opacity .4s ease,transform .4s ease}
+.nav-brand{font-family:var(--fh);font-size:.85rem;font-weight:600;color:var(--teal-light);letter-spacing:.08em}
+.nav-links{display:flex;gap:2px;list-style:none;margin:0;padding:0}
+.nav-links li a{display:flex;align-items:center;gap:5px;padding:6px 10px;text-decoration:none;font-family:var(--fm);font-size:.65rem;letter-spacing:.08em;color:var(--text-dim);border-radius:6px;transition:all .25s ease;white-space:nowrap}
+.nav-links li a:hover{color:var(--text-light);background:rgba(13,148,136,.1)}
+.nav-links li a.active{color:var(--teal-light);background:rgba(13,148,136,.12)}
+.nav-num{font-size:.55rem;opacity:.45;font-family:var(--fb)}
+
+/* ═══════════════ WALKER (GIF) ═══════════════ */
+#walker{position:fixed;z-index:5;pointer-events:none;width:320px;height:560px;top:55%;filter:drop-shadow(0 10px 30px rgba(0,0,0,.5));will-change:transform,left,top}
+#walker img{width:100%;height:100%;object-fit:contain;object-position:center bottom}
+
+/* ═══════════════ GRAIN ═══════════════ */
+#grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px}
+
+/* Code block */
+.code-block{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:20px 24px;margin:20px 0;overflow-x:auto;font-family:'SF Mono',Menlo,monospace;font-size:.78rem;line-height:1.7;color:#a5f3fc}
+
+@media(max-width:768px){#walker{width:200px;height:350px}}
 
 /* Demo widget area */
 #voice-helper-demo{margin:32px auto;max-width:640px;width:100%}
 
 /* About Me / Resume section */
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:32px 0}
+
+/* ═══════════════ EPILOGUE ═══════════════ */
+.scene-epilogue{text-align:center;flex-direction:column}
+.epilogue-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ═══════════════ NAV ═══════════════ */
+#scene-nav{position:fixed;top:24px;left:72px;z-index:200;display:flex;align-items:center;gap:20px;padding:8px 16px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(10,22,40,.7);backdrop-filter:blur(12px);transition:opacity .4s ease,transform .4s ease}
+.nav-brand{font-family:var(--fh);font-size:.85rem;font-weight:600;color:var(--teal-light);letter-spacing:.08em}
+.nav-links{display:flex;gap:2px;list-style:none;margin:0;padding:0}
+.nav-links li a{display:flex;align-items:center;gap:5px;padding:6px 10px;text-decoration:none;font-family:var(--fm);font-size:.65rem;letter-spacing:.08em;color:var(--text-dim);border-radius:6px;transition:all .25s ease;white-space:nowrap}
+.nav-links li a:hover{color:var(--text-light);background:rgba(13,148,136,.1)}
+.nav-links li a.active{color:var(--teal-light);background:rgba(13,148,136,.12)}
+.nav-num{font-size:.55rem;opacity:.45;font-family:var(--fb)}
+
+/* ═══════════════ WALKER (GIF) ═══════════════ */
+#walker{position:fixed;z-index:5;pointer-events:none;width:320px;height:560px;top:55%;filter:drop-shadow(0 10px 30px rgba(0,0,0,.5));will-change:transform,left,top}
+#walker img{width:100%;height:100%;object-fit:contain;object-position:center bottom}
+
+/* ═══════════════ GRAIN ═══════════════ */
+#grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px}
+
+/* Code block */
+.code-block{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:20px 24px;margin:20px 0;overflow-x:auto;font-family:'SF Mono',Menlo,monospace;font-size:.78rem;line-height:1.7;color:#a5f3fc}
+
 @media(max-width:768px){.about-grid{grid-template-columns:1fr}}
 .about-intro p{font-size:.92rem;line-height:1.85;color:rgba(255,255,255,.72);margin-bottom:16px}
 .skill-tags{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}
@@ -189,6 +313,9 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 </style>
 </head>
 <body>
+<div id="ambient-bg"></div><div id="grain"></div>
+<div id="timeline"><div id="timeline-progress" style="height:0%"></div></div>
+<div id="timeline-dots"></div>
 <div id="ambient-bg"></div>
 <div id="grain"></div>
 <div id="timeline"><div id="timeline-progress" style="height:0%"></div></div>
@@ -210,7 +337,7 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 </nav>
 
 <!-- Walking character -->
-<div id="walker"><video src="design/guy.mp4" muted loop playsinline preload="auto"></div>
+<div id="walker"><img src="design/assembled.gif" alt="Demo preview"></div>
 
 <!-- ═══════════════ SCENE 1: OPENING ═══════════════ -->
 <section class="scene scene-opening" data-scene="opening">
@@ -457,218 +584,166 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
       <span class="vision-tag">Dual-Model Arch</span><span class="vision-tag">State Machine</span><span class="vision-tag">Human-Centered</span>
       <span class="vision-tag">Open Source</span><span class="vision-tag">MCP Compatible</span>
     </div>
+
+    <!-- Autonomy × Presence Matrix -->
+    <div class="reveal" style="margin:36px 0;position:relative">
+      <img src="design/autonomy-presence-matrix.png" alt="自主性×存在感矩阵" style="width:100%;border-radius:14px;border:1px solid rgba(13,148,136,.2);box-shadow:0 20px 60px rgba(0,0,0,.4);display:block">
+      <p style="text-align:center;font-size:.75rem;color:var(--text-dim);margin-top:10px;letter-spacing:.04em">自主性 × 存在感 二维分析框架 — 从 Proxy 到 Agent 的产品进化方向</p>
+    </div>
   </div>
 </section>
 
-<!-- ═══════════════ SCENE 8: ABOUT ME & RESUME ═══════════════ -->
-<section class="scene" data-scene="about">
-  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 07</div><h2>About Me</h2></div>
+<!-- ═══════════════ SECTION 2: RESUME — PDF PREVIEW + NODE SIDEBAR ═══════════════ -->
+<section id="resume" class="scene" data-scene="resume">
+  <div class="chapter-card"><span class="ch-num">Chapter 02</span><h2>Resume</h2></div>
   <div class="scene-content">
-    <h2 class="reveal-left">Engineer &amp;<br>Product Creator</h2>
-    <div class="section-divider reveal"></div>
-
-    <div class="about-grid reveal" style="transition-delay:.15s">
-      <!-- Left: Intro + Skills -->
-      <div class="about-intro">
-        <p>我是一名软件工程师，相信技术应该服务于真实需求。从 0 到 1 打造过多个项目，注重产品体验和技术架构的平衡。</p>
-        <p>Voice Helper 是我的第一个独立作品，从需求调研到开发上线，全程亲力亲为。这个过程让我深刻体会到产品思维和工程能力的结合有多么重要。</p>
-        <p>我的定位是「让人的思想、感受和审美被更好呈现」，这个语音助手就是一个微型的「AI × 思维延伸」产品。</p>
-
-        <p style="font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);margin:20px 0 10px;font-family:var(--fm)">// TECH_STACK</p>
-        <div class="skill-tags">
-          <span class="skill-tag">Python</span>
-          <span class="skill-tag">TypeScript</span>
-          <span class="skill-tag">FastAPI</span>
-          <span class="skill-tag">AI/ML</span>
-          <span class="skill-tag">Prompt Engineering</span>
-          <span class="skill-tag">Product</span>
-          <span class="skill-tag">Data Analysis</span>
+    <h2 class="reveal">我的履历</h2>
+    <p class="reveal" style="color:var(--text-dim);margin-bottom:28px">从产品到工程，持续探索 AI 落地的最佳路径。</p>
+    <div class="resume-layout reveal">
+      <div class="resume-pdf-area">
+        <div class="resume-pdf-frame" id="resume-frame-container">
+          <div id="pdf-img-wrapper" style="width:100%;overflow-y:auto;max-height:75vh;scrollbar-width:thin;scrollbar-color:var(--teal-light) rgba(255,255,255,.08);border-radius:12px;background:#fff;display:flex;flex-direction:column;align-items:center;padding:8px">
+            <img src="design/resume-pages/page_01.png" alt="Resume Page 1" style="width:100%;height:auto;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.08);display:block" loading="eager">
+          </div>
+        </div>
+        <div class="download-bar">
+          <button class="db-btn" onclick="openDownloadModal()">⬥ 下载 PDF 简历</button>
+          <div class="db-count">已下载 <span class="db-count-num" id="download-count">0</span> 次</div>
         </div>
       </div>
-
-      <!-- Right: Resume Card -->
-      <div class="resume-card">
-        <h4>&#47;&nbsp; RESUME</h4>
-        <div class="r-name">陈厚瑄 (Rock Chen)</div>
-        <div class="r-subtitle">AI &amp; 产品 | 数据分析 | 商业分析</div>
-
-        <div class="resume-section">
-          <h5>工作经历 Work Experience</h5>
-          <div class="resume-item"><div class="ri-title">Data Analyst &amp; AI Product Specialist</div><div class="ri-meta">龙湖集团 Longfor Group · Apr 2024 – Present</div></div>
-          <div class="resume-item"><div class="ri-title">AI 产品实习生 AI Product Intern</div><div class="ri-meta">TCL 鸿鵠实验室 · Jul 2024 – Jun 2025</div></div>
-          <div class="resume-item"><div class="ri-title">商业分析师 Business Analyst</div><div class="ri-meta">核桃编程 Walnut Programming · Jul 2022 – Nov 2022</div></div>
-        </div>
-
-        <div class="resume-section">
-          <h5>项目 Projects</h5>
-          <div class="resume-row">
-            <span class="resume-tag">Voice Helper · 语音 AI 助手</span>
-            <span class="resume-tag">美团商业分析 · 2024</span>
-            <span class="resume-tag">AI 驱动的企业估值系统</span>
+      <div class="resume-node-sidebar">
+        <p style="font-size:.7rem;color:var(--text-dim);margin-bottom:16px;letter-spacing:.08em;text-transform:uppercase">👆 悬浮查看详情</p>
+        <div class="node-track"><div class="node-line"></div>
+          <div class="node-item active" data-node="personal" onmouseenter="showNodePreview(this)" onmouseleave="hideNodePreview(this)">
+            <div class="node-dot"></div><div class="node-label">基本信息</div>
+            <div class="node-preview"><div class="node-preview-title">👤 基本信息</div><div class="node-preview-body"><strong>陈厚瑄 (Rock Chen)</strong><br><br>📱 +86 15210235027<br>📧 15210235027@163.com<br>📍 北京</div></div>
           </div>
-        </div>
-
-        <div class="resume-section">
-          <h5>技能 Skills</h5>
-          <div class="resume-row">
-            <span class="resume-tag">Prompt Engineering</span>
-            <span class="resume-tag">LLM 微调</span>
-            <span class="resume-tag">Python / SQL / Tableau</span>
-            <span class="resume-tag">GRE 322 / IELTS 7.5</span>
+          <div class="node-item" data-node="skills" onmouseenter="showNodePreview(this)" onmouseleave="hideNodePreview(this)">
+            <div class="node-dot"></div><div class="node-label">专业技能</div>
+            <div class="node-preview"><div class="node-preview-title">🛠️ 专业技能</div><div class="node-preview-body">
+              <strong style="color:var(--teal-light)">AI</strong> — PE 提示词优化、ML 与 LLM 范式差异、RAG/SFT、Agent loop/skill 设计（Claude Code）<br><br>
+              <strong style="color:var(--teal-light)">数据分析</strong> — Python（FastAPI、Pandas）、爬虫、Tableau/PowerBI、SQL、Neo4j<br><br>
+              <strong style="color:var(--teal-light)">产品工具</strong> — Axure、Figma/墨刀、飞书、Xmind<br><br>
+              <strong style="color:var(--teal-light)">外语</strong> — GRE 322、雅思 7.5（口语 7.5）
+            </div></div>
           </div>
-        </div>
-
-        <div class="resume-section" style="border-bottom:none;padding-bottom:0;margin-bottom:0">
-          <h5>教育 Education</h5>
-          <div class="resume-item" style="margin-bottom:4px"><div class="ri-title">商业分析硕士</div><div class="ri-meta">南洋理工大学 NTU (2024-2025)</div></div>
-          <div class="resume-item"><div class="ri-title">经济学学士</div><div class="ri-meta">对外经济贸易大学 UIBE (2019-2023)</div></div>
+          <div class="node-item" data-node="work" onmouseenter="showNodePreview(this)" onmouseleave="hideNodePreview(this)">
+            <div class="node-dot"></div><div class="node-label">工作经历</div>
+            <div class="node-preview"><div class="node-preview-title">💼 工作经历（4 段）</div><div class="node-preview-body">
+              <strong style="color:var(--teal-light)">① 龙湖集团 · 数科引擎 · 数据智能体</strong><br>数据产品经理（实习）<br><span style="color:var(--text-dim)">2024.07 – 2025.06</span><br>• 主导企业「智能问数Agent」0→1 落地<br>• 准确率 50%→95%，协调 6 个航道<br>• Claude Code Skill 探索 AI 工程化<br><br>
+              <strong style="color:var(--teal-light)">② Groundup AI（新加坡）</strong><br>B 端解决方案<br><span style="color:var(--text-dim)">2024.03 – 2024.07</span><br>• IoT 传感器方案落地，赴新加坡实地评估<br>• 全球供应链渠道 + LoRa 远洋场景<br><br>
+              <strong style="color:var(--teal-light)">③ TCL 鸿鹄实验室</strong><br><span style="color:var(--text-dim)">2025.01 – 2025.06</span><br>• SFT 语料设计，准确率提升 6%<br>• LLM 微调 Eval，支撑技术选型<br>• 中英说明书数据工程流水线（4万+条）<br><br>
+              <strong style="color:var(--teal-light)">④ 核桃编程</strong><br>产品经理<br><span style="color:var(--text-dim)">2025.08 – 至今</span><br>• 400+ 用户漏斗分析，驱动 5 项优化<br>• CRM 埋点规范化 + 销售OKR
+            </div></div>
+          </div>
+          <div class="node-item" data-node="project" onmouseenter="showNodePreview(this)" onmouseleave="hideNodePreview(this)">
+            <div class="node-dot"></div><div class="node-label">项目经历</div>
+            <div class="node-preview"><div class="node-preview-title">🚀 项目经历</div><div class="node-preview-body">
+              <strong style="color:var(--teal-light)">个人兴趣项目：高自主性 AI 语音伙伴</strong><br><br>
+              • 发现现有 AI 交互结构性缺陷 —— 人永远是发起者<br>
+              • 体验 10+ 款 AI 产品提炼核心矛盾<br>
+              • 全栈开发 Render 上线：DashScope 替代 OpenAI Realtime<br>
+              • 双模型系统：区分"说"与"想"<br>
+              • 定义下一代 AI 伴侣交互方向
+            </div></div>
+          </div>
+          <div class="node-item" data-node="edu" onmouseenter="showNodePreview(this)" onmouseleave="hideNodePreview(this)">
+            <div class="node-dot"></div><div class="node-label">教育背景</div>
+            <div class="node-preview"><div class="node-preview-title">🎓 教育背景</div><div class="node-preview-body">
+              <strong style="color:var(--teal-light)">南洋理工大学 (NTU)</strong> · 商业分析硕士<br><span style="color:var(--text-dim)">2019.09 – 2023.06</span><br>
+              <strong style="color:var(--teal-light)">对外经济贸易大学 (UIBE)</strong> · 国际贸易学士<br><span style="color:var(--text-dim)">2022.07 – 2024.07</span>
+            </div></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ SCENE 9: EPILOGUE ═══════════════ -->
-<section class="scene scene-epilogue scene-warm" data-scene="epilogue">
-  <div class="scene-content" style="text-align:center">
-    <p class="reveal" style="font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--amber-light);margin-bottom:20px">End of Voyage</p>
-    <h2 class="reveal" style="transition-delay:.1s">Build AI that truly understands you.</h2>
-    <p class="reveal" style="transition-delay:.25s;margin:20px auto 40px;max-width:500px;color:var(--text-dim)">Voice Helper 是一个开源项目。欢迎查看源码、提出建议、或一起构建下一代人机交互方式。</p>
-    <div class="epilogue-links reveal" style="transition-delay:.4s">
-      <a href="https://github.com/rockchen/20260306s-voice-helper" target="_blank" rel="noopener" class="btn-outline btn-warm">View Source on GitHub ↗</a>
-      <a href="#" onclick="document.getElementById('voice-helper-demo').scrollIntoView({behavior:'smooth'});return false" class="btn-outline btn-warm">Try the Demo ↑</a>
-      <a href="#" class="btn-outline btn-warm">Get in Touch</a>
-    </div>
-    <div class="sound-wave reveal" style="justify-content:center;margin-top:48px;transition-delay:.6s" id="outro-wave"></div>
+
+<section class="scene scene-epilogue" data-scene="epilogue">
+  <div class="chapter-card" style="align-items:center;justify-content:center"><span class="ch-num">End</span><h2 style="text-align:center">Let's Connect</h2></div>
+  <h2 class="reveal" style="font-size:clamp(2rem,4vw,3rem);margin-bottom:16px">一起构建下一代人机交互</h2>
+  <p class="reveal" style="color:var(--text-dim);max-width:480px;margin-bottom:32px">无论是 AI 产品探索、技术合作还是单纯交流想法，都欢迎联系我。</p>
+  <div class="epilogue-links reveal">
+    <a href="mailto:rockchen2025@outlook.com" class="btn-outline">📧 Email</a>
+    <a href="https://github.com/rockchenhq" target="_blank" class="btn-outline">⚡ GitHub</a>
+    <a href="https://linkedin.com/in/rockchen-hx" target="_blank" class="btn-outline">💼 LinkedIn</a>
   </div>
+  <p style="margin-top:48px;font-size:.72rem;color:var(--text-dim);opacity:.4" class="reveal">© 2026 Rock Chen 陈厚瑄</p>
 </section>
 
 <script src="demo-widget.js"></script>
+<script src="demo-widget.js"></script>
 <script>
-(function(){
-/* Sound waves */
-function mkWave(id,n){var w=document.getElementById(id);if(!w)return;for(var i=0;i<n;i++){var b=document.createElement('span');b.style.setProperty('--h',(12+Math.random()*36)+'px');b.style.animationDelay=(i*.04)+'s';b.style.animationDuration=(.8+Math.random()*.8)+'s';w.appendChild(b)}}
-mkWave('hero-wave',50);mkWave('outro-wave',20);
-
-/* Scroll reveal */
-var rObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');rObs.unobserve(e.target)}})},{threshold:.15,rootMargin:'0px 0px -60px 0px'});
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-float').forEach(function(el){rObs.observe(el)});
-
-/* Chapter cards — parallax on scroll */
-var cObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('slide-in');else e.target.classList.remove('slide-in')})},{threshold:.3});
-document.querySelectorAll('[data-chapter]').forEach(function(el){cObs.observe(el)});
-
-/* Nav highlight — auto highlight current scene */
-var navLinks=document.querySelectorAll('#scene-nav a[data-target]');
-window.addEventListener('scroll',function(){if(window._navT)return;window._navT=true;requestAnimationFrame(function(){
-  var sy=window.scrollY,active=null,minD=Infinity;
-  document.querySelectorAll('[data-scene]').forEach(function(s){
-    var d=Math.abs(s.offsetTop-sy-120);if(d<minD){minD=d;active=s.dataset.scene}
-  });
-  navLinks.forEach(function(a){
-    a.classList.toggle('active',a.dataset.target===active);
-  });
-  window._navT=false})},{passive:true});
-
-/* Chapter text parallax: drifts up + fades as user scrolls through scene */
-window.addEventListener('scroll',function(){if(window._cpt)return;window._cpt=true;requestAnimationFrame(function(){
-  document.querySelectorAll('[data-chapter].slide-in').forEach(function(card){
-    var sec=card.closest('.scene'),rect=sec.getBoundingClientRect(),vh=window.innerHeight;
-    var progress=Math.max(0,Math.min(1,(vh-rect.top)/(vh+rect.height)));
-    if(progress>0){
-      var ty=-(progress*40),op=1-Math.max(0,(progress-.3)*1.4);
-      card.querySelector('h2').style.transform='translateY('+ty+'px)';
-      card.querySelector('h2').style.opacity=Math.max(.03,op*.10);
-      var num=card.querySelector('.ch-num');
-      if(num){num.style.transform='translateY('+ty*.6+'px)';num.style.opacity=Math.max(.02,op*.5)}
-    }
-  });
-  window._cpt=false})},{passive:true});
-
-/* Timeline */
-var scenes=document.querySelectorAll('[data-scene]'),dotsC=document.getElementById('timeline-dots'),prog=document.getElementById('timeline-progress'),dots=[];
-scenes.forEach(function(s){var d=document.createElement('div');d.className='tl-dot';d.style.top=(s.offsetTop+s.offsetHeight/2)+'px';d._warm=s.classList.contains('scene-warm');dotsC.appendChild(d);dots.push(d)});
-
-/* Scroll handler */
+// ═══ SCROLL REVEAL ═══
+const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>ro.observe(el));
+const scenes=document.querySelectorAll('.scene');
+scenes.forEach(s=>{const cc=s.querySelector('.chapter-card');if(!cc)return;
+  const ro2=new IntersectionObserver(e=>{if(e[0].isIntersecting>.1)cc.classList.add('slide-in')},{threshold:.1});
+  ro2.observe(s);
+});
+// ═══ TIMELINE DOTS + PROGRESS ═══
+const dotsC=document.getElementById('timeline-dots'),prog=document.getElementById('timeline-progress'),dots=[];
+scenes.forEach(s=>{const d=document.createElement('div');d.className='tl-dot';d.style.top=(s.offsetTop+s.offsetHeight/2)+'px';d._warm=s.classList.contains('scene-warm');dotsC.appendChild(d);dots.push(d)});
 var ambient=document.getElementById('ambient-bg');
 var navy={r:10,g:22,b:40},tealC={r:13,g:148,b:136},amberC={r:245,g:158,b:11};
 function lerp(a,b,t){return a+(b-a)*t}
-function lerpC(c1,c2,t){return 'rgb('+Math.round(lerp(c1.r,c2.r,t))+','+Math.round(lerp(c1.g,c2.g,t))+','+Math.round(lerp(c1.b,c2.b,t))+')'}
+function lerpC(c1,c2,t){return 'rgb('+Math.round(lerp(c1.r,c2.r,t))+','+Math.round(lerp(c1.g,c2.g,t))+','+Math.round(lerp(c1.b,c2.t))+')'}
 var ticking=false;
 window.addEventListener('scroll',function(){if(ticking)return;ticking=true;requestAnimationFrame(function(){
   var sy=window.scrollY,ms=document.documentElement.scrollHeight-window.innerHeight,p=Math.min(sy/Math.max(ms,1),1);
   prog.style.height=(p*100)+'%';
-  dots.forEach(function(d,i){var sT=scenes[i].offsetTop,sH=scenes[i].offsetHeight;if(sy>=sT-200&&sy<sT+sH-200){d.classList.add('active');if(d._warm)d.classList.add('warm')}else{d.classList.remove('active','warm')}});
-  var c;if(p<.5)c=lerpC(navy,tealC,p*2);else c=lerpC(tealC,amberC,(p-.5)*2);
-  ambient.style.background='radial-gradient(ellipse 120% 80% at 50% 50%,'+c+',#0A1628)';ticking=false})},{passive:true});
-
-/* Mouse parallax */
-document.addEventListener('mousemove',function(e){ambient.style.setProperty('--mx',(e.clientX/window.innerWidth*100)+'%');ambient.style.setProperty('--my',(e.clientY/window.innerHeight*100)+'%')});
-
-/* Research viz canvas for tech scene */
+  var col;if(p<.5)col=lerpC(navy,tealC,p*2);else col=lerpC(tealC,amberC,(p-.5)*2);
+  ambient.style.background='radial-gradient(ellipse 120% 80% at 50% 50%,'+col+',#0A1628)';
+  ticking=false})},{passive:true});
 (function(){
-  var el=document.getElementById('research-viz-tech');if(!el)return;
-  var cv=document.createElement('canvas');el.appendChild(cv);
-  var ctx=cv.getContext('2d');
-  // Tech stack particles
-  var labels=['Python','FastAPI','WebSocket','Mem0','Qdrant','DashScope','OpenAI','MCP','async/await','VAD','State Machine','Embedding'];
-  var particles=[];for(var i=0;i<50;i++){particles.push({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.0008,vy:(Math.random()-.5)*.0008,r:Math.random()*2+1,l:labels[i%labels.length]})}
-  function rsz(){var r=el.getBoundingClientRect(),dp=window.devicePixelRatio||1;cv.width=r.width*dp;cv.height=r.height*dp;ctx.setTransform(dp,0,0,dp,0,0);cv.style.width=r.width+'px';cv.style.height=r.height+'px'}
-  rsz();window.addEventListener('resize',rsz);
-  function draw(){var w=cv.width/(window.devicePixelRatio||1),h=cv.height/(window.devicePixelRatio||1);ctx.clearRect(0,0,w,h);
-  particles.forEach(function(p){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>1)p.vx*=-1;if(p.y<0||p.y>1)p.vy*=-1});
-  particles.forEach(function(a,i){particles.slice(i+1).forEach(function(b){var dx=(a.x-b.x)*w,dy=(a.y-b.y)*h,d=Math.sqrt(dx*dx+dy*dy);if(d<70){ctx.beginPath();ctx.moveTo(a.x*w,a.y*h);ctx.lineTo(b.x*w,b.y*h);ctx.strokeStyle='rgba(245,158,11,'+(0.06*(1-d/70))+')';ctx.lineWidth=.5;ctx.stroke()}});
-  ctx.beginPath();ctx.arc(a.x*w,a.y*h,a.r,0,Math.PI*2);ctx.fillStyle='rgba(245,158,11,0.28)';ctx.fill()});
-  requestAnimationFrame(draw)}draw()})();
-
-/* Walking character — scroll-driven journey */
+  var dotObs=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      var idx=Array.prototype.indexOf.call(scenes,en.target);
+      if(idx<0||!dots[idx])return;
+      if(en.isIntersecting){dots[idx].classList.add('active');if(dots[idx]._warm)dots[idx].classList.add('warm')}
+      else{dots[idx].classList.remove('active','warm')}
+    });
+  },{threshold:.25,rootMargin:'-10% 0px -10% 0px'});
+  scenes.forEach(function(s){dotObs.observe(s)});
+})();
+dots.forEach(function(d,i){d.addEventListener('click',function(){var t=scenes[i];if(t){var o=t.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:o,behavior:'smooth'})}})});
+document.addEventListener('mousemove',function(e){ambient.style.setProperty('--mx',(e.clientX/window.innerWidth*100)+'%');ambient.style.setProperty('--my',(e.clientY/window.innerHeight*100)+'%')});
+// ═══ NAV ACTIVE STATE + SMOOTH SCROLL OFFSET ═══
+const navLinks=document.querySelectorAll('.nav-links a');
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',function(e){
+    e.preventDefault();
+    const t=document.querySelector(this.getAttribute('href'));
+    if(t){const o=t.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:o,behavior:'smooth'})}
+  });
+});
+const navObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const t=e.target.id;navLinks.forEach(a=>{a.classList.toggle('active',a.dataset.target===t)})}})},{threshold:.3});
+document.querySelectorAll('.scene[id]').forEach(el=>navObs.observe(el));
+// ═══ WALKING CHARACTER (GIF) ═══
 (function(){
   var w=document.getElementById('walker');if(!w)return;
-  var vid=w.querySelector('video');
-  var ww=window.innerWidth,wh=window.innerHeight;
-  // Walk stages: [scrollStart(0-1), scrollEnd(0-1), xStart(%), xEnd(%), yStart(px), yEnd(px), scaleStart, scaleEnd]
-  // Direction: xStart<xEnd = walks right (no flip), xStart>xEnd = walks left (flip)
-  var S=[
-    [.02,.14, -10,105, wh*.35, wh*.25, .35,.55],   // Stage 1: tiny, top-left→top-right
-    [.20,.32, 108,-8,  wh*.55, wh*.45, .55,.80],    // Stage 2: med, right→left, middle
-    [.42,.55, -12,110,  wh*.65, wh*.60, .70,1.05],   // Stage 3: large, left→right, lower-mid
-    [.64,.78, 112,-10, wh*.75, wh*.70, .90,1.15],    // Stage 4: xl, right→left, bottom area
-    [.85,.96, -8, 105, wh*.85, wh*.82, .65,.50],     // Stage 5: shrinking again, left→right bottom
-  ];
-  function getStage(p){
-    for(var i=0;i<S.length;i++){if(p>=S[i][0]&&p<S[i][1])return{idx:i,s:S[i],lp:(p-S[i][0])/(S[i][1]-S[i][0])}}
-    return null
-  }
-  // Start video on first user interaction (mobile needs it)
-  function tryPlay(){if(vid)vid.play().catch(function(){})}
-  window.addEventListener('scroll',tryPlay,{once:true,passive:true});
-  window.addEventListener('mousemove',tryPlay,{once:true,passive:true});
-
-  var _wt=false;
-  window.addEventListener('scroll',function(){if(_wt)return;_wt=true;requestAnimationFrame(function(){
-    var sy=window.scrollY,ms=document.documentElement.scrollHeight-window.innerHeight;
-    var p=Math.min(sy/Math.max(ms,1),1);
-    if(p<.01||p>.99){w.style.opacity='0';_wt=false;return}
-    w.style.opacity='1';
-    var st=getStage(p);
-    if(!st){w.style.opacity='0';_wt=false;return}
-    var s=st.s,lp=st.lp;
-    var ex=s[2]+(s[3]-s[2])*lp;
-    var ey=s[4]+(s[5]-s[4])*lp;
-    var es=s[6]+(s[7]-s[6])*lp;
-    var flip=s[3]<s[2]; // true if walking left
-    // Smooth easing for natural feel
-    var e=lp<.5?2*lp*lp:1-Math.pow(-2*lp+2,2)/2;
-    var cx=ex*ww/100,cy=ey;
-    w.style.transform='translateX('+cx+'px) translateY('+cy+'px) scale('+es+(flip?'':'')+')';
-    if(flip){var cur=w.style.transform;if(cur.indexOf('scale')>0)w.style.transform=cur.replace('scale(','scale(-')}
-    _wt=false})},{passive:true})();
-
-  // Ensure video loops seamlessly
-  if(vid){vid.playbackRate=1;vid.addEventListener('ended',function(){vid.currentTime=0;vid.play()})}
+  var ww=window.innerWidth,wh=window.innerHeight,x=-420,speed=.8,direction=1,currentScale=1,baseY=wh*.55+window.scrollY,enterFromLeft=true;
+  window.addEventListener('resize',function(){ww=window.innerWidth;wh=window.innerHeight});
+  w.style.opacity='1';function step(){
+    var sy=window.scrollY;x+=speed*direction;var imgWidth=w.offsetWidth||320;
+    if(x>ww+40){enterFromLeft=false;x=-(imgWidth+40);direction=1}
+    else if(x<-(imgWidth+40)){enterFromLeft=true;x=ww+40;direction=-1}
+    var screenY=baseY-sy;var margin=wh*.3;
+    if(screenY<-margin||screenY>wh+margin){baseY=sy+wh*(.35+Math.random()*.35);currentScale=Math.random()<.1?2:(.8+Math.random()*.4);if(enterFromLeft){x=-(imgWidth+40);direction=1;enterFromLeft=false}else{x=ww+40;direction=-1;enterFromLeft=true}screenY=baseY-sy}
+    w.style.left=x+'px';w.style.top=screenY+'px';w.style.bottom='auto';w.style.transform='scale('+direction*currentScale+','+currentScale+')';requestAnimationFrame(step);
+  }requestAnimationFrame(step);
 })();
-
-})();
+// ═══ NODE SIDEBAR INTERACTIONS ═══
+function showNodePreview(el){document.querySelectorAll('.node-item').forEach(n=>n!==el&&n.classList.remove('active'));el.classList.add('active');const pv=el.querySelector('.node-preview');if(pv)pv.classList.add('visible');}
+function hideNodePreview(el){const pv=el.querySelector('.node-preview');if(pv)pv.classList.remove('visible');}
+document.querySelectorAll('.node-item').forEach(n=>{n.addEventListener('click',function(){document.querySelectorAll('.node-item').forEach(x=>x!==this&&x.classList.remove('active'));this.classList.toggle('active');const pv=this.querySelector('.node-preview');if(pv)pv.classList.toggle('visible',this.classList.contains('active'))});});
+// ═══ DOWNLOAD COUNTER + MODAL ═══
+(function(){let dl=parseInt(localStorage.getItem('rc_resume_dl')||'0');document.getElementById('download-count').textContent=dl})();
+function openDownloadModal(){document.getElementById('dl-modal').classList.add('active');document.getElementById('form-area').style.display='block';document.getElementById('success-area').style.display='none'}
+function closeDownloadModal(){document.getElementById('dl-modal').classList.remove('active')}
+function submitDownload(){const ei=document.getElementById('dl-email');ei.classList.remove('error');const em=ei.value.trim();if(!em||!em.includes('@')){ei.classList.add('error');return}let ct=parseInt(localStorage.getItem('rc_resume_dl')||'0')+1;localStorage.setItem('rc_resume_dl',ct);document.getElementById('download-count').textContent=ct;document.getElementById('form-area').style.display='none';document.getElementById('success-area').style.display='block';const a=document.createElement('a');a.href='resume.pdf';a.download='陈厚瑄_简历_RockChen_2026.04.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(closeDownloadModal,2000)}
+document.getElementById('dl-modal').addEventListener('click',function(e){if(e.target===this)closeDownloadModal()});
 </script>
-</body>
-</html>
