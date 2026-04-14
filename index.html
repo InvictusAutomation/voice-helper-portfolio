@@ -3,32 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rock Chen — Voice Helper</title>
+<title>Rock Chen 陈厚瑄 — AI × 产品 × 工程</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --navy:#0A1628;--navy-mid:#0F2847;
-  --teal:#0D9488;--teal-light:#14B8A6;
-  --amber:#F59E0B;--amber-light:#FBBF24;
-  --text-light:rgba(255,255,255,.88);
-  --text-dim:rgba(255,255,255,.55);
-  --fh:'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-  --fb:'Space Grotesk', system-ui, sans-serif;
-  --fm:'JetBrains Mono', monospace;
-}
+:root{--navy:#0A1628;--navy-mid:#0F2847;--teal:#0D9488;--teal-light:#14B8A6;--amber:#F59E0B;--amber-light:#FBBF24;--text-light:rgba(255,255,255,.88);--text-dim:rgba(255,255,255,.55);--fh:'Space Grotesk',sans-serif;--fb:'Space Grotesk',system-ui,sans-serif;--fm:'JetBrains Mono',monospace;}
 html{scroll-behavior:smooth;overflow-x:hidden}
 body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overflow-x:hidden;line-height:1.7;-webkit-font-smoothing:antialiased}
 #ambient-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 120% 80% at 50% 50%,var(--navy-mid),var(--navy));transition:background 1.2s ease}
 #ambient-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(circle 500px at var(--mx,50%) var(--my,40%),rgba(13,148,136,.22) 0%,rgba(13,148,136,.10) 30%,transparent 65%);transition:background .6s ease}
-#timeline{position:fixed;left:32px;top:0;height:100vh;width:2px;z-index:100;background:rgba(255,255,255,.06)}
+#timeline{position:fixed;left:52px;top:0;height:100vh;width:2px;z-index:100;background:rgba(255,255,255,.06)}
 #timeline-progress{width:100%;background:linear-gradient(180deg,var(--teal),var(--amber));border-radius:0 0 2px 2px;transition:height .15s ease;box-shadow:0 0 12px rgba(13,148,136,.5)}
-#timeline-dots{position:fixed;left:25px;top:0;height:100vh;z-index:101;pointer-events:none}
-.tl-dot{position:absolute;width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.15);background:var(--navy);transition:all .4s ease;transform:translateX(-50%)}
-.tl-dot.active{border-color:var(--teal-light);background:var(--teal);box-shadow:0 0 16px rgba(13,148,136,.6)}
-.tl-dot.warm{border-color:var(--amber);background:var(--amber);box-shadow:0 0 16px rgba(245,158,11,.5)}
+#timeline-dots{position:fixed;left:52px;top:0;height:100vh;z-index:101;pointer-events:none}
+.tl-dot{position:absolute;width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(255,255,255,.18);background:var(--navy);transition:all .5s cubic-bezier(.23,1,.32,1);transform:translate(-50%,-50%);cursor:pointer;pointer-events:auto}
+.tl-dot.active{border-color:var(--teal-light);background:var(--teal);box-shadow:0 0 22px rgba(13,148,136,.6),0 0 6px rgba(13,148,136,.8);transform:translate(-50%,-50%) scale(1.15)}
+.tl-dot.warm{border-color:var(--amber-light);background:var(--amber);box-shadow:0 0 22px rgba(245,158,11,.5),0 0 6px rgba(245,158,11,.7)}
 .scene{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;z-index:1;overflow:hidden;padding:80px 60px 80px 100px}
 .reveal{opacity:0;transform:translateY(60px);transition:opacity .9s cubic-bezier(.23,1,.32,1),transform .9s cubic-bezier(.23,1,.32,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -36,20 +27,9 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 .reveal-left.visible{opacity:1;transform:translateX(0)}
 .reveal-right{opacity:0;transform:translateX(80px);transition:opacity .9s cubic-bezier(.23,1,.32,1),transform .9s cubic-bezier(.23,1,.32,1)}
 .reveal-right.visible{opacity:1;transform:translateX(0)}
-.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .8s ease,transform .8s cubic-bezier(.23,1,.32,1)}
-.reveal-scale.visible{opacity:1;transform:scale(1)}
-.reveal-float{opacity:0;transform:translateY(100px);transition:1s ease .2s,transform 1s cubic-bezier(.23,1,.32,1) .2s}
-.reveal-float.visible{opacity:1;transform:translateY(0)}
-.chapter-card{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-end;padding:40px 50px;opacity:0;
-  pointer-events:none;z-index:0;
-  transition:opacity .6s ease}
-.chapter-card .ch-num{font-family:var(--fm);font-size:.72rem;text-transform:uppercase;letter-spacing:.4em;color:var(--teal-light);opacity:0;margin-bottom:8px;
-  transition:opacity .8s ease .3s,transform 1s cubic-bezier(.23,1,.32,1);
-  transform:translateY(20px)}
-.chapter-card h2{font-family:var(--fh);font-size:clamp(3rem,7vw,5.5rem);font-weight:300;letter-spacing:-.02em;line-height:1;
-  color:rgba(13,148,136,.10);opacity:0;
-  transition:opacity .8s ease .4s,transform 1s cubic-bezier(.23,1,.32,1);
-  transform:translateY(30px)}
+.chapter-card{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-end;padding:40px 50px;opacity:0;pointer-events:none;z-index:0;transition:opacity .6s ease}
+.chapter-card .ch-num{font-family:var(--fm);font-size:.72rem;text-transform:uppercase;letter-spacing:.4em;color:var(--teal-light);opacity:0;margin-bottom:8px;transition:opacity .8s ease .3s,transform 1s cubic-bezier(.23,1,.32,1);transform:translateY(20px)}
+.chapter-card h2{font-family:var(--fh);font-size:clamp(3rem,7vw,5.5rem);font-weight:300;letter-spacing:-.02em;line-height:1;color:rgba(13,148,136,.10);opacity:0;transition:opacity .8s ease .4s,transform 1s cubic-bezier(.23,1,.32,1);transform:translateY(30px)}
 .chapter-card.slide-in{opacity:1}
 .chapter-card.slide-in .ch-num,.chapter-card.slide-in h2{opacity:1;transform:translateY(0)}
 .scene-warm .chapter-card .ch-num{color:var(--amber-light)}
@@ -61,534 +41,392 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 @keyframes wave{0%,100%{height:8px;opacity:.3}50%{height:var(--h,40px);opacity:1}}
 .btn-outline{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border:1px solid rgba(255,255,255,.25);border-radius:40px;color:var(--text-light);text-decoration:none;font-family:var(--fb);font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;transition:all .4s ease;cursor:pointer;background:transparent}
 .btn-outline:hover{border-color:var(--teal-light);background:rgba(13,148,136,.1);transform:translateY(-2px)}
-.btn-warm{border-color:var(--amber);color:var(--amber-light)}
-.btn-warm:hover{background:rgba(245,158,11,.1);border-color:var(--amber-light)}
 .scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.5;animation:sp 2.5s ease-in-out infinite}
 .scroll-indicator span{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim)}
 .scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--teal-light),transparent);animation:sl 2s ease-in-out infinite}
 @keyframes sp{0%,100%{opacity:.3;transform:translateX(-50%) translateY(0)}50%{opacity:.7;transform:translateX(-50%) translateY(8px)}}
 @keyframes sl{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-.scene-opening{flex-direction:column;text-align:center}
-.scene-opening h1{font-family:var(--fh);font-size:clamp(2.8rem,6vw,5rem);font-weight:300;line-height:1.15;margin-bottom:16px}
-.scene-opening .subtitle{font-size:1.05rem;color:var(--text-dim);max-width:520px;margin:0 auto 40px}
-.scene-content{max-width:860px}
+.scene-warm{background:linear-gradient(180deg,transparent,rgba(245,158,11,.03) 50%,rgba(245,158,11,.06))}
+.scene-warm .quote-float{border-left-color:var(--amber)}.scene-warm .quote-float::before{color:var(--amber)}
+.scene-warm .sound-wave span{background:var(--amber-light)}
+.scene-hero{flex-direction:column;text-align:center}
+.hero-name-en{font-family:var(--fh);font-size:clamp(3.2rem,7vw,5.5rem);font-weight:300;letter-spacing:-.02em;color:var(--teal-light);line-height:1.1}
+.hero-name-zh{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:300;color:var(--text-dim);margin-top:4px;letter-spacing:.15em}
+.hero-subtitle{font-size:1.05rem;color:var(--text-dim);max-width:520px;margin:16px auto 0;line-height:1.6}
+.keyword-cloud{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:900px;margin:36px auto 0}
+.kw-tag{padding:8px 22px;border-radius:30px;font-size:.78rem;font-weight:500;letter-spacing:.04em;white-space:nowrap;transition:all .35s ease;cursor:default;border:1px solid transparent}
+.kw-tag-lg{font-size:.95rem;font-weight:600;padding:11px 30px}
+.kw-tag-teal{background:rgba(13,148,136,.08);border-color:rgba(13,148,136,.25);color:var(--teal-light)}
+.kw-tag-amber{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.25);color:var(--amber-light)}
+.kw-tag-dim{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);color:var(--text-dim)}
+.kw-tag:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.hero-quote{font-size:1.15rem;color:var(--text-dim);font-style:italic;max-width:580px;margin:32px auto 0;line-height:1.75;opacity:.85;border-left:2px solid var(--amber);padding-left:20px;text-align:left}
+.scene-content{max-width:1100px;width:100%}
 .scene-content h2{font-family:var(--fh);font-size:clamp(2rem,4vw,3.2rem);font-weight:300;line-height:1.25;margin-bottom:24px}
-.scene-content p{font-size:1rem;line-height:1.9;color:rgba(255,255,255,.75);margin-bottom:20px;max-width:640px}
 .section-divider{width:60px;height:1px;background:linear-gradient(90deg,var(--teal-light),transparent);margin:48px 0}
+.resume-layout{display:flex;gap:40px;align-items:flex-start}
+.resume-pdf-area{flex:1;min-width:0}
+.resume-pdf-frame{width:100%;min-height:75vh;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:#fff;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.resume-node-sidebar{width:300px;flex-shrink:0;position:sticky;top:100px}
+.node-track{position:relative;padding:32px 0}
+.node-line{position:absolute;left:13px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--teal-light),var(--amber));border-radius:1px;opacity:.3}
+.node-item{position:relative;padding:22px 0 22px 42px;cursor:pointer;transition:all .3s ease}
+.node-dot{position:absolute;left:0;top:28px;width:26px;height:26px;border-radius:50%;border:2px solid var(--teal-light);background:var(--navy);z-index:1;transition:all .3s ease;display:flex;align-items:center;justify-content:center}
+.node-dot::after{content:'';width:9px;height:9px;border-radius:50%;background:var(--teal-light);transform:scale(0);transition:transform .3s ease}
+.node-item.active .node-dot{background:var(--teal);box-shadow:0 0 14px rgba(13,148,136,.5)}
+.node-item.active .node-dot::after{transform:scale(1)}
+.node-label{font-size:.85rem;color:var(--text-dim);transition:color .3s ease;font-weight:500;letter-spacing:.02em}
+.node-item:hover .node-label{color:var(--text-light)}
+.node-item.active .node-label{color:var(--teal-light);font-weight:600}
+.node-preview{position:absolute;right:calc(100% + 20px);top:-10px;width:520px;padding:28px 32px;background:linear-gradient(145deg,#0F1E38,#0A1628);border:1px solid rgba(13,148,136,.35);border-radius:14px;z-index:50;opacity:0;pointer-events:none;transform:translateX(10px);transition:all .3s ease;box-shadow:0 16px 48px rgba(0,0,0,.6);max-height:70vh;overflow-y:auto}
+.node-preview.visible{opacity:1;transform:translateX(0);pointer-events:auto}
+.node-preview-title{font-family:var(--fh);font-size:1.08rem;color:var(--teal-light);margin-bottom:14px;font-weight:600}
+.node-preview-body{font-size:.94rem;color:rgba(255,255,255,.78);line-height:1.85}
+.download-bar{display:flex;align-items:center;justify-content:center;gap:24px;padding:28px 40px;margin-top:28px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(0,0,0,.2);flex-wrap:wrap}
+.db-btn{padding:12px 28px;border-radius:30px;font-size:.82rem;font-weight:500;cursor:pointer;transition:all .3s ease;border:1px solid var(--teal-light);color:var(--teal-light);background:rgba(13,148,136,.08);display:inline-flex;align-items:center;gap:8px}
+.db-btn:hover{background:rgba(13,148,136,.15);transform:translateY(-2px);box-shadow:0 6px 20px rgba(13,148,136,.2)}
+.db-count{font-size:.76rem;color:var(--text-dim);font-family:var(--fm);display:flex;align-items:center;gap:6px}
+.db-count-num{font-size:1.2rem;font-weight:600;color:var(--amber-light);font-family:var(--fh)}
+.modal-overlay{position:fixed;inset:0;z-index:9999;background:rgba(10,22,40,.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s ease}
+.modal-overlay.active{opacity:1;pointer-events:auto}
+.modal-box{width:420px;max-width:90vw;background:linear-gradient(145deg,#0F1E38,#0A1628);border:1px solid rgba(13,148,136,.25);border-radius:20px;padding:36px 36px 28px;position:relative;transform:translateY(30px) scale(.96);transition:transform .4s cubic-bezier(.23,1,.32,1);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.modal-overlay.active .modal-box{transform:translateY(0) scale(1)}
+.modal-close{position:absolute;top:16px;right:18px;width:32px;height:32px;border:none;background:rgba(255,255,255,.08);border-radius:50%;color:var(--text-dim);cursor:pointer;font-size:1.1rem;transition:all .25s ease;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:rgba(255,255,255,.15);color:var(--text-light)}
+.modal-title{font-family:var(--fh);font-size:1.3rem;font-weight:600;color:var(--text-light);margin-bottom:6px}
+.modal-subtitle{font-size:.82rem;color:var(--text-dim);margin-bottom:24px}
+.form-group{margin-bottom:18px}
+.form-label{display:block;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;font-weight:500}
+.form-input{width:100%;padding:12px 16px;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(255,255,255,.04);color:var(--text-light);font-size:.92rem;outline:none;transition:border-color .25s ease}
+.form-input:focus{border-color:var(--teal-light)}
+.form-input.error{border-color:#EF4444}
+.form-error-msg{font-size:.72rem;color:#EF4444;margin-top:4px;display:none}
+.form-input.error+.form-error-msg{display:block}
+.form-submit{width:100%;padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--teal),#0F766E);color:#fff;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .3s ease;font-family:var(--fb);letter-spacing:.04em;margin-top:8px}
+.form-submit:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(13,148,136,.3)}
+.form-note{font-size:.7rem;color:var(--text-dim);margin-top:14px;text-align:center;opacity:.6}
+.form-success{display:none;text-align:center;padding:20px 0}
+.form-success-icon{font-size:2.5rem;margin-bottom:10px}
+.form-success-text{font-size:.95rem;color:var(--teal-light);font-weight:500}
+.video-wrapper{width:100%;max-width:1100px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1);background:#000;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.video-wrapper video{width:100%;display:block}
+.video-caption{font-size:.82rem;color:var(--text-dim);margin-top:12px;text-align:center}
 .framework-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin:40px 0}
 .fw-card{padding:28px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.02);transition:all .5s ease}
 .fw-card:hover{border-color:var(--teal);background:rgba(13,148,136,.05);transform:translateY(-4px)}
 .fw-card h4{font-family:var(--fh);font-size:1.25rem;margin-bottom:8px;color:var(--text-light)}
 .fw-card p{font-size:.85rem;color:var(--text-dim);line-height:1.7}
 .vision-tag{display:inline-block;padding:6px 16px;border:1px solid rgba(245,158,11,.3);border-radius:20px;font-size:.75rem;letter-spacing:.1em;color:var(--amber-light);margin:4px}
+.insight-card{padding:32px;border:1px solid rgba(255,255,255,.06);border-radius:14px;background:rgba(255,255,255,.01);margin:24px 0;position:relative}
+.insight-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px}
+.insight-card.ic-teal::before{background:linear-gradient(180deg,var(--teal-light),var(--teal))}
+.insight-card.ic-amber::before{background:linear-gradient(180deg,var(--amber-light),var(--amber))}
+.insight-card h3{font-family:var(--fh);font-size:1.15rem;color:var(--teal-light);margin-bottom:12px}
+.insight-card p{font-size:.88rem;color:rgba(255,255,255,.68);line-height:1.8}
+.market-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.82rem}
+.market-table th{text-align:left;padding:10px 14px;border-bottom:2px solid rgba(13,148,136,.3);color:var(--teal-light);font-family:var(--fm);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.market-table td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(255,255,255,.68);line-height:1.5}
+.market-table tr:hover td{background:rgba(13,148,136,.03)}
+.phase-timeline{display:flex;gap:0;margin:32px 0;position:relative}
+.phase-timeline::before{content:'';position:absolute;top:24px;left:40px;right:40px;height:2px;background:linear-gradient(90deg,var(--teal-light),var(--amber),var(--teal-light));opacity:.3}
+.phase-node{text-align:center;flex:1;position:relative;z-index:1}
+.phase-dot{width:48px;height:48px;border-radius:50%;border:3px solid var(--teal-light);background:var(--navy);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:var(--teal-light);font-family:var(--fm);transition:all .3s ease}
+.phase-node.done .phase-dot{background:var(--teal);color:#fff;box-shadow:0 0 16px rgba(13,148,136,.4)}
+.phase-node.current .phase-dot{border-color:var(--amber);color:var(--amber-light);animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.3)}50%{box-shadow:0 0 0 8px rgba(245,158,11,0)}}
+.phase-name{font-size:.78rem;font-weight:600;color:var(--text-light);margin-bottom:4px}
+.phase-desc{font-size:.7rem;color:var(--text-dim);line-height:1.5;max-width:140px;margin:0 auto}
 .scene-epilogue{text-align:center;flex-direction:column}
 .epilogue-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-.scene-warm{background:linear-gradient(180deg,transparent,rgba(245,158,11,.03) 50%,rgba(245,158,11,.06))}
-.scene-warm .quote-float{border-left-color:var(--amber)}
-.scene-warm .quote-float::before{color:var(--amber)}
-.scene-warm .sound-wave span{background:var(--amber-light)}
-.scene-warm .section-divider{background:linear-gradient(90deg,var(--amber),transparent)}
-
-/* Architecture diagram */
-.arch-diagram{width:100%;max-width:700px;margin:36px 0;padding:28px;border:1px solid rgba(13,148,136,.25);border-radius:14px;background:rgba(0,0,0,.35);position:relative;overflow:hidden}
-.arch-diagram::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(13,148,136,.04),transparent 70%)}
-.arch-layer{text-align:center;padding:18px 22px;margin:10px 0;border-radius:10px;position:relative;z-index:1}
-.arch-layer-ui{background:linear-gradient(135deg,rgba(13,148,136,.22),rgba(13,148,106,.12));border:1px solid rgba(13,148,136,.35)}
-.arch-layer-engine{background:linear-gradient(135deg,rgba(245,158,11,.18),rgba(245,158,11,.08));border:1px solid rgba(245,158,11,.3)}
-.arch-layer-ext{background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.2)}
-.arch-label{font-family:var(--fb);font-size:.72rem;text-transform:uppercase;letter-spacing:.18em;color:var(--text-dim);margin-bottom:8px}
-.arch-title{font-family:var(--fh);font-size:1.15rem;font-weight:400;color:var(--text-light)}
-.arch-modules{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}
-.arch-module{font-size:.72rem;padding:3px 10px;border-radius:12px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);white-space:nowrap}
-.arch-arrow{display:flex;justify-content:center;padding:4px 0;color:var(--text-dim);font-size:1.2rem}
-
-/* Code block */
-.code-block{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:20px 24px;margin:28px 0;overflow-x:auto;font-family:'SF Mono',Menlo,monospace;font-size:.78rem;line-height:1.7;color:#a5f3fc}
-.code-block .c-cmt{color:rgba(255,255,255,.35);font-style:italic}
-.code-block .c-kw{color:#fbbf24}
-.code-block .c-str{color:#34d399}
-.code-block .c-fn{color:#93c5fd}
-.code-block .c-var{color:#f9a8d4}
-
-/* Stats row */
-.stats-row{display:flex;gap:32px;margin:32px 0;flex-wrap:wrap}
-.stat-item{text-align:center;flex:1;min-width:100px}
-.stat-number{font-family:var(--fh);font-size:2.4rem;font-weight:300;color:var(--teal-light)}
-.stat-label{font-size:.7rem;color:var(--text-dim);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
-
-@media(max-width:768px){
-  .scene{padding:60px 24px}
-  #timeline,#timeline-dots{display:none}
-  .chapter-card{position:relative;padding:20px 24px;align-items:flex-start;justify-content:flex-start}
-  .chapter-card h2{font-size:2.5rem}
-  .chapter-card.slide-in .ch-num,.chapter-card.slide-in h2{transform:translateY(0)}
-  .scene-content h2{font-size:1.8rem}
-  .sound-wave{justify-content:center}
-  .framework-grid{grid-template-columns:1fr}
-  .epilogue-links{flex-direction:column;align-items:center}
-  .arch-diagram{padding:16px}
-  .arch-modules{flex-direction:column;align-items:center}
-  .stats-row{flex-direction:row;justify-content:center}
-}
-#grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px}
-
-/* Scene navigation (top-left fixed) */
-#scene-nav{position:fixed;top:24px;left:72px;z-index:200;display:flex;align-items:center;gap:20px;
-  padding:8px 16px;border:1px solid rgba(255,255,255,.08);border-radius:10px;
-  background:rgba(10,22,40,.7);backdrop-filter:blur(12px);
-  transition:opacity .4s ease,transform .4s ease}
-#scene-nav:hover{border-color:rgba(255,255,255,.14)}
+#scene-nav{position:fixed;top:24px;left:72px;z-index:200;display:flex;align-items:center;gap:20px;padding:8px 16px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(10,22,40,.7);backdrop-filter:blur(12px);transition:opacity .4s ease,transform .4s ease}
 .nav-brand{font-family:var(--fh);font-size:.85rem;font-weight:600;color:var(--teal-light);letter-spacing:.08em}
 .nav-links{display:flex;gap:2px;list-style:none;margin:0;padding:0}
-.nav-links li a{display:flex;align-items:center;gap:5px;padding:6px 10px;text-decoration:none;
-  font-family:var(--fm);font-size:.65rem;letter-spacing:.08em;color:var(--text-dim);
-  border-radius:6px;transition:all .25s ease;white-space:nowrap}
+.nav-links li a{display:flex;align-items:center;gap:5px;padding:6px 10px;text-decoration:none;font-family:var(--fm);font-size:.65rem;letter-spacing:.08em;color:var(--text-dim);border-radius:6px;transition:all .25s ease;white-space:nowrap}
 .nav-links li a:hover{color:var(--text-light);background:rgba(13,148,136,.1)}
 .nav-links li a.active{color:var(--teal-light);background:rgba(13,148,136,.12)}
 .nav-num{font-size:.55rem;opacity:.45;font-family:var(--fb)}
-.nav-links li a.active .nav-num{opacity:1}
-
+#walker{position:fixed;z-index:5;pointer-events:none;width:320px;height:560px;top:55%;filter:drop-shadow(0 10px 30px rgba(0,0,0,.5));will-change:transform,left,top}
+#walker img{width:100%;height:100%;object-fit:contain;object-position:center bottom}
+#grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px}
 @media(max-width:900px){
   #scene-nav{left:12px;top:12px;padding:6px 10px;flex-direction:column;align-items:flex-start;gap:4px;max-width:160px}
-  .nav-brand{display:none}
-  .nav-links{flex-direction:column;gap:1px}
+  .nav-brand{display:none}.nav-links{flex-direction:column;gap:1px}
   .nav-links li a{padding:5px 8px;font-size:.62rem}
 }
-@media(max-width:768px){#scene-nav{display:none}}
-
-/* Walking character — auto horizontal walk */
-#walker{position:fixed;z-index:5;pointer-events:none;
-  width:320px;height:560px;top:55%;
-  filter:drop-shadow(0 10px 30px rgba(0,0,0,.5));
-  will-change:transform,left,top}
-#walker img{width:100%;height:100%;object-fit:contain;object-position:center bottom}
-@media(max-width:768px){#walker{width:200px;height:350px}}
-
-/* Demo widget area */
-#voice-helper-demo{margin:32px auto;max-width:640px;width:100%}
-
-/* About Me / Resume section */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:32px 0}
-@media(max-width:768px){.about-grid{grid-template-columns:1fr}}
-.about-intro p{font-size:.92rem;line-height:1.85;color:rgba(255,255,255,.72);margin-bottom:16px}
-.skill-tags{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}
-.skill-tag{padding:6px 16px;border-radius:20px;font-size:.75rem;background:rgba(13,148,136,.08);border:1px solid rgba(13,148,136,.18);color:var(--teal-light)}
-.resume-card{padding:28px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.02);position:relative;overflow:hidden}
-.resume-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--teal-light),var(--amber))}
-.resume-card h4{font-family:var(--fb);font-size:.78rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text-dim);margin-bottom:16px;padding-left:12px}
-.resume-card .r-name{font-size:1.05rem;color:#fff;font-weight:500;margin-bottom:2px}
-.resume-card .r-subtitle{font-size:.75rem;color:var(--text-dim);margin-bottom:14px}
-.resume-section{margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}
-.resume-section h5{font-size:.82rem;color:var(--text-light);margin-bottom:10px}
-.resume-item{margin-bottom:10px}
-.resume-item .ri-title{color:var(--text-light);font-size:.84rem}
-.resume-item .ri-meta{color:var(--text-dim);font-size:.72rem;font-family:var(--fm)}
-.resume-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
-.resume-tag{font-size:.7px;padding:3px 10px;border-radius:10px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.12);color:rgba(255,255,255,.65)}
+@media(max-width:768px){
+  #scene-nav{display:none};.scene{padding:60px 24px};#timeline,#timeline-dots{display:none};
+  .chapter-card{position:relative;padding:20px 24px;align-items:flex-start;justify-content:flex-start};
+  .chapter-card h2{font-size:2.5rem};.scene-content h2{font-size:1.8rem};
+  .framework-grid{grid-template-columns:1fr};.epilogue-links{flex-direction:column;align-items:center};
+  .download-bar{flex-direction:column;gap:14px;padding:20px 24px};
+  .resume-layout{flex-direction:column};.resume-node-sidebar{width:100%;position:static};
+  .node-preview{display:none};.phase-timeline{flex-direction:column;gap:16px};
+  .phase-timeline::before{display:none};.market-table{font-size:.72rem}
+  #walker{width:200px;height:350px}
+}
 </style>
 </head>
 <body>
-<div id="ambient-bg"></div>
-<div id="grain"></div>
+<div id="ambient-bg"></div><div id="grain"></div>
 <div id="timeline"><div id="timeline-progress" style="height:0%"></div></div>
 <div id="timeline-dots"></div>
 
-<!-- Fixed Nav: top-left quick jump -->
 <nav id="scene-nav" class="reveal visible">
-  <div class="nav-brand">VH</div>
+  <div class="nav-brand">RC</div>
   <ul class="nav-links">
-    <li><a href="#idea" data-target="idea"><span class="nav-num">01</span> Idea</a></li>
-    <li><a href="#principles" data-target="principles"><span class="nav-num">02</span> Principles</a></li>
-    <li><a href="#tech" data-target="tech"><span class="nav-num">03</span> Tech Stack</a></li>
-    <li><a href="#architecture" data-target="architecture"><span class="nav-num">04</span> Architecture</a></li>
-    <li><a href="#product" data-target="product"><span class="nav-num">05</span> Try It</a></li>
-    <li><a href="#roadmap" data-target="roadmap"><span class="nav-num">06</span> Roadmap</a></li>
-    <li><a href="#about" data-target="about"><span class="nav-num">07</span> About</a></li>
-    <li><a href="#epilogue" data-target="epilogue"><span class="nav-num">08</span> End</a></li>
+    <li><a href="#hero" data-target="hero"><span class="nav-num">01</span> About</a></li>
+    <li><a href="#resume" data-target="resume"><span class="nav-num">02</span> Resume</a></li>
+    <li><a href="#video" data-target="video"><span class="nav-num">03</span> Video</a></li>
+    <li><a href="#project" data-target="project"><span class="nav-num">04</span> Project</a></li>
   </ul>
 </nav>
 
-<!-- Walking character -->
-<div id="walker"><img src="design/assembled.gif" alt="Demo preview"></div>
+<div id="walker"><img src="design/assembled.gif" alt=""></div>
 
-<!-- ═══════════════ SCENE 1: OPENING ═══════════════ -->
-<section class="scene scene-opening" data-scene="opening">
-  <div>
-    <p class="reveal" style="font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--teal-light);margin-bottom:20px">Voice First AI · Proactive &amp; Context-Aware</p>
-    <h1 class="reveal" style="transition-delay:.15s">Voice Helper</h1>
-    <p class="subtitle reveal" style="transition-delay:.3s">一个会成长的 AI 伙伴<br>从线性对话中提取结构化知识，拥有自己的「主体性」</p>
-    <div class="sound-wave reveal" style="justify-content:center;transition-delay:.5s" id="hero-wave"></div>
+<section id="hero" class="scene scene-hero" data-scene="hero">
+  <div class="chapter-card"><span class="ch-num">Chapter 01</span><h2>About Me</h2></div>
+  <p class="reveal" style="font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--teal-light);margin-bottom:20px">AI × Product × Full-Stack Engineering</p>
+  <div class="hero-name-en reveal" style="transition-delay:.1s">Rock Chen</div>
+  <div class="hero-name-zh reveal" style="transition-delay:.2s">陈厚瑄</div>
+  <p class="hero-subtitle reveal" style="transition-delay:.35s">用技术构建有温度的智能体验<br>从产品到工程，持续探索 AI 落地的最佳路径。</p>
+  <div class="sound-wave reveal" style="justify-content:center;transition-delay:.45s">
+    <span style="--h:10px;animation-delay:0s"></span><span style="--h:28px;animation-delay:0.05s"></span><span style="--h:41px;animation-delay:0.1s"></span><span style="--h:47px;animation-delay:0.15s"></span><span style="--h:44px;animation-delay:0.2s"></span><span style="--h:32px;animation-delay:0.25s"></span><span style="--h:15px;animation-delay:0.3s"></span><span style="--h:23px;animation-delay:0.35s"></span><span style="--h:38px;animation-delay:0.4s"></span><span style="--h:47px;animation-delay:0.45s"></span><span style="--h:46px;animation-delay:0.5s"></span><span style="--h:36px;animation-delay:0.55s"></span><span style="--h:20px;animation-delay:0.6s"></span><span style="--h:18px;animation-delay:0.65s"></span><span style="--h:34px;animation-delay:0.7s"></span><span style="--h:45px;animation-delay:0.75s"></span><span style="--h:47px;animation-delay:0.8s"></span><span style="--h:40px;animation-delay:0.85s"></span><span style="--h:25px;animation-delay:0.9s"></span><span style="--h:12px;animation-delay:0.95s"></span><span style="--h:30px;animation-delay:1.0s"></span><span style="--h:43px;animation-delay:1.05s"></span><span style="--h:47px;animation-delay:1.1s"></span><span style="--h:43px;animation-delay:1.15s"></span>
   </div>
-  <div class="scroll-indicator reveal" style="transition-delay:.8s">
-    <span>Scroll to explore</span>
-    <div class="scroll-line"></div>
+  <div class="keyword-cloud reveal" style="transition-delay:.6s">
+    <span class="kw-tag kw-tag-teal kw-tag-lg">AI 产品经理</span>
+    <span class="kw-tag kw-tag-amber kw-tag-lg">全栈工程师</span>
+    <span class="kw-tag kw-tag-teal">Prompt Engineering</span>
+    <span class="kw-tag kw-tag-dim">LLM 应用架构</span>
+    <span class="kw-tag kw-tag-amber">用户体验设计</span>
+    <span class="kw-tag kw-tag-dim">语音交互</span>
+    <span class="kw-tag kw-tag-teal">Agent / 智能体</span>
+    <span class="kw-tag kw-tag-dim">状态机设计</span>
+    <span class="kw-tag kw-tag-amber">RAG 检索增强</span>
+    <span class="kw-tag kw-tag-dim">记忆系统</span>
+    <span class="kw-tag kw-tag-teal">独立开发者</span>
+    <span class="kw-tag kw-tag-amber">产品思维驱动</span>
   </div>
+  <div class="hero-quote reveal" style="transition-delay:.9s">
+    "我相信最好的产品，是那些让技术隐形、让人与 AI 的交互像呼吸一样自然的产品。"
+  </div>
+  <div class="scroll-indicator"><span>Scroll Down</span><div class="scroll-line"></div></div>
 </section>
 
-<!-- ═══════════════ SCENE 2: THE IDEA ═══════════════ -->
-<section class="scene" data-scene="idea">
-  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 01</div><h2>The Idea</h2></div>
+<section id="resume" class="scene" data-scene="resume">
+  <div class="chapter-card"><span class="ch-num">Chapter 02</span><h2>Resume</h2></div>
   <div class="scene-content">
-    <h2 class="reveal-left">传统 AI 助手是「问一句答一句」<br>但真正的伙伴不是这样。</h2>
-    <div class="section-divider reveal"></div>
-    <p class="reveal" style="transition-delay:.2s">市面上的语音助手本质上都是「快速搜索引擎」——你问，它答。对话结束，上下文清零。它们没有记忆、没有主动性，更不理解你的世界。</p>
-    <p class="reveal" style="transition-delay:.35s">Voice Helper 的出发点很简单：<strong>如果 AI 能像真正关心你的人一样——记住你说过的、理解你没说的、在你需要时主动出现——那会是怎样的体验？</strong></p>
-    <div class="quote-float reveal-float">"最好的界面不是等待你操作的那个，而是预判你需求的那个。"</div>
-
-    <!-- Key stats -->
-    <div class="stats-row reveal" style="transition-delay:.45s">
-      <div class="stat-item"><div class="stat-number">4</div><div class="stat-label">State Machine</div></div>
-      <div class="stat-item"><div class="stat-number">&lt;1.5s</div><div class="stat-label">Voice Latency</div></div>
-      <div class="stat-item"><div class="stat-number">2</div><div class="stat-label">Realtime Providers</div></div>
-      <div class="stat-item"><div class="stat-number">∞</div><div class="stat-label">Memory Growth</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════ SCENE 3: CORE PRINCIPLES ═══════════════ -->
-<section class="scene" data-scene="principles">
-  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 02</div><h2>Core Principles</h2></div>
-  <div class="scene-content">
-    <h2 class="reveal-right">四大核心理念<br><span style="font-size:.55em;color:var(--text-dim)">定义了 Voice Helper 与传统助手的所有区别</span></h2>
-    <div class="section-divider reveal"></div>
-    <div class="framework-grid reveal" style="transition-delay:.15s">
-      <div class="fw-card">
-        <h4>主动性 Proactive</h4>
-        <p>不只回答问题，还会主动关心、提醒、分享。基于学习到的模式和上下文信号，在用户需要之前就提供帮助。</p>
-      </div>
-      <div class="fw-card">
-        <h4>记忆性 Memory</h4>
-        <p>记住对话中的重要信息，通过 Mem0 向量化存储形成长期知识积累，支持语义检索和跨会话回忆。</p>
-      </div>
-      <div class="fw-card">
-        <h4>成长性 Growth</h4>
-        <p>从每次交互中学习，不断优化对用户的理解和回复质量。越用越懂你。</p>
-      </div>
-      <div class="fw-card">
-        <h4>关系性 Relational</h4>
-        <p>理解人际关系网络，记住用户重视的人事物，在合适的时机主动提及和关怀。</p>
-      </div>
-    </div>
-
-    <!-- Code glimpse -->
-    <p class="reveal" style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);margin:40px 0 16px">Architecture Glimpse</p>
-    <div class="code-block reveal" style="transition-delay:.3s">
-<span class="c-cmt"># Hybrid scheme: OpenAI voice + DashScope brain</span>
-<span class="c-kw">class</span> <span class="c-var">Brain</span>:
-    <span class="c-cmt"># Background intelligence — never blocks hot path</span>
-    <span class="c-kw">async def</span> <span class="c-fn">process_input</span>(<span class="c-var">self</span>, text):
-        <span class="c-var">self</span>.memory.<span class="c-fn">add_conversation</span>(<span class="c-str">"user"</span>, text)
-        memories = <span class="c-var">self</span>.memory.<span class="c-fn">search</span>(text, limit=<span class="c-str">5</span>)
-        switch = <span class="c-kw">await</span> <span class="c-var">self</span>.sm.<span class="c-fn">_detect_state_switch</span>(text)
-        <span class="c-cmt"># Fire-and-forget: never blocks audio pipeline</span>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════ SCENE 4: TECH STACK DEEP DIVE ═══════════════ -->
-<section class="scene" data-scene="tech">
-  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 03</div><h2>Tech Stack</h2></div>
-  <div class="scene-content">
-    <h2 class="reveal-left">双模型架构<br><span style="font-size:.55em;color:var(--text-dim)">OpenAI Realtime Voice + DashScope Qwen Intelligence Brain</span></h2>
-    <div class="section-divider reveal"></div>
-    <p class="reveal">Voice Helper 采用独特的双模型混合架构：语音交互层使用 OpenAI/DashScope Realtime API 实现超低延迟（&lt;1.5s），而智能决策层（状态机、记忆检索、意图判断）全部由阿里云 DashScope Qwen 驱动，兼顾速度与中文能力。</p>
-
-    <div class="framework-grid reveal" style="transition-delay:.2s">
-      <div class="fw-card">
-        <h4>Realtime Voice Layer</h4>
-        <p><strong>OpenAI gpt-4o-mini-realtime</strong> 或 <strong>DashScope qwen3.5-omni-plus-realtime</strong> · Server-side VAD · 打断机制 (Barge-in) · 长篇模式自动切换</p>
-      </div>
-      <div class="fw-card">
-        <h4>Intelligence Engine</h4>
-        <p>DashScope <strong>qwen-plus</strong> 对话 + <strong>qwen-turbo</strong> 判断决策 · 异步后台处理管线 · 不阻塞音频热路径</p>
-      </div>
-      <div class="fw-card">
-        <h4>Memory System</h4>
-        <p><strong>Mem0</strong> + Qdrant 向量存储 + <strong>text-embedding-v3</strong> · 结构化事实提取 · 跨会话语义检索</p>
-      </div>
-      <div class="fw-card">
-        <h4>MCP Tool Extension</h4>
-        <p>Model Context Protocol via FastMCP · Web 搜索工具 · SSE 工具服务器架构 · 可插拔扩展设计</p>
-      </div>
-      <div class="fw-card">
-        <h4>State Machine</h4>
-        <p>IDLE → ENGAGED → FADING → SILENT 四态模型 · LLM 驱动的状态转换检测 · 渐进式自主性调节</p>
-      </div>
-      <div class="fw-card">
-        <h4>Voice Configuration</h4>
-        <p><code>voice_config.yaml</code> 驱动 · 音色/VAD 参数/token 上限/打断关键词 全部可配置 · 热加载无需改代码</p>
-      </div>
-    </div>
-
-    <div class="research-viz reveal-scale" id="research-viz-tech"></div>
-  </div>
-</section>
-
-<!-- ═══════════════ SCENE 5: ARCHITECTURE ═══════════════ -->
-<section class="scene scene-warm" data-scene="architecture">
-  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 04</div><h2>Architecture</h2></div>
-  <div class="scene-content">
-    <h2 class="reveal-right">三层解耦架构<br>热路径与冷路径分离</h2>
-    <div class="section-divider reveal"></div>
-    <p class="reveal">整个系统被清晰地分为三层：用户交互层（语音/文本）、核心引擎层（对话/记忆/推理）、外部服务层（LLM API/MCP 工具）。关键设计决策：**Brain 引擎的所有 LLM 调用都在异步后台执行，绝不阻塞音频热路径**。</p>
-
-    <div class="arch-diagram reveal-scale">
-      <div class="arch-layer arch-layer-ui">
-        <div class="arch-label">Layer 1 · User Interface</div>
-        <div class="arch-title">交互层</div>
-        <div class="arch-modules">
-          <span class="arch-module">Realtime WebSocket</span>
-          <span class="arch-module">Text Terminal</span>
-          <span class="arch-module">Server VAD</span>
-          <span class="arch-module">Audio Stream</span>
-        </div>
-      </div>
-      <div class="arch-arrow">▼</div>
-      <div class="arch-layer arch-layer-engine">
-        <div class="arch-label">Layer 2 · Core Engine</div>
-        <div class="arch-title">核心引擎 (Async Background)</div>
-        <div class="arch-modules">
-          <span class="arch-module">🧠 Brain (process_input)</span>
-          <span class="arch-module">💾 MemoryManager (Mem0+Qdrant)</span>
-          <span class="arch-machine">⚡ StateMachine (4-state)</span>
-          <span class="arch-module">🔔 Trigger (proactive)</span>
-          <span class="arch-module">🔗 MCPBridge (tools)</span>
-        </div>
-      </div>
-      <div class="arch-arrow">▼</div>
-      <div class="arch-layer arch-layer-ext">
-        <div class="arch-label">Layer 3 · External Services</div>
-        <div class="arch-title">外部服务</div>
-        <div class="arch-modules">
-          <span class="arch-module">OpenAI Realtime API</span>
-          <span class="arch-module">DashScope (Qwen + Embedding)</span>
-          <span class="arch-module">MCP SSE Servers</span>
-          <span class="arch-module">Qdrant Vector DB</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="quote-float reveal-float">"热路径只做一件事：收音频 → 发音频。所有思考都在冷路径的 Brain 里异步完成。"</div>
-  </div>
-</section>
-
-<!-- ═══════════════ SCENE 6: THE PRODUCT — INTERACTIVE DEMO ═══════════════ -->
-<section class="scene scene-warm" data-scene="product">
-  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 05</div><h2>Try It</h2></div>
-  <div class="scene-content">
-    <h2 class="reveal-left">Voice Helper<br><span style="font-size:.65em;color:var(--text-dim);font-weight:300">可交互 Demo · 直接体验</span></h2>
-    <div class="section-divider reveal"></div>
-    <p class="reveal">下方是一个真实的交互式 Demo。你可以直接输入消息与 Voice Helper 对话。当前运行在<strong>模拟模式</strong>（无需后端即可体验），部署 Render 后端后将自动切换到真实 AI 对话模式。</p>
-
-    <!-- Interactive Chat Widget -->
-    <div id="voice-helper-demo" data-api-url="" class="reveal-scale"></div>
-
-    <!-- Current capabilities -->
-    <p class="reveal" style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);margin:36px 0 16px">Phase 1 Capabilities</p>
-    <div class="framework-grid reveal" style="transition-delay:.15s">
-      <div class="fw-card">
-        <h4>三种运行模式</h4>
-        <p><code>--mode realtime</code> 超低延迟语音 (~1s) · <code>--mode fast</code> Agents SDK 低延迟 · <code>--mode agents</code> 全功能含 MCP 搜索</p>
-      </div>
-      <div class="fw-card">
-        <h4>SILENT Mode</h4>
-        <p>LLM 驱动的静默模式切换 · 在 SILENT 中仅倾听不回应 · 支持静默指令执行（设闹钟/记笔记）· Beep 确认反馈</p>
-      </div>
-      <div class="fw-card">
-        <h4>Proactive Trigger</h4>
-        <p>IDLE 状态下的定时扫描 · 基于记忆和上下文判断是否值得主动说话 · 智能退避算法避免打扰</p>
-      </div>
-      <div class="fw-card">
-        <h4>Barge-in Interrupt</h4>
-        <p>用户可在 AI 说话时插话中断 · 触发词列表可配置（"别讲了""停下""算了"等）· 中断后立即停止并等待新输入</p>
-      </div>
-      <div class="fw-card">
-        <h4>Long Mode Detection</h4>
-        <p>自动检测故事/分析请求 → 动态提升 token 上限至 300 · 口语化长输出 · 故事有头尾、分析有观点</p>
-      </div>
-      <div class="fw-card">
-        <h4>Time Injection</h4>
-        <p>识别时间相关提问 → 注入精确日期/星期/时间 → AI 能准确回答"现在几点""今天星期几"</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════ SCENE 7: ROADMAP ═══════════════ -->
-<section class="scene scene-warm" data-scene="roadmap">
-  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 06</div><h2>Roadmap</h2></div>
-  <div class="scene-content">
-    <h2 class="reveal-right">From Assistant<br>to Companion</h2>
-    <div class="section-divider reveal"></div>
-
-    <p class="reveal" style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal-light);margin-bottom:16px">Phase 1 ✅ — Now (Current State)</p>
-    <div class="framework-grid reveal" style="transition-delay:.1s">
-      <div class="fw-card" style="border-left:3px solid var(--teal)">
-        <h4>✅ 双 Provider 语音</h4><p>OpenAI + DashScope Realtime，Server VAD，&lt;1.5s 延迟</p>
-      </div>
-      <div class="fw-card" style="border-left:3px solid var(--teal)">
-        <h4>✅ 四态状态机</h4><p>IDLE / ENGAGED / FADING / SILENT，LLM 驱动转换</p>
-      </div>
-      <div class="fw-card" style="border-left:3px solid var(--teal)">
-        <h4>✅ 记忆系统</h4><p>Mem0 + Qdrant，向量存储 + 语义检索</p>
-      </div>
-      <div class="fw-card" style="border-left:3px solid var(--teal)">
-        <h4>✅ 主动性触发</h4><p>IDLE 扫描 + 智能判断 + 退避算法</p>
-      </div>
-    </div>
-
-    <p class="reveal" style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber-light);margin:36px 0 16px">Phase 2 🔮 — Memory & Analysis</p>
-    <div class="framework-grid reveal" style="transition-delay:.2s">
-      <div class="fw-card"><h4>对话解构</h4><p>从每次对话中提取结构化知识：核心论点、论证结构、隐含前提、情绪基调</p></div>
-      <div class="fw-card"><h4>知识图谱</h4><p>关系型记忆存储：人、事、物之间的关联网络可视化</p></div>
-      <div class="fw-card"><h4>记忆 UI</h4><p>查看/编辑/删除记忆条目的 Web 界面，让用户完全掌控 AI 的记忆</p></div>
-    </div>
-
-    <p class="reveal" style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber-light);margin:36px 0 16px">Phase 3 🚀 — Social & Autonomous</p>
-    <div class="framework-grid reveal" style="transition-delay:.3s">
-      <div class="fw-card"><h4>社会关系建模</h4><p>自动推断关系类型（亲密/家人/同事/朋友），追踪关系强度变化</p></div>
-      <div class="fw-card"><h4>主动提醒系统</h4><p>生日追踪、承诺提醒、关系维护建议 —— 真正"会来事儿"</p></div>
-      <div class="fw-card"><h4>个性化人格</h4><p>好奇心、同理心、幽默感等多维度性格配置 + 兴趣领域主动推送</p></div>
-    </div>
-
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin:36px 0" class="reveal">
-      <span class="vision-tag">Proactive AI</span><span class="vision-tag">Voice-First</span><span class="vision-tag">Contextual Memory</span>
-      <span class="vision-tag">Dual-Model Arch</span><span class="vision-tag">State Machine</span><span class="vision-tag">Human-Centered</span>
-      <span class="vision-tag">Open Source</span><span class="vision-tag">MCP Compatible</span>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════ SCENE 8: ABOUT ME & RESUME ═══════════════ -->
-<section class="scene" data-scene="about">
-  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 07</div><h2>About Me</h2></div>
-  <div class="scene-content">
-    <h2 class="reveal-left">Engineer &amp;<br>Product Creator</h2>
-    <div class="section-divider reveal"></div>
-
-    <div class="about-grid reveal" style="transition-delay:.15s">
-      <!-- Left: Intro + Skills -->
-      <div class="about-intro">
-        <p>我是一名软件工程师，相信技术应该服务于真实需求。从 0 到 1 打造过多个项目，注重产品体验和技术架构的平衡。</p>
-        <p>Voice Helper 是我的第一个独立作品，从需求调研到开发上线，全程亲力亲为。这个过程让我深刻体会到产品思维和工程能力的结合有多么重要。</p>
-        <p>我的定位是「让人的思想、感受和审美被更好呈现」，这个语音助手就是一个微型的「AI × 思维延伸」产品。</p>
-
-        <p style="font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);margin:20px 0 10px;font-family:var(--fm)">// TECH_STACK</p>
-        <div class="skill-tags">
-          <span class="skill-tag">Python</span>
-          <span class="skill-tag">TypeScript</span>
-          <span class="skill-tag">FastAPI</span>
-          <span class="skill-tag">AI/ML</span>
-          <span class="skill-tag">Prompt Engineering</span>
-          <span class="skill-tag">Product</span>
-          <span class="skill-tag">Data Analysis</span>
-        </div>
-      </div>
-
-      <!-- Right: Resume Card -->
-      <div class="resume-card">
-        <h4>&#47;&nbsp; RESUME</h4>
-        <div class="r-name">陈厚瑄 (Rock Chen)</div>
-        <div class="r-subtitle">AI &amp; 产品 | 数据分析 | 商业分析</div>
-
-        <div class="resume-section">
-          <h5>工作经历 Work Experience</h5>
-          <div class="resume-item"><div class="ri-title">Data Analyst &amp; AI Product Specialist</div><div class="ri-meta">龙湖集团 Longfor Group · Apr 2024 – Present</div></div>
-          <div class="resume-item"><div class="ri-title">AI 产品实习生 AI Product Intern</div><div class="ri-meta">TCL 鸿鵠实验室 · Jul 2024 – Jun 2025</div></div>
-          <div class="resume-item"><div class="ri-title">商业分析师 Business Analyst</div><div class="ri-meta">核桃编程 Walnut Programming · Jul 2022 – Nov 2022</div></div>
-        </div>
-
-        <div class="resume-section">
-          <h5>项目 Projects</h5>
-          <div class="resume-row">
-            <span class="resume-tag">Voice Helper · 语音 AI 助手</span>
-            <span class="resume-tag">美团商业分析 · 2024</span>
-            <span class="resume-tag">AI 驱动的企业估值系统</span>
+    <h2 class="reveal">我的履历</h2>
+    <p class="reveal" style="color:var(--text-dim);margin-bottom:28px">从产品到工程，持续探索 AI 落地的最佳路径。</p>
+    <div class="resume-layout reveal">
+      <div class="resume-pdf-area">
+        <div class="resume-pdf-frame" id="resume-frame-container">
+          <div id="pdf-img-wrapper" style="width:100%;overflow-y:auto;max-height:75vh;scrollbar-width:thin;scrollbar-color:var(--teal-light) rgba(255,255,255,.08);border-radius:12px;background:#fff;display:flex;flex-direction:column;align-items:center;padding:8px">
+            <img src="design/resume-pages/page_01.png" alt="Resume Page 1" style="width:100%;height:auto;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.08);display:block" loading="eager">
           </div>
         </div>
-
-        <div class="resume-section">
-          <h5>技能 Skills</h5>
-          <div class="resume-row">
-            <span class="resume-tag">Prompt Engineering</span>
-            <span class="resume-tag">LLM 微调</span>
-            <span class="resume-tag">Python / SQL / Tableau</span>
-            <span class="resume-tag">GRE 322 / IELTS 7.5</span>
-          </div>
+        <div class="download-bar">
+          <button class="db-btn" onclick="openDownloadModal()">⬥ 下载 PDF 简历</button>
+          <div class="db-count">已下载 <span class="db-count-num" id="download-count">0</span> 次</div>
         </div>
-
-        <div class="resume-section" style="border-bottom:none;padding-bottom:0;margin-bottom:0">
-          <h5>教育 Education</h5>
-          <div class="resume-item" style="margin-bottom:4px"><div class="ri-title">商业分析硕士</div><div class="ri-meta">南洋理工大学 NTU (2024-2025)</div></div>
-          <div class="resume-item"><div class="ri-title">经济学学士</div><div class="ri-meta">对外经济贸易大学 UIBE (2019-2023)</div></div>
+      </div>
+      <div class="resume-node-sidebar">
+        <p style="font-size:.7rem;color:var(--text-dim);margin-bottom:16px;letter-spacing:.08em;text-transform:uppercase">👆 悬浮查看详情</p>
+        <div class="node-track">
+          <div class="node-line"></div>
+          <div class="node-item active" data-node="personal" onmouseenter="showNodePreview(this)" onmouseleave="hideNodePreview(this)">
+            <div class="node-dot"></div>
+            <div class="node-label">基本信息</div>
+            <div class="node-preview">
+              <div class="node-preview-title">👤 基本信息</div>
+              <div class="node-preview-body"><strong>陈厚瑄 (Rock Chen)</strong><br><br>📱 +86 15210235027<br>📧 15210235027@163.com<br>📍 北京</div>
+            </div>
+          </div>
+          <div class="node-item" data-node="skills" onmouseenter="showNodePreview(this)" onmouseleave="hideNodePreview(this)">
+            <div class="node-dot"></div>
+            <div class="node-label">专业技能</div>
+            <div class="node-preview">
+              <div class="node-preview-title">🛠️ 专业技能</div>
+              <div class="node-preview-body">
+                <strong style="color:var(--teal-light)">AI</strong><br>PE 提示词优化、理解 ML 与 LLM 范式差异<br>熟悉 RAG/SFT 常用方法、Agent loop/skill 设计（Claude Code）<br><br>
+                <strong style="color:var(--teal-light)">数据分析</strong><br>Python（FastAPI、Pandas）、爬虫<br>Tableau/PowerBI、SQL、主流 NoSQL（Neo4j）<br><br>
+                <strong style="color:var(--teal-light)">产品工具</strong><br>Axure、Figma/墨刀、飞书、Xmind<br><br>
+                <strong style="color:var(--teal-light)">外语</strong><br>GRE 322、雅思 7.5（口语 7.5）
+              </div>
+            </div>
+          </div>
+          <div class="node-item" data-node="work" onmouseenter="showNodePreview(this)" onmouseleave="hideNodePreview(this)">
+            <div class="node-dot"></div>
+            <div class="node-label">工作经历</div>
+            <div class="node-preview">
+              <div class="node-preview-title">💼 工作经历（4 段）</div>
+              <div class="node-preview-body">
+                <strong style="color:var(--teal-light)">① 龙湖集团 · 数科引擎 · 数据智能体</strong><br>数据产品经理（实习）<br><span style="color:var(--text-dim)">2024.07 – 2025.06</span><br>• 主导企业「智能问数Agent」0→1 落地<br>• 准确率 50%→95%，协调 6 个航道<br>• Claude Code Skill 探索 AI 工程化<br><br>
+                <strong style="color:var(--teal-light)">② Groundup AI（新加坡）</strong><br>B 端解决方案<br><span style="color:var(--text-dim)">2024.03 – 2024.07</span><br>• IoT 传感器方案落地，赴新加坡实地评估<br>• 全球供应链渠道 + LoRa 远洋场景<br><br>
+                <strong style="color:var(--teal-light)">③ TCL 鸿鹄实验室</strong><br><span style="color:var(--text-dim)">2025.01 – 2025.06</span><br>• SFT 语料设计，准确率提升 6%<br>• LLM 微调 Eval，支撑技术选型<br>• 中英说明书数据工程流水线（4万+条）<br><br>
+                <strong style="color:var(--teal-light)">④ 核桃编程</strong><br>产品经理<br><span style="color:var(--text-dim)">2025.08 – 至今</span><br>• 400+ 用户漏斗分析，驱动 5 项优化<br>• CRM 埋点规范化 + 销售OKR
+              </div>
+            </div>
+          </div>
+          <div class="node-item" data-node="project" onmouseenter="showNodePreview(this)" onmouseleave="hideNodePreview(this)">
+            <div class="node-dot"></div>
+            <div class="node-label">项目经历</div>
+            <div class="node-preview">
+              <div class="node-preview-title">🚀 项目经历</div>
+              <div class="node-preview-body">
+                <strong style="color:var(--teal-light)">个人兴趣项目：高自主性 AI 语音伙伴</strong><br><br>
+                • 发现现有 AI 交互结构性缺陷 —— 人永远是发起者<br>
+                • 体验 10+ 款 AI 产品提炼核心矛盾<br>
+                • 全栈开发 Render 上线：DashScope 替代 OpenAI Realtime<br>
+                • 双模型系统：区分"说"与"想"<br>
+                • 定义下一代 AI 伴侣交互方向
+              </div>
+            </div>
+          </div>
+          <div class="node-item" data-node="edu" onmouseenter="showNodePreview(this)" onmouseleave="hideNodePreview(this)">
+            <div class="node-dot"></div>
+            <div class="node-label">教育背景</div>
+            <div class="node-preview">
+              <div class="node-preview-title">🎓 教育背景</div>
+              <div class="node-preview-body">
+                <strong style="color:var(--teal-light)">南洋理工大学 (NTU)</strong> · 商业分析硕士<br><span style="color:var(--text-dim)">2019.09 – 2023.06</span><br>
+                <strong style="color:var(--teal-light)">对外经济贸易大学 (UIBE)</strong> · 国际贸易学士<br><span style="color:var(--text-dim)">2022.07 – 2024.07</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ SCENE 9: EPILOGUE ═══════════════ -->
-<section class="scene scene-epilogue scene-warm" data-scene="epilogue">
+<section id="video" class="scene scene-warm" data-scene="video">
+  <div class="chapter-card"><span class="ch-num">Chapter 03</span><h2>Video</h2></div>
   <div class="scene-content" style="text-align:center">
-    <p class="reveal" style="font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--amber-light);margin-bottom:20px">End of Voyage</p>
-    <h2 class="reveal" style="transition-delay:.1s">Build AI that truly understands you.</h2>
-    <p class="reveal" style="transition-delay:.25s;margin:20px auto 40px;max-width:500px;color:var(--text-dim)">Voice Helper 是一个开源项目。欢迎查看源码、提出建议、或一起构建下一代人机交互方式。</p>
-    <div class="epilogue-links reveal" style="transition-delay:.4s">
-      <a href="https://github.com/rockchen/20260306s-voice-helper" target="_blank" rel="noopener" class="btn-outline btn-warm">View Source on GitHub ↗</a>
-      <a href="#" onclick="document.getElementById('voice-helper-demo').scrollIntoView({behavior:'smooth'});return false" class="btn-outline btn-warm">Try the Demo ↑</a>
-      <a href="#" class="btn-outline btn-warm">Get in Touch</a>
+    <h2 class="reveal">个人简介视频</h2>
+    <p class="reveal" style="color:var(--text-dim);margin-bottom:32px">用 30 秒快速了解我——从关键词到职业旅程，再到项目实践。</p>
+    <div class="video-wrapper reveal">
+      <video controls preload="metadata" poster="">
+        <source src="remotion-videos/output/rock-chen-intro.mp4" type="video/mp4">
+        您的浏览器不支持视频播放。
+      </video>
     </div>
-    <div class="sound-wave reveal" style="justify-content:center;margin-top:48px;transition-delay:.6s" id="outro-wave"></div>
+    <div class="video-caption reveal">Rock Chen 个人简介 · 30s · Remotion 制作</div>
   </div>
 </section>
 
-<script src="demo-widget.js"></script>
+<section id="project" class="scene scene-warm" data-scene="project">
+  <div class="chapter-card"><span class="ch-num">Chapter 04</span><h2>Voice Helper</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal">Voice Helper — 从洞察到落地</h2>
+    <p class="reveal" style="color:var(--text-dim);font-size:1.05rem;margin-bottom:12px">一个开源的语音 AI 助手 —— 如果 AI 能像真正关心你的人一样记住你说过的、理解你没说的、在你需要时主动出现。</p>
+    <div class="reveal" style="margin:20px 0">
+      <span class="vision-tag">主动式交互</span>
+      <span class="vision-tag">长期记忆</span>
+      <span class="vision-tag">情绪感知</span>
+      <span class="vision-tag">个性化成长</span>
+      <span class="vision-tag">双模型混合架构</span>
+    </div>
+    <div class="section-divider"></div>
+    <h3 class="reveal" style="font-family:var(--fh);font-size:1.5rem;color:var(--teal-light);margin-bottom:16px">为什么做这个？</h3>
+    <div class="insight-card ic-teal reveal-left">
+      <h3>🔍 市场痛点：人永远是发起者（Initiator）</h3>
+      <p>自 GPT 发布以来，所有 AI 产品都有一个结构性缺陷：</p>
+      <table class="market-table">
+        <tr><th>产品类型</th><th>代表产品</th><th>触发方式</th><th>本质问题</th></tr>
+        <tr><td>边栏 Copilot</td><td>Microsoft Copilot / Claude</td><td>用户点开边栏</td><td>被动工具，不在场</td></tr>
+        <tr><td>AI 通话</td><td>ChatGPT 语音 / 豆包</td><td>用户先开口</td><td>轮流说话，无主动性</td></tr>
+        <tr><td>穿戴设备</td><td>Humane AI Pin / Rabbit r1</td><td>用户行为触发</td><td>感知弱，交互浅</td></tr>
+        <tr><td>语音助手</td><td>Siri / Google Assistant</td><td>唤醒词触发</td><td>规则型，无上下文</td></tr>
+        <tr><td>情感语音 AI</td><td>Hume AI EVI</td><td>用户先开口</td><td>有情感感知但无主动触发</td></tr>
+      </table>
+    </div>
+    <div class="reveal-right" style="margin:24px 0;position:relative">
+      <img src="design/autonomy-presence-matrix.png" alt="自主性×存在感矩阵" style="width:100%;border-radius:14px;border:1px solid rgba(13,148,136,.2);box-shadow:0 20px 60px rgba(0,0,0,.4);display:block">
+      <p style="text-align:center;font-size:.75rem;color:var(--text-dim);margin-top:10px;letter-spacing:.04em">自主性 × 存在感 二维分析框架 — 从 Proxy 到 Agent 的产品进化方向</p>
+    </div>
+    <div class="insight-card ic-amber reveal-right">
+      <h3>💡 核心洞察：自主性 × 存在感矩阵</h3>
+      <p>右上角仍然是空白的——即使最新的 Hume EVI 也只解决了"存在感"（情感感知），没有解决"主动性"。Voice Helper 要填补这个空白：<strong>高主动 × 高存在</strong>。</p>
+    </div>
+    <div class="insight-card ic-teal reveal">
+      <h3>📚 理论支撑</h3>
+      <ul>
+        <li><strong>Inner Thoughts Framework</strong> (Liu et al., CHI 2025)：AI 应持续产生内心独白，寻找合适的时机表达想法</li>
+        <li><strong>Human-centered PCA</strong> (Deng et al., 2024)：可预测性、可控性、适当性三原则</li>
+        <li><strong>ComPeer</strong> (Liu et al., 2024)：轻量级低压力主动开启，消息 &lt;30 字</li>
+        <li><strong>心流理论</strong>：最好的互动是精准出现</li>
+      </ul>
+    </div>
+    <div class="section-divider"></div>
+    <h3 class="reveal" style="font-family:var(--fh);font-size:1.5rem;color:var(--amber-light);margin-bottom:16px">怎么做的？</h3>
+    <div class="framework-grid">
+      <div class="fw-card reveal-left"><h4>🎙️ 语音交互层</h4><p>OpenAI/DashScope Realtime API 实现超低延迟语音对话，端到端延迟 &lt;1.5s。</p></div>
+      <div class="fw-card reveal" style="transition-delay:.15s"><h4>🧠 Inner Thoughts Engine</h4><p>三层管线：记忆扫描 → 思维生成+动机评估 → 表达规划。AI 持续产生内心独白。</p></div>
+      <div class="fw-card reveal-right" style="transition-delay:.3s"><h4>💾 Mem0 记忆系统</h4><p>自动事实提取、矛盾检测、时效衰减。图+向量混合检索。</p></div>
+      <div class="fw-card reveal-left" style="transition-delay:.45s"><h4>🌡️ 主动性温度旋钮</h4><p>Cold/Warm/Hot 三档可调，用户反馈闭环自动调节阈值。</p></div>
+    </div>
+    <div class="section-divider"></div>
+    <h3 class="reveal" style="font-family:var(--fh);font-size:1.5rem;color:var(--teal-light);margin-bottom:24px">迭代路线图</h3>
+    <div class="phase-timeline reveal">
+      <div class="phase-node done"><div class="phase-dot">✓</div><div class="phase-name">Phase 0 MVP</div><div class="phase-desc">三种语音模式<br>realtime/fast/agents</div></div>
+      <div class="phase-node current"><div class="phase-dot">→</div><div class="phase-name">Phase 1</div><div class="phase-desc">记忆系统 +<br>主动触发引擎</div></div>
+      <div class="phase-node"><div class="phase-dot">②</div><div class="phase-name">Phase 2</div><div class="phase-desc">社会关系建模<br>关系强度追踪</div></div>
+      <div class="phase-node"><div class="phase-dot">③</div><div class="phase-name">Phase 3</div><div class="phase-desc">个性化情感感知<br>性格配置</div></div>
+    </div>
+    <div class="quote-float reveal" style="margin-top:40px">
+      Voice Helper 是我从需求调研到开发上线的第一个完整作品。
+      这段经历让我深刻体会到：真正好的产品不是堆砌功能，而是对用户痛点的深刻理解 + 对技术边界的清晰认知 + 一点点"让世界变得更好一点"的理想主义。
+    </div>
+  </div>
+</section>
+
+<section class="scene scene-epilogue" data-scene="epilogue">
+  <div class="chapter-card" style="align-items:center;justify-content:center"><span class="ch-num">End</span><h2 style="text-align:center">Let's Connect</h2></div>
+  <h2 class="reveal" style="font-size:clamp(2rem,4vw,3rem);margin-bottom:16px">一起构建下一代人机交互</h2>
+  <p class="reveal" style="color:var(--text-dim);max-width:480px;margin-bottom:32px">无论是 AI 产品探索、技术合作还是单纯交流想法，都欢迎联系我。</p>
+  <div class="epilogue-links reveal">
+    <a href="mailto:rockchen2025@outlook.com" class="btn-outline">📧 Email</a>
+    <a href="https://github.com/rockchenhq" target="_blank" class="btn-outline">⚡ GitHub</a>
+    <a href="https://linkedin.com/in/rockchen-hx" target="_blank" class="btn-outline">💼 LinkedIn</a>
+  </div>
+  <p style="margin-top:48px;font-size:.72rem;color:var(--text-dim);opacity:.4" class="reveal">© 2026 Rock Chen 陈厚瑄</p>
+</section>
+
+<div class="modal-overlay" id="dl-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeDownloadModal()">✕</button>
+    <div class="modal-title">下载简历 PDF</div>
+    <div class="modal-subtitle">填写以下信息即可获取最新版简历</div>
+    <div id="form-area">
+      <div class="form-group">
+        <label class="form-label" for="dl-company">公司名称（选填）</label>
+        <input class="form-input" type="text" id="dl-company" placeholder="您的公司或组织">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="dl-email">联系邮箱 *</label>
+        <input class="form-input" type="email" id="dl-email" placeholder="name@company.com">
+        <div class="form-error-msg">请输入有效的邮箱地址（需包含 @）</div>
+      </div>
+      <button class="form-submit" onclick="submitDownload()">确认并下载</button>
+      <div class="form-note">* 仅用于统计用途，我们不会发送垃圾邮件</div>
+    </div>
+    <div class="form-success" id="success-area">
+      <div class="form-success-icon">✅</div>
+      <div class="form-success-text">验证通过！简历正在下载...</div>
+    </div>
+  </div>
+</div>
+
 <script>
-(function(){
-/* Sound waves */
-function mkWave(id,n){var w=document.getElementById(id);if(!w)return;for(var i=0;i<n;i++){var b=document.createElement('span');b.style.setProperty('--h',(12+Math.random()*36)+'px');b.style.animationDelay=(i*.04)+'s';b.style.animationDuration=(.8+Math.random()*.8)+'s';w.appendChild(b)}}
-mkWave('hero-wave',50);mkWave('outro-wave',20);
-
-/* Scroll reveal */
-var rObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');rObs.unobserve(e.target)}})},{threshold:.15,rootMargin:'0px 0px -60px 0px'});
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-float').forEach(function(el){rObs.observe(el)});
-
-/* Chapter cards — parallax on scroll */
-var cObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('slide-in');else e.target.classList.remove('slide-in')})},{threshold:.3});
-document.querySelectorAll('[data-chapter]').forEach(function(el){cObs.observe(el)});
-
-/* Nav highlight — auto highlight current scene */
-var navLinks=document.querySelectorAll('#scene-nav a[data-target]');
-window.addEventListener('scroll',function(){if(window._navT)return;window._navT=true;requestAnimationFrame(function(){
-  var sy=window.scrollY,active=null,minD=Infinity;
-  document.querySelectorAll('[data-scene]').forEach(function(s){
-    var d=Math.abs(s.offsetTop-sy-120);if(d<minD){minD=d;active=s.dataset.scene}
-  });
-  navLinks.forEach(function(a){
-    a.classList.toggle('active',a.dataset.target===active);
-  });
-  window._navT=false})},{passive:true});
-
-/* Chapter text parallax: drifts up + fades as user scrolls through scene */
-window.addEventListener('scroll',function(){if(window._cpt)return;window._cpt=true;requestAnimationFrame(function(){
-  document.querySelectorAll('[data-chapter].slide-in').forEach(function(card){
-    var sec=card.closest('.scene'),rect=sec.getBoundingClientRect(),vh=window.innerHeight;
-    var progress=Math.max(0,Math.min(1,(vh-rect.top)/(vh+rect.height)));
-    if(progress>0){
-      var ty=-(progress*40),op=1-Math.max(0,(progress-.3)*1.4);
-      card.querySelector('h2').style.transform='translateY('+ty+'px)';
-      card.querySelector('h2').style.opacity=Math.max(.03,op*.10);
-      var num=card.querySelector('.ch-num');
-      if(num){num.style.transform='translateY('+ty*.6+'px)';num.style.opacity=Math.max(.02,op*.5)}
-    }
-  });
-  window._cpt=false})},{passive:true});
-
-/* Timeline */
-var scenes=document.querySelectorAll('[data-scene]'),dotsC=document.getElementById('timeline-dots'),prog=document.getElementById('timeline-progress'),dots=[];
-scenes.forEach(function(s){var d=document.createElement('div');d.className='tl-dot';d.style.top=(s.offsetTop+s.offsetHeight/2)+'px';d._warm=s.classList.contains('scene-warm');dotsC.appendChild(d);dots.push(d)});
-
-/* Scroll handler */
+const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>ro.observe(el));
+const scenes=document.querySelectorAll('.scene');
+scenes.forEach(s=>{const cc=s.querySelector('.chapter-card');if(!cc)return;
+  const ro2=new IntersectionObserver(e=>{if(e[0].isIntersecting>.1)cc.classList.add('slide-in')},{threshold:.1});
+  ro2.observe(s);
+});
+const dotsC=document.getElementById('timeline-dots'),prog=document.getElementById('timeline-progress'),dots=[];
+scenes.forEach(s=>{const d=document.createElement('div');d.className='tl-dot';d.style.top=(s.offsetTop+s.offsetHeight/2)+'px';d._warm=s.classList.contains('scene-warm');dotsC.appendChild(d);dots.push(d)});
 var ambient=document.getElementById('ambient-bg');
 var navy={r:10,g:22,b:40},tealC={r:13,g:148,b:136},amberC={r:245,g:158,b:11};
 function lerp(a,b,t){return a+(b-a)*t}
@@ -597,105 +435,53 @@ var ticking=false;
 window.addEventListener('scroll',function(){if(ticking)return;ticking=true;requestAnimationFrame(function(){
   var sy=window.scrollY,ms=document.documentElement.scrollHeight-window.innerHeight,p=Math.min(sy/Math.max(ms,1),1);
   prog.style.height=(p*100)+'%';
-  dots.forEach(function(d,i){var sT=scenes[i].offsetTop,sH=scenes[i].offsetHeight;if(sy>=sT-200&&sy<sT+sH-200){d.classList.add('active');if(d._warm)d.classList.add('warm')}else{d.classList.remove('active','warm')}});
   var c;if(p<.5)c=lerpC(navy,tealC,p*2);else c=lerpC(tealC,amberC,(p-.5)*2);
-  ambient.style.background='radial-gradient(ellipse 120% 80% at 50% 50%,'+c+',#0A1628)';ticking=false})},{passive:true});
-
-/* Mouse parallax */
-document.addEventListener('mousemove',function(e){ambient.style.setProperty('--mx',(e.clientX/window.innerWidth*100)+'%');ambient.style.setProperty('--my',(e.clientY/window.innerHeight*100)+'%')});
-
-/* Research viz canvas for tech scene */
+  ambient.style.background='radial-gradient(ellipse 120% 80% at 50% 50%,'+c+',#0A1628)';
+  ticking=false})},{passive:true});
 (function(){
-  var el=document.getElementById('research-viz-tech');if(!el)return;
-  var cv=document.createElement('canvas');el.appendChild(cv);
-  var ctx=cv.getContext('2d');
-  // Tech stack particles
-  var labels=['Python','FastAPI','WebSocket','Mem0','Qdrant','DashScope','OpenAI','MCP','async/await','VAD','State Machine','Embedding'];
-  var particles=[];for(var i=0;i<50;i++){particles.push({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.0008,vy:(Math.random()-.5)*.0008,r:Math.random()*2+1,l:labels[i%labels.length]})}
-  function rsz(){var r=el.getBoundingClientRect(),dp=window.devicePixelRatio||1;cv.width=r.width*dp;cv.height=r.height*dp;ctx.setTransform(dp,0,0,dp,0,0);cv.style.width=r.width+'px';cv.style.height=r.height+'px'}
-  rsz();window.addEventListener('resize',rsz);
-  function draw(){var w=cv.width/(window.devicePixelRatio||1),h=cv.height/(window.devicePixelRatio||1);ctx.clearRect(0,0,w,h);
-  particles.forEach(function(p){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>1)p.vx*=-1;if(p.y<0||p.y>1)p.vy*=-1});
-  particles.forEach(function(a,i){particles.slice(i+1).forEach(function(b){var dx=(a.x-b.x)*w,dy=(a.y-b.y)*h,d=Math.sqrt(dx*dx+dy*dy);if(d<70){ctx.beginPath();ctx.moveTo(a.x*w,a.y*h);ctx.lineTo(b.x*w,b.y*h);ctx.strokeStyle='rgba(245,158,11,'+(0.06*(1-d/70))+')';ctx.lineWidth=.5;ctx.stroke()}});
-  ctx.beginPath();ctx.arc(a.x*w,a.y*h,a.r,0,Math.PI*2);ctx.fillStyle='rgba(245,158,11,0.28)';ctx.fill()});
-  requestAnimationFrame(draw)}draw()})();
-
-/* Walking character — auto horizontal walk + 1:1 scroll + viewport refresh */
+  var dotObs=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      var idx=Array.prototype.indexOf.call(scenes,en.target);
+      if(idx<0||!dots[idx])return;
+      if(en.isIntersecting){dots[idx].classList.add('active');if(scenes[idx].classList.contains('scene-warm'))dots[idx].classList.add('warm');}
+      else{dots[idx].classList.remove('active','warm');}
+    });
+  },{threshold:.25,rootMargin:'-10% 0px -10% 0px'});
+  scenes.forEach(function(s){dotObs.observe(s)});
+})();
+dots.forEach(function(d,i){d.addEventListener('click',function(){var t=scenes[i];if(t){var o=t.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:o,behavior:'smooth'})}})});
+document.addEventListener('mousemove',function(e){ambient.style.setProperty('--mx',(e.clientX/window.innerWidth*100)+'%');ambient.style.setProperty('--my',(e.clientY/window.innerHeight*100)+'%')});
+const navLinks=document.querySelectorAll('.nav-links a');
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',function(e){
+    e.preventDefault();
+    const t=document.querySelector(this.getAttribute('href'));
+    if(t){const o=t.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:o,behavior:'smooth'})}
+  });
+});
+const navObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const t=e.target.id;navLinks.forEach(a=>{a.classList.toggle('active',a.dataset.target===t)})}})},{threshold:.3});
+document.querySelectorAll('.scene[id]').forEach(el=>navObs.observe(el));
 (function(){
   var w=document.getElementById('walker');if(!w)return;
-  var ww=window.innerWidth,wh=window.innerHeight;
-
-  // Auto-walk state
-  var x=-420;
-  var speed=0.8;
-  var direction=1;
-  var currentScale=1;
-  // Current Y position in page coordinates
-  var baseY=wh*0.55 + window.scrollY;
-  // Track which side we entered from, to alternate
-  var enterFromLeft=true;
-
-  function resize(){ww=window.innerWidth;wh=window.innerHeight}
-  window.addEventListener('resize',resize);
-
-  w.style.opacity='1';
-
-  function step(){
-    var sy=window.scrollY;
-
-    // Horizontal auto-walk
-    x += speed * direction;
-    var imgWidth=w.offsetWidth||320;
-
-    if(x > ww + 40){
-      enterFromLeft=false;  // next time enter from right side
-      x = -(imgWidth + 40);
-      direction=1;
-    } else if(x < -(imgWidth + 40)){
-      enterFromLeft=true;   // next time enter from left side
-      x = ww + 40;
-      direction=-1;
-    }
-
-    // Calculate current screen-Y position
-    var screenY = baseY - sy;
-
-    // Viewport refresh check
-    var margin = wh * 0.3;
-    if(screenY < -margin || screenY > wh + margin){
-      // Reset to fresh position in current viewport
-      baseY = sy + wh * (0.35 + Math.random() * 0.35);
-      // Random scale: 90% chance ±20% (0.8~1.2), 10% chance 200%
-      currentScale = Math.random() < 0.1 ? 2.0 : (0.8 + Math.random() * 0.4);
-
-      // Alternate entry edge: left ↔ right
-      if(enterFromLeft){
-        x = -(imgWidth + 40);
-        direction=1;
-        enterFromLeft=false;  // next refresh will use opposite side
-      } else {
-        x = ww + 40;
-        direction=-1;
-        enterFromLeft=true;  // next refresh will use opposite side
-      }
-      screenY = baseY - sy;
-    }
-
-    // Render — uniform scale (preserve aspect ratio), horizontal flip via negative X
-    var sx = direction * currentScale;
-    var sy = currentScale;
-    w.style.left=x+'px';
-    w.style.top=screenY+'px';
-    w.style.bottom='auto';
-    w.style.transform='scale('+sx+', '+sy+')';
-
-    rafId=requestAnimationFrame(step);
-  }
-
-  rafId=requestAnimationFrame(step);
+  var ww=window.innerWidth,wh=window.innerHeight,x=-420,speed=.8,direction=1,currentScale=1,baseY=wh*.55+window.scrollY,enterFromLeft=true;
+  window.addEventListener('resize',function(){ww=window.innerWidth;wh=window.innerHeight});
+  w.style.opacity='1';function step(){
+    var sy=window.scrollY;x+=speed*direction;var imgWidth=w.offsetWidth||320;
+    if(x>ww+40){enterFromLeft=false;x=-(imgWidth+40);direction=1}
+    else if(x<-(imgWidth+40)){enterFromLeft=true;x=ww+40;direction=-1}
+    var screenY=baseY-sy;var margin=wh*.3;
+    if(screenY<-margin||screenY>wh+margin){baseY=sy+wh*(.35+Math.random()*.35);currentScale=Math.random()<.1?2:(.8+Math.random()*.4);if(enterFromLeft){x=-(imgWidth+40);direction=1;enterFromLeft=false}else{x=ww+40;direction=-1;enterFromLeft=true}screenY=baseY-sy}
+    w.style.left=x+'px';w.style.top=screenY+'px';w.style.bottom='auto';w.style.transform='scale('+direction*currentScale+','+currentScale+')';requestAnimationFrame(step);
+  }requestAnimationFrame(step);
 })();
-
-})();
+function showNodePreview(el){document.querySelectorAll('.node-item').forEach(n=>n!==el&&n.classList.remove('active'));el.classList.add('active');const pv=el.querySelector('.node-preview');if(pv)pv.classList.add('visible');}
+function hideNodePreview(el){const pv=el.querySelector('.node-preview');if(pv)pv.classList.remove('visible');}
+document.querySelectorAll('.node-item').forEach(n=>{n.addEventListener('click',function(){document.querySelectorAll('.node-item').forEach(x=>x!==this&&x.classList.remove('active'));this.classList.toggle('active');const pv=this.querySelector('.node-preview');if(pv)pv.classList.toggle('visible',this.classList.contains('active'))});});
+(function(){let dl=parseInt(localStorage.getItem('rc_resume_dl')||'0');document.getElementById('download-count').textContent=dl})();
+function openDownloadModal(){document.getElementById('dl-modal').classList.add('active');document.getElementById('form-area').style.display='block';document.getElementById('success-area').style.display='none'}
+function closeDownloadModal(){document.getElementById('dl-modal').classList.remove('active')}
+function submitDownload(){const ei=document.getElementById('dl-email');ei.classList.remove('error');const em=ei.value.trim();if(!em||!em.includes('@')){ei.classList.add('error');return}let ct=parseInt(localStorage.getItem('rc_resume_dl')||'0')+1;localStorage.setItem('rc_resume_dl',ct);document.getElementById('download-count').textContent=ct;document.getElementById('form-area').style.display='none';document.getElementById('success-area').style.display='block';const a=document.createElement('a');a.href='resume.pdf';a.download='陈厚瑄_简历_RockChen_2026.04.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(closeDownloadModal,2000)}
+document.getElementById('dl-modal').addEventListener('click',function(e){if(e.target===this)closeDownloadModal()});
 </script>
 </body>
 </html>
