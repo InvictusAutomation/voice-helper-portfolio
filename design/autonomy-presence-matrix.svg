@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 820" width="1120" height="820">
+<style>
+  .title { font-family: "Space Grotesk", sans-serif; fill: #14B8A6; }
+  .axis-label { font-family: "Space Grotesk", sans-serif; fill: #e2e8f0; font-weight: 600; }
+  .axis-sub { font-family: "Space Grotesk", sans-serif; fill: #94a3b8; font-size: 12px; }
+  .product-name { font-family: "Space Grotesk", sans-serif; fill: #ffffff; font-weight: 600; font-size: 13px; }
+  .body-text { font-family: "Space Grotesk", sans-serif; fill: rgba(255,255,255,.75); font-size: 11.5px; line-height: 1.65; }
+  .highlight { fill: #14B8A6; font-weight: 600; }
+  .amber { fill: #FBBF24; font-weight: 500; }
+  .muted { fill: rgba(255,255,255,.45); font-size: 10.5px; }
+  .quadrant-title { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 14px; }
+</style>
+<defs>
+  <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#0F1E38"/>
+    <stop offset="100%" stop-color="#0A1628"/>
+  </linearGradient>
+  <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse">
+    <path d="M 28 0 L 0 0 0 28" fill="none" stroke="rgba(13,148,136,.06)" stroke-width="0.6"/>
+  </pattern>
+  <linearGradient id="qTL" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="rgba(245,158,11,.04)"/><stop offset="100%" stop-color="rgba(245,158,11,.08)"/></linearGradient>
+  <linearGradient id="qTR" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="rgba(13,148,136,.08)"/><stop offset="100%" stop-color="rgba(13,148,136,.15)"/></linearGradient>
+  <linearGradient id="qBL" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="rgba(255,255,255,.02)"/><stop offset="100%" stop-color="rgba(255,255,255,.04)"/></linearGradient>
+  <linearGradient id="qBR" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="rgba(100,116,139,.03)"/><stop offset="100%" stop-color="rgba(100,116,139,.07)"/></linearGradient>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="5" result="blur"/>
+    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs>
+<rect width="1120" height="820" fill="url(#bgGrad)" rx="12"/>
+<rect width="1120" height="820" fill="url(#grid)" rx="12"/>
+<text x="560" y="40" text-anchor="middle" class="title" font-size="22" font-weight="600">自主性 × 存在感 矩阵</text>
+<text x="560" y="62" text-anchor="middle" class="muted" letter-spacing=".15em" text-transform="uppercase">Autonomy × Presence Matrix — 产品思考框架</text>
+<rect x="180" y="120" width="380" height="300" fill="url(#qTL)" rx="8"/>
+<rect x="560" y="120" width="380" height="300" fill="url(#qTR)" rx="8"/>
+<rect x="180" y="420" width="380" height="300" fill="url(#qBL)" rx="8"/>
+<rect x="560" y="420" width="380" height="300" fill="url(#qBR)" rx="8"/>
+<line x1="180" y1="720" x2="970" y2="720" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+<line x1="180" y1="720" x2="180" y2="90" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+<defs>
+<marker id="arrowX" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 9 3, 0 6" fill="rgba(255,255,255,.4)"/></marker>
+<marker id="arrowY" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 9 3, 0 6" fill="rgba(255,255,255,.4)"/></marker>
+</defs>
+<line x1="180" y1="720" x2="970" y2="720" stroke="rgba(255,255,255,.25)" stroke-width="1.5" marker-end="url(#arrowX)"/>
+<line x1="180" y1="720" x2="180" y2="90" stroke="rgba(255,255,255,.25)" stroke-width="1.5" marker-end="url(#arrowY)"/>
+<text x="985" y="725" class="axis-label" font-size="15">自主性 Autonomy →</text>
+<text x="170" y="742" class="axis-sub" text-anchor="end">被动响应 Proxy</text>
+<text x="950" y="742" class="axis-sub" text-anchor="start">主动行动 Agent</text>
+<text x="180" y="75" class="axis-label" font-size="15" text-anchor="middle" transform="rotate(-90,180,75)">→ 存在感 Presence</text>
+<text x="168" y="712" class="axis-sub" text-anchor="end">无感 / 隐形</text>
+<text x="168" y="125" class="axis-sub" text-anchor="end">沉浸 / 在场</text>
+<text x="215" y="138" class="quadrant-title" fill="#FBBF24">Ⅰ 高自主 × 弱存在</text>
+<circle cx="310" cy="132" r="7" fill="#F59E0B" opacity=".85"/>
+<text x="323" y="136" class="product-name" fill="#FBBF24">Friend AI 项链</text>
+<text x="215" y="162" class="body-text">代表产品：<tspan class="amber">Friend AI Necklace</tspan>（2024）</text>
+<text x="215" y="181" class="body-text">全天候佩戴式 AI，通过麦克风持续感知环境</text>
+<text x="215" y="200" class="body-text">与用户对话、自动记笔记、安排任务提醒</text>
+<text x="215" y="223" class="body-text"><tspan class="highlight">核心特征：</tspan></text>
+<text x="215" y="238" class="body-text">• 强任务驱动：主动收集信息 → 分析 → 推送结论</text>
+<text x="215" y="255" class="body-text">• 用户通常被动接收通知，无法双向讨论</text>
+<text x="215" y="272" class="body-text">• 交互模式：「AI 决定做什么 → 告诉你结果」</text>
+<text x="215" y="289" class="body-text">• 存在感弱：不打扰、不对话、像后台服务</text>
+<text x="215" y="312" class="body-text"><tspan class="amber">⚠ 极端问题：</tspan>缺乏「言之有物」的判断力</text>
+<text x="215" y="329" class="body-text">—— 自主发起的内容可能无关痛痒或时机不当</text>
+<text x="215" y="436" class="quadrant-title" fill="#64748b">Ⅲ 低自主 × 弱存在</text>
+<circle cx="310" cy="430" r="6" fill="#64748b" opacity=".6"/>
+<text x="323" y="434" class="product-name" fill="#94a3b8">Siri / Google Assistant</text>
+<text x="215" y="460" class="body-text" opacity=".65">唤醒词触发 → 规则匹配 → 固定回复</text>
+<text x="215" y="478" class="body-text" opacity=".65">无上下文理解，无记忆，无主动性</text>
+<text x="215" y="496" class="body-text" opacity=".65">本质是命令行界面，不是智能体</text>
+<text x="588" y="138" class="quadrant-title" fill="#14B8A6">Ⅱ 高自主 × 强存在 ← 目标</text>
+<circle cx="720" cy="340" r="14" fill="#0D9488" opacity=".2" filter="url(#glow)"/>
+<circle cx="720" cy="340" r="9" fill="#14B8A6"/>
+<circle cx="720" cy="340" r="4" fill="#fff" opacity=".8"/>
+<text x="740" cy="345" class="product-name" fill="#14B8A6" font-size="14">Voice Helper ★</text>
+<text x="588" y="164" class="body-text"><tspan class="highlight">将两个维度的优势结合：</tspan></text>
+<text x="588" y="181" class="body-text">• 高存在感 → 情绪感知、语音交互、在场陪伴</text>
+<text x="588" y="198" class="body-text">• 高自主性 → 主动发起、Inner Thoughts 心跳机制</text>
+<text x="588" y="219" class="body-text"><tspan class="highlight">关键挑战：</tspan></text>
+<text x="588" y="236" class="body-text"><tspan class="amber">节奏感：</tspan>高存在感 = 高干扰风险</text>
+<text x="588" y="253" class="body-text">→ 必须在「对的时机」说话才形成真正帮助</text>
+<text x="588" y="270" class="body-text">→ 察言观色：读懂用户状态再决定是否介入</text>
+<text x="588" y="291" class="body-text"><tspan class="amber">言之有物：</tspan>高自主性 = 每次发起都要有落脚点</text>
+<text x="588" y="308" class="body-text">→ 不是为了说话而说话，而是带着目的（灵感/任务）</text>
+<text x="588" y="325" class="body-text">→ 主体意识：Agent 为自己定义目标和任务</text>
+<text x="588" y="346" class="body-text"><tspan class="highlight" font-size="12">→ 既要「言之有物」又要「察言观色」</tspan></text>
+<text x="588" y="436" class="quadrant-title" fill="#94a3b8">Ⅳ 弱自主 × 强存在</text>
+<circle cx="703" cy="430" r="7" fill="#64748b" opacity=".7"/>
+<text x="716" y="434" class="product-name" fill="#cbd5e1">Hume EVI / ChatGPT Voice / 豆包</text>
+<text x="588" y="460" class="body-text">强情感感知 + 流畅语音交互</text>
+<text x="588" y="477" class="body-text">能听懂语调情绪，表现力强 → 「在场感」很足</text>
+<text x="588" y="499" class="body-text"><tspan class="amber">⚠ 核心缺陷：不是真正的 Co-Pilot</tspan></text>
+<text x="588" y="516" class="body-text">市面上的「Copilot」实质是 <tspan class="highlight">Proxy（代理）</tspan></text>
+<text x="588" y="533" class="body-text">Proxy = 代表主体执行，拷贝行为即可</text>
+<text x="588" y="550" class="body-text">Agent = 有自治性，自己定义任务和目标</text>
+<text x="588" y="572" class="body-text">它们缺乏主体意识：</text>
+<text x="588" y="589" class="body-text">• 附和用户 / 应激反应 / 无心跳机制</text>
+<text x="588" y="606" class="body-text">• 不会主动思考「现在有什么事可以做」</text>
+<text x="588" y="623" class="body-text">• 用户永远是 Initiator（发起者）</text>
+<circle cx="340" cy="520" r="5" fill="rgba(148,163,184,.5)"/>
+<text x="350" y="524" class="muted">MS Copilot</text>
+<circle cx="330" cy="260" r="5" fill="rgba(245,158,11,.5)"/>
+<text x="340" y="264" class="muted" fill="#FBBF24">Humane AI Pin</text>
+<circle cx="750" cy="550" r="5" fill="rgba(148,163,184,.5)"/>
+<text x="760" y="554" class="muted">ChatGPT Voice</text>
+<circle cx="310" cy="300" r="5" fill="rgba(245,158,11,.4)"/>
+<text x="320" y="304" class="muted" fill="#FBBF24">Rabbit r1</text>
+<circle cx="240" cy="580" r="5" fill="rgba(100,116,139,.4)"/>
+<text x="250" y="584" class="muted">Siri</text>
+<rect x="172" y="740" width="768" height="26" rx="4" fill="rgba(13,148,136,.05)" stroke="rgba(13,148,136,.15)" stroke-dasharray="4,3"/>
+<text x="182" y="757" class="muted" font-size="10.5">
+<tspan fill="#14B8A6">← 自治性光谱 —</tspan> 
+<tspan fill="rgba(255,255,255,.5)">Proxy「帮我做」（被动工具）</tspan>
+ ···· 
+<tspan fill="#FBBF24">Agent「我来做」（自主行动）</tspan>
+ →</text>
+<rect x="570" y="784" width="360" height="46" rx="6" fill="rgba(245,158,11,.04)" stroke="rgba(245,158,11,.12)"/>
+<text x="580" y="800" class="muted" font-size="10"><tspan class="amber">Proxy vs Agent：</tspan>Proxy 强调「代表」— 能拷贝主体行为即可；</text>
+<text x="580" y="816" class="muted" font-size="10">Agent 核心含义是「行动」— 有自治性，为自己定义任务和目标。</text>
+<defs><marker id="arrowTeal" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#14B8A6" opacity=".6"/></marker></defs>
+<path d="M 720,500 Q 680,400 705,360" fill="none" stroke="#14B8A6" stroke-width="1.5" stroke-dasharray="8,4" opacity=".5" marker-end="url(#arrowTeal)"/>
+<text x="700" y="430" class="muted" font-size="10" fill="#14B8A6" opacity=".8" transform="rotate(-35,700,430)">→ 产品进化方向</text>
+</svg>
