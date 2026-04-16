@@ -127,6 +127,51 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 .market-table th{text-align:left;padding:10px 14px;border-bottom:2px solid rgba(13,148,136,.3);color:var(--teal-light);font-family:var(--fm);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
 .market-table td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(255,255,255,.68);line-height:1.5}
 .market-table tr:hover td{background:rgba(13,148,136,.03)}
+
+/* ═══════════════════════════════════════════════════════════════════════ */
+/* Voice Helper Widget Styles - 语音助手组件样式 */
+/* ═══════════════════════════════════════════════════════════════════════ */
+.voice-widget{position:fixed;bottom:32px;right:32px;z-index:9999}
+.voice-toggle{position:relative;width:64px;height:64px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--teal),#0F766E);color:#fff;cursor:pointer;box-shadow:0 8px 32px rgba(13,148,136,.4);transition:all .3s ease;display:flex;align-items:center;justify-content:center}
+.voice-toggle:hover{transform:scale(1.1);box-shadow:0 12px 40px rgba(13,148,136,.5)}
+.voice-toggle:active{transform:scale(.95)}
+.voice-toggle.listening{background:linear-gradient(135deg,var(--amber),#D97706)}
+.voice-toggle.listening .voice-ripple{position:absolute;border-radius:50%;border:2px solid var(--amber-light);animation:voiceRipple 1.5s ease-out infinite}
+.voice-toggle.listening .voice-ripple:nth-child(2){animation-delay:.5s}
+.voice-toggle.listening .voice-ripple:nth-child(3){animation-delay:1s}
+@keyframes voiceRipple{0%{width:64px;height:64px;opacity:.8}100%{width:120px;height:120px;opacity:0}}
+.voice-icon{display:flex;align-items:center;justify-content:center;width:28px;height:28px;position:relative;z-index:1}
+.voice-icon svg{width:100%;height:100%}
+.voice-dialog{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;background:rgba(10,22,40,.85);backdrop-filter:blur(12px);opacity:0;pointer-events:none;transition:opacity .3s ease}
+.voice-dialog.active{opacity:1;pointer-events:auto}
+.voice-dialog-content{position:relative;width:90%;max-width:480px;background:linear-gradient(145deg,#0F1E38,#0A1628);border:1px solid rgba(13,148,136,.25);border-radius:24px;padding:40px 32px;box-shadow:0 30px 80px rgba(0,0,0,.6);transform:translateY(20px) scale(.95);transition:transform .3s cubic-bezier(.23,1,.32,1)}
+.voice-dialog.active .voice-dialog-content{transform:translateY(0) scale(1)}
+.voice-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;border-radius:50%;background:rgba(255,255,255,.08);color:var(--text-dim);cursor:pointer;font-size:1.2rem;transition:all .25s ease;display:flex;align-items:center;justify-content:center}
+.voice-close:hover{background:rgba(255,255,255,.15);color:var(--text-light)}
+.voice-header{text-align:center;margin-bottom:32px}
+.voice-header h3{font-family:var(--fh);font-size:1.5rem;font-weight:600;color:var(--teal-light);margin-bottom:8px}
+.voice-status{font-size:.85rem;color:var(--text-dim);transition:color .3s ease}
+.voice-status.listening{color:var(--amber-light)}
+.voice-status.speaking{color:var(--teal-light)}
+.voice-visualizer{position:relative;height:100px;display:flex;align-items:center;justify-content:center;margin-bottom:24px}
+#voice-canvas{width:100%;height:100%}
+.voice-pulse{position:absolute;width:80px;height:80px;border-radius:50%;background:rgba(13,148,136,.1);opacity:0;transition:opacity .3s ease}
+.voice-pulse.active{opacity:1;animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.3}50%{transform:scale(1.2);opacity:.6}}
+.voice-transcript{min-height:60px;max-height:120px;overflow-y:auto;padding:16px;background:rgba(0,0,0,.2);border-radius:12px;margin-bottom:24px;font-size:.9rem;color:var(--text-light);line-height:1.6;scrollbar-width:thin;scrollbar-color:var(--teal-light) transparent}
+.voice-transcript::-webkit-scrollbar{width:4px}
+.voice-transcript::-webkit-scrollbar-thumb{background:var(--teal-light);border-radius:2px}
+.voice-transcript .user{color:var(--teal-light);margin-bottom:8px}
+.voice-transcript .assistant{color:var(--text-light)}
+.voice-controls{display:flex;justify-content:center}
+.voice-mic-btn{width:72px;height:72px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--teal),#0F766E);color:#fff;cursor:pointer;box-shadow:0 8px 32px rgba(13,148,136,.4);transition:all .3s ease;display:flex;align-items:center;justify-content:center}
+.voice-mic-btn:hover{transform:scale(1.05);box-shadow:0 10px 36px rgba(13,148,136,.5)}
+.voice-mic-btn:active{transform:scale(.95)}
+.voice-mic-btn.listening{background:linear-gradient(135deg,var(--amber),#D97706);box-shadow:0 8px 32px rgba(245,158,11,.4)}
+.voice-mic-btn svg{width:32px;height:32px}
+.voice-error{text-align:center;color:#EF4444;font-size:.85rem;margin-top:16px;min-height:20px}
+@media(max-width:600px){.voice-widget{bottom:20px;right:20px}.voice-toggle{width:56px;height:56px}.voice-dialog-content{padding:32px 24px}}
+
 .phase-timeline{display:flex;gap:0;margin:32px 0;position:relative}
 .phase-timeline::before{content:'';position:absolute;top:24px;left:40px;right:40px;height:2px;background:linear-gradient(90deg,var(--teal-light),var(--amber),var(--teal-light));opacity:.3}
 .phase-node{text-align:center;flex:1;position:relative;z-index:1}
@@ -175,9 +220,9 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
   <div class="nav-brand">RC</div>
   <ul class="nav-links">
     <li><a href="#hero" data-target="hero"><span class="nav-num">01</span> About</a></li>
-    <li><a href="#resume" data-target="resume"><span class="nav-num">02</span> Resume</a></li>
-    <li><a href="#video" data-target="video"><span class="nav-num">03</span> Video</a></li>
-    <li><a href="#project" data-target="project"><span class="nav-num">04</span> Project</a></li>
+    <li><a href="#whoami" data-target="whoami"><span class="nav-num">02</span> Who I Am</a></li>
+    <li><a href="#project" data-target="project"><span class="nav-num">03</span> Work</a></li>
+    <li><a href="#resume" data-target="resume"><span class="nav-num">04</span> Resume</a></li>
   </ul>
 </nav>
 
@@ -185,38 +230,150 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 
 <section id="hero" class="scene scene-hero" data-scene="hero">
   <div class="chapter-card"><span class="ch-num">Chapter 01</span><h2>About Me</h2></div>
-  <p class="reveal" style="font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--teal-light);margin-bottom:20px">AI × Product × Full-Stack Engineering</p>
+  <p class="reveal" style="font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--teal-light);margin-bottom:20px">我是陈厚瑄，这是我的故事</p>
   <div class="hero-name-en reveal" style="transition-delay:.1s">Rock Chen</div>
   <div class="hero-name-zh reveal" style="transition-delay:.2s">陈厚瑄</div>
-  <p class="hero-subtitle reveal" style="transition-delay:.35s">用技术构建有温度的智能体验<br>从产品到工程，持续探索 AI 落地的最佳路径。</p>
-  <div class="sound-wave reveal" style="justify-content:center;transition-delay:.45s">
-    <span style="--h:10px;animation-delay:0s"></span><span style="--h:28px;animation-delay:0.05s"></span><span style="--h:41px;animation-delay:0.1s"></span><span style="--h:47px;animation-delay:0.15s"></span><span style="--h:44px;animation-delay:0.2s"></span><span style="--h:32px;animation-delay:0.25s"></span><span style="--h:15px;animation-delay:0.3s"></span><span style="--h:23px;animation-delay:0.35s"></span><span style="--h:38px;animation-delay:0.4s"></span><span style="--h:47px;animation-delay:0.45s"></span><span style="--h:46px;animation-delay:0.5s"></span><span style="--h:36px;animation-delay:0.55s"></span><span style="--h:20px;animation-delay:0.6s"></span><span style="--h:18px;animation-delay:0.65s"></span><span style="--h:34px;animation-delay:0.7s"></span><span style="--h:45px;animation-delay:0.75s"></span><span style="--h:47px;animation-delay:0.8s"></span><span style="--h:40px;animation-delay:0.85s"></span><span style="--h:25px;animation-delay:0.9s"></span><span style="--h:12px;animation-delay:0.95s"></span><span style="--h:30px;animation-delay:1.0s"></span><span style="--h:43px;animation-delay:1.05s"></span><span style="--h:47px;animation-delay:1.1s"></span><span style="--h:43px;animation-delay:1.15s"></span>
-  </div>
-  <div class="keyword-cloud reveal" style="transition-delay:.6s">
+  <p class="hero-subtitle reveal" style="transition-delay:.35s">AI 产品经理，技术产品人。探索下一代智能产品。</p>
+  <div class="sound-wave reveal" style="justify-content:center;transition-delay:.45s" id="hero-wave"></div>
+  <div class="keyword-cloud reveal" style="transition-delay:.6s;margin-bottom:28px">
     <span class="kw-tag kw-tag-teal kw-tag-lg">AI 产品经理</span>
-    <span class="kw-tag kw-tag-amber kw-tag-lg">全栈工程师</span>
-    <span class="kw-tag kw-tag-teal">Prompt Engineering</span>
-    <span class="kw-tag kw-tag-dim">LLM 应用架构</span>
-    <span class="kw-tag kw-tag-amber">用户体验设计</span>
-    <span class="kw-tag kw-tag-dim">语音交互</span>
-    <span class="kw-tag kw-tag-teal">Agent / 智能体</span>
-    <span class="kw-tag kw-tag-dim">状态机设计</span>
-    <span class="kw-tag kw-tag-amber">RAG 检索增强</span>
-    <span class="kw-tag kw-tag-dim">记忆系统</span>
-    <span class="kw-tag kw-tag-teal">独立开发者</span>
-    <span class="kw-tag kw-tag-amber">产品思维驱动</span>
-  </div>
-  <div class="hero-quote reveal" style="transition-delay:.9s">
-    "我相信最好的产品，是那些让技术隐形、让人与 AI 的交互像呼吸一样自然的产品。"
+    <span class="kw-tag kw-tag-amber kw-tag-lg">技术产品人</span>
   </div>
   <div class="scroll-indicator"><span>Scroll Down</span><div class="scroll-line"></div></div>
 </section>
 
-<section id="resume" class="scene" data-scene="resume">
-  <div class="chapter-card"><span class="ch-num">Chapter 02</span><h2>Resume</h2></div>
+<section id="whoami" class="scene" data-scene="whoami">
+  <div class="chapter-card"><span class="ch-num">Chapter 02</span><h2>Who I Am</h2></div>
   <div class="scene-content">
-    <h2 class="reveal">我的履历</h2>
-    <p class="reveal" style="color:var(--text-dim);margin-bottom:28px">从产品到工程，持续探索 AI 落地的最佳路径。</p>
+    <h2 class="reveal">我是谁？</h2>
+    <p class="reveal" style="color:var(--text-dim);margin-bottom:32px">视频中的我，以及文字里的我。</p>
+    
+    <!-- 视频部分 -->
+    <div class="video-wrapper reveal">
+      <video controls preload="metadata" poster="">
+        <source src="remotion-videos/output/rock-chen-intro.mp4" type="video/mp4">
+        您的浏览器不支持视频播放。
+      </video>
+    </div>
+    <div class="video-caption reveal">Rock Chen 个人简介 · 30s · Remotion 制作</div>
+    
+    <div class="section-divider"></div>
+    
+    <!-- 原 Perspective 内容 -->
+    <div class="insight-card ic-teal reveal-left">
+      <h3>🔍 我的世界观</h3>
+      <p>我始终相信：<strong>技术应该服务于人性，而非反之</strong>。在AI浪潮中，我们要做的不是创造更智能的机器，而是创造更好的生活体验。这种视角让我在技术狂热中保持冷静，始终从"人"的需求出发思考问题。</p>
+    </div>
+    
+    <div class="insight-card ic-amber reveal-right">
+      <h3>🎯 方法论：产品思维 + 工程直觉</h3>
+      <p>我有一套独特的工作方法论：</p>
+      <ul>
+        <li><strong>从核心矛盾出发</strong>：先找到最本质的问题，而不是表面症状</li>
+        <li><strong>技术边界思维</strong>：了解什么能做，什么不能做，什么现在不能但未来可能</li>
+        <li><strong>持续验证假设</strong>：小步快跑，数据驱动，避免完美主义陷阱</li>
+        <li><strong>人本设计</strong>：永远以最终用户的使用体验为衡量标准</li>
+      </ul>
+    </div>
+    
+    <div class="insight-card ic-teal reveal">
+      <h3>🌍 简历之外的经历</h3>
+      <p>除了工作履历，还有这些经历塑造了我：</p>
+      <div style="margin-top:20px">
+        <div style="margin-bottom:16px;padding-left:20px;border-left:2px solid var(--amber-light);">
+          <h4 style="font-size:1rem;color:var(--amber-light);margin-bottom:4px">新加坡实地项目经历</h4>
+          <p style="font-size:.88rem;color:var(--text-dim);margin-bottom:8px">赴新加坡参与IoT传感器方案评估，深入了解全球化供应链和不同国家的技术落地差异。</p>
+        </div>
+        <div style="margin-bottom:16px;padding-left:20px;border-left:2px solid var(--teal-light);">
+          <h4 style="font-size:1rem;color:var(--teal-light);margin-bottom:4px">跨学科教育背景</h4>
+          <p style="font-size:.88rem;color:var(--text-dim);margin-bottom:8px">国际贸易学士 + 商业分析硕士，让我既有商业全局视野，又有数据分析硬技能。</p>
+        </div>
+        <div style="margin-bottom:16px;padding-left:20px;border-left:2px solid var(--amber-light);">
+          <h4 style="font-size:1rem;color:var(--amber-light);margin-bottom:4px">独立开发者视角</h4>
+          <p style="font-size:.88rem;color:var(--text-dim);margin-bottom:8px">从0到1构建Voice Helper的经历，让我深刻理解了产品全生命周期——从想法到落地，从代码到用户。</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="quote-float reveal" style="margin-top:40px">
+      "我曾见过AI技术如何从实验室走向现实，也见过好产品如何从痛点中诞生。这段旅程教会我最重要的事：真正的创新不在于技术的复杂度，而在于对人的理解深度。"
+    </div>
+  </div>
+</section>
+
+<section id="project" class="scene scene-warm" data-scene="project">
+  <div class="chapter-card"><span class="ch-num">Chapter 03</span><h2>My Work: Voice Helper</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal">Voice Helper — 从洞察到落地</h2>
+    <p class="reveal" style="color:var(--text-dim);font-size:1.05rem;margin-bottom:12px">一个开源的语音 AI 助手 —— 如果 AI 能像真正关心你的人一样记住你说过的、理解你没说的、在你需要时主动出现。</p>
+    <div class="reveal" style="margin:20px 0">
+      <span class="vision-tag">主动式交互</span>
+      <span class="vision-tag">长期记忆</span>
+      <span class="vision-tag">情绪感知</span>
+      <span class="vision-tag">个性化成长</span>
+      <span class="vision-tag">双模型混合架构</span>
+    </div>
+    <div class="section-divider"></div>
+    <h3 class="reveal" style="font-family:var(--fh);font-size:1.5rem;color:var(--teal-light);margin-bottom:16px">为什么做这个？</h3>
+    <div class="insight-card ic-teal reveal-left">
+      <h3>🔍 市场痛点：人永远是发起者（Initiator）</h3>
+      <p>自 GPT 发布以来，所有 AI 产品都有一个结构性缺陷：</p>
+      <table class="market-table">
+        <tr><th>产品类型</th><th>代表产品</th><th>触发方式</th><th>本质问题</th></tr>
+        <tr><td>边栏 Copilot</td><td>Microsoft Copilot / Claude</td><td>用户点开边栏</td><td>被动工具，不在场</td></tr>
+        <tr><td>AI 通话</td><td>ChatGPT 语音 / 豆包</td><td>用户先开口</td><td>轮流说话，无主动性</td></tr>
+        <tr><td>穿戴设备</td><td>Humane AI Pin / Rabbit r1</td><td>用户行为触发</td><td>感知弱，交互浅</td></tr>
+        <tr><td>语音助手</td><td>Siri / Google Assistant</td><td>唤醒词触发</td><td>规则型，无上下文</td></tr>
+        <tr><td>情感语音 AI</td><td>Hume AI EVI</td><td>用户先开口</td><td>有情感感知但无主动触发</td></tr>
+      </table>
+    </div>
+    <div class="reveal-right" style="margin:24px 0;position:relative">
+      <img src="design/autonomy-presence-matrix.png" alt="自主性×存在感矩阵" style="width:100%;border-radius:14px;border:1px solid rgba(13,148,136,.2);box-shadow:0 20px 60px rgba(0,0,0,.4);display:block">
+      <p style="text-align:center;font-size:.75rem;color:var(--text-dim);margin-top:10px;letter-spacing:.04em">自主性 × 存在感 二维分析框架 — 从 Proxy 到 Agent 的产品进化方向</p>
+    </div>
+    <div class="insight-card ic-amber reveal-right">
+      <h3>💡 核心洞察：自主性 × 存在感矩阵</h3>
+      <p>右上角仍然是空白的——即使最新的 Hume EVI 也只解决了"存在感"（情感感知），没有解决"主动性"。Voice Helper 要填补这个空白：<strong>高主动 × 高存在</strong>。</p>
+    </div>
+    <div class="insight-card ic-teal reveal">
+      <h3>📚 理论支撑</h3>
+      <ul>
+        <li><strong>Inner Thoughts Framework</strong> (Liu et al., CHI 2025)：AI 应持续产生内心独白，寻找合适的时机表达想法</li>
+        <li><strong>Human-centered PCA</strong> (Deng et al., 2024)：可预测性、可控性、适当性三原则</li>
+        <li><strong>ComPeer</strong> (Liu et al., 2024)：轻量级低压力主动开启，消息 &lt;30 字</li>
+        <li><strong>心流理论</strong>：最好的互动是精准出现</li>
+      </ul>
+    </div>
+    <div class="section-divider"></div>
+    <h3 class="reveal" style="font-family:var(--fh);font-size:1.5rem;color:var(--amber-light);margin-bottom:16px">怎么做的？</h3>
+    <div class="framework-grid">
+      <div class="fw-card reveal-left"><h4>🎙️ 语音交互层</h4><p>OpenAI/DashScope Realtime API 实现超低延迟语音对话，端到端延迟 &lt;1.5s。</p></div>
+      <div class="fw-card reveal" style="transition-delay:.15s"><h4>🧠 Inner Thoughts Engine</h4><p>三层管线：记忆扫描 → 思维生成+动机评估 → 表达规划。AI 持续产生内心独白。</p></div>
+      <div class="fw-card reveal-right" style="transition-delay:.3s"><h4>💾 Mem0 记忆系统</h4><p>自动事实提取、矛盾检测、时效衰减。图+向量混合检索。</p></div>
+      <div class="fw-card reveal-left" style="transition-delay:.45s"><h4>🌡️ 主动性温度旋钮</h4><p>Cold/Warm/Hot 三档可调，用户反馈闭环自动调节阈值。</p></div>
+    </div>
+    <div class="section-divider"></div>
+    <h3 class="reveal" style="font-family:var(--fh);font-size:1.5rem;color:var(--teal-light);margin-bottom:24px">迭代路线图</h3>
+    <div class="phase-timeline reveal">
+      <div class="phase-node done"><div class="phase-dot">✓</div><div class="phase-name">Phase 0 MVP</div><div class="phase-desc">三种语音模式<br>realtime/fast/agents</div></div>
+      <div class="phase-node current"><div class="phase-dot">→</div><div class="phase-name">Phase 1</div><div class="phase-desc">记忆系统 +<br>主动触发引擎</div></div>
+      <div class="phase-node"><div class="phase-dot">②</div><div class="phase-name">Phase 2</div><div class="phase-desc">社会关系建模<br>关系强度追踪</div></div>
+      <div class="phase-node"><div class="phase-dot">③</div><div class="phase-name">Phase 3</div><div class="phase-desc">个性化情感感知<br>性格配置</div></div>
+    </div>
+    <div class="quote-float reveal" style="margin-top:40px">
+      Voice Helper 是我从需求调研到开发上线的第一个完整作品。
+      这段经历让我深刻体会到：真正好的产品不是堆砌功能，而是对用户痛点的深刻理解 + 对技术边界的清晰认知 + 一点点"让世界变得更好一点"的理想主义。
+    </div>
+  </div>
+</section>
+
+
+
+<section id="resume" class="scene" data-scene="resume">
+  <div class="chapter-card"><span class="ch-num">Chapter 04</span><h2>Resume</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal">我的职涯旅程</h2>
+    <p class="reveal" style="color:var(--text-dim);margin-bottom:28px">从数据分析到产品管理，从跨国合作到AI落地，这是一段持续探索技术边界的旅程。</p>
     <div class="resume-layout reveal">
       <div class="resume-pdf-area">
         <div class="resume-pdf-frame" id="resume-frame-container">
@@ -299,86 +456,6 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
   </div>
 </section>
 
-<section id="video" class="scene scene-warm" data-scene="video">
-  <div class="chapter-card"><span class="ch-num">Chapter 03</span><h2>Video</h2></div>
-  <div class="scene-content" style="text-align:center">
-    <h2 class="reveal">个人简介视频</h2>
-    <p class="reveal" style="color:var(--text-dim);margin-bottom:32px">用 30 秒快速了解我——从关键词到职业旅程，再到项目实践。</p>
-    <div class="video-wrapper reveal">
-      <video controls preload="metadata" poster="">
-        <source src="remotion-videos/output/rock-chen-intro.mp4" type="video/mp4">
-        您的浏览器不支持视频播放。
-      </video>
-    </div>
-    <div class="video-caption reveal">Rock Chen 个人简介 · 30s · Remotion 制作</div>
-  </div>
-</section>
-
-<section id="project" class="scene scene-warm" data-scene="project">
-  <div class="chapter-card"><span class="ch-num">Chapter 04</span><h2>Voice Helper</h2></div>
-  <div class="scene-content">
-    <h2 class="reveal">Voice Helper — 从洞察到落地</h2>
-    <p class="reveal" style="color:var(--text-dim);font-size:1.05rem;margin-bottom:12px">一个开源的语音 AI 助手 —— 如果 AI 能像真正关心你的人一样记住你说过的、理解你没说的、在你需要时主动出现。</p>
-    <div class="reveal" style="margin:20px 0">
-      <span class="vision-tag">主动式交互</span>
-      <span class="vision-tag">长期记忆</span>
-      <span class="vision-tag">情绪感知</span>
-      <span class="vision-tag">个性化成长</span>
-      <span class="vision-tag">双模型混合架构</span>
-    </div>
-    <div class="section-divider"></div>
-    <h3 class="reveal" style="font-family:var(--fh);font-size:1.5rem;color:var(--teal-light);margin-bottom:16px">为什么做这个？</h3>
-    <div class="insight-card ic-teal reveal-left">
-      <h3>🔍 市场痛点：人永远是发起者（Initiator）</h3>
-      <p>自 GPT 发布以来，所有 AI 产品都有一个结构性缺陷：</p>
-      <table class="market-table">
-        <tr><th>产品类型</th><th>代表产品</th><th>触发方式</th><th>本质问题</th></tr>
-        <tr><td>边栏 Copilot</td><td>Microsoft Copilot / Claude</td><td>用户点开边栏</td><td>被动工具，不在场</td></tr>
-        <tr><td>AI 通话</td><td>ChatGPT 语音 / 豆包</td><td>用户先开口</td><td>轮流说话，无主动性</td></tr>
-        <tr><td>穿戴设备</td><td>Humane AI Pin / Rabbit r1</td><td>用户行为触发</td><td>感知弱，交互浅</td></tr>
-        <tr><td>语音助手</td><td>Siri / Google Assistant</td><td>唤醒词触发</td><td>规则型，无上下文</td></tr>
-        <tr><td>情感语音 AI</td><td>Hume AI EVI</td><td>用户先开口</td><td>有情感感知但无主动触发</td></tr>
-      </table>
-    </div>
-    <div class="reveal-right" style="margin:24px 0;position:relative">
-      <img src="design/autonomy-presence-matrix.png" alt="自主性×存在感矩阵" style="width:100%;border-radius:14px;border:1px solid rgba(13,148,136,.2);box-shadow:0 20px 60px rgba(0,0,0,.4);display:block">
-      <p style="text-align:center;font-size:.75rem;color:var(--text-dim);margin-top:10px;letter-spacing:.04em">自主性 × 存在感 二维分析框架 — 从 Proxy 到 Agent 的产品进化方向</p>
-    </div>
-    <div class="insight-card ic-amber reveal-right">
-      <h3>💡 核心洞察：自主性 × 存在感矩阵</h3>
-      <p>右上角仍然是空白的——即使最新的 Hume EVI 也只解决了"存在感"（情感感知），没有解决"主动性"。Voice Helper 要填补这个空白：<strong>高主动 × 高存在</strong>。</p>
-    </div>
-    <div class="insight-card ic-teal reveal">
-      <h3>📚 理论支撑</h3>
-      <ul>
-        <li><strong>Inner Thoughts Framework</strong> (Liu et al., CHI 2025)：AI 应持续产生内心独白，寻找合适的时机表达想法</li>
-        <li><strong>Human-centered PCA</strong> (Deng et al., 2024)：可预测性、可控性、适当性三原则</li>
-        <li><strong>ComPeer</strong> (Liu et al., 2024)：轻量级低压力主动开启，消息 &lt;30 字</li>
-        <li><strong>心流理论</strong>：最好的互动是精准出现</li>
-      </ul>
-    </div>
-    <div class="section-divider"></div>
-    <h3 class="reveal" style="font-family:var(--fh);font-size:1.5rem;color:var(--amber-light);margin-bottom:16px">怎么做的？</h3>
-    <div class="framework-grid">
-      <div class="fw-card reveal-left"><h4>🎙️ 语音交互层</h4><p>OpenAI/DashScope Realtime API 实现超低延迟语音对话，端到端延迟 &lt;1.5s。</p></div>
-      <div class="fw-card reveal" style="transition-delay:.15s"><h4>🧠 Inner Thoughts Engine</h4><p>三层管线：记忆扫描 → 思维生成+动机评估 → 表达规划。AI 持续产生内心独白。</p></div>
-      <div class="fw-card reveal-right" style="transition-delay:.3s"><h4>💾 Mem0 记忆系统</h4><p>自动事实提取、矛盾检测、时效衰减。图+向量混合检索。</p></div>
-      <div class="fw-card reveal-left" style="transition-delay:.45s"><h4>🌡️ 主动性温度旋钮</h4><p>Cold/Warm/Hot 三档可调，用户反馈闭环自动调节阈值。</p></div>
-    </div>
-    <div class="section-divider"></div>
-    <h3 class="reveal" style="font-family:var(--fh);font-size:1.5rem;color:var(--teal-light);margin-bottom:24px">迭代路线图</h3>
-    <div class="phase-timeline reveal">
-      <div class="phase-node done"><div class="phase-dot">✓</div><div class="phase-name">Phase 0 MVP</div><div class="phase-desc">三种语音模式<br>realtime/fast/agents</div></div>
-      <div class="phase-node current"><div class="phase-dot">→</div><div class="phase-name">Phase 1</div><div class="phase-desc">记忆系统 +<br>主动触发引擎</div></div>
-      <div class="phase-node"><div class="phase-dot">②</div><div class="phase-name">Phase 2</div><div class="phase-desc">社会关系建模<br>关系强度追踪</div></div>
-      <div class="phase-node"><div class="phase-dot">③</div><div class="phase-name">Phase 3</div><div class="phase-desc">个性化情感感知<br>性格配置</div></div>
-    </div>
-    <div class="quote-float reveal" style="margin-top:40px">
-      Voice Helper 是我从需求调研到开发上线的第一个完整作品。
-      这段经历让我深刻体会到：真正好的产品不是堆砌功能，而是对用户痛点的深刻理解 + 对技术边界的清晰认知 + 一点点"让世界变得更好一点"的理想主义。
-    </div>
-  </div>
-</section>
 
 <section class="scene scene-epilogue" data-scene="epilogue">
   <div class="chapter-card" style="align-items:center;justify-content:center"><span class="ch-num">End</span><h2 style="text-align:center">Let's Connect</h2></div>
@@ -391,6 +468,52 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
   </div>
   <p style="margin-top:48px;font-size:.72rem;color:var(--text-dim);opacity:.4" class="reveal">© 2026 Rock Chen 陈厚瑄</p>
 </section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- Voice Helper Widget - 语音助手悬浮组件 -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div id="voice-widget" class="voice-widget">
+  <button id="voice-toggle" class="voice-toggle" aria-label="打开语音助手">
+    <span class="voice-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+        <line x1="12" y1="19" x2="12" y2="23"></line>
+        <line x1="8" y1="23" x2="16" y2="23"></line>
+      </svg>
+    </span>
+    <span class="voice-ripple"></span>
+    <span class="voice-ripple"></span>
+    <span class="voice-ripple"></span>
+  </button>
+</div>
+
+<!-- Voice Dialog -->
+<div id="voice-dialog" class="voice-dialog">
+  <div class="voice-dialog-content">
+    <button class="voice-close" id="voice-close">✕</button>
+    <div class="voice-header">
+      <h3>Voice Helper</h3>
+      <p class="voice-status" id="voice-status">点击麦克风开始对话</p>
+    </div>
+    <div class="voice-visualizer" id="voice-visualizer">
+      <canvas id="voice-canvas" width="300" height="100"></canvas>
+      <div class="voice-pulse" id="voice-pulse"></div>
+    </div>
+    <div class="voice-transcript" id="voice-transcript"></div>
+    <div class="voice-controls">
+      <button id="voice-mic-btn" class="voice-mic-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+          <line x1="12" y1="19" x2="12" y2="23"></line>
+          <line x1="8" y1="23" x2="16" y2="23"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="voice-error" id="voice-error"></div>
+  </div>
+</div>
 
 <div class="modal-overlay" id="dl-modal">
   <div class="modal-box">
@@ -482,6 +605,457 @@ function openDownloadModal(){document.getElementById('dl-modal').classList.add('
 function closeDownloadModal(){document.getElementById('dl-modal').classList.remove('active')}
 function submitDownload(){const ei=document.getElementById('dl-email');ei.classList.remove('error');const em=ei.value.trim();if(!em||!em.includes('@')){ei.classList.add('error');return}let ct=parseInt(localStorage.getItem('rc_resume_dl')||'0')+1;localStorage.setItem('rc_resume_dl',ct);document.getElementById('download-count').textContent=ct;document.getElementById('form-area').style.display='none';document.getElementById('success-area').style.display='block';const a=document.createElement('a');a.href='resume.pdf';a.download='陈厚瑄_简历_RockChen_2026.04.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(closeDownloadModal,2000)}
 document.getElementById('dl-modal').addEventListener('click',function(e){if(e.target===this)closeDownloadModal()});
+
+// ═══════════════════════════════════════════════════════════════════════
+// Voice Helper Widget - 语音助手交互逻辑
+// ═══════════════════════════════════════════════════════════════════════
+(function(){
+  // 配置
+  const CONFIG = {
+    // Render 后端地址 - 部署后更新为实际地址
+    WS_URL: 'wss://voice-helper-api.onrender.com/ws/voice',
+    // 音频参数
+    SAMPLE_RATE: 16000,
+    BUFFER_SIZE: 4096,
+    // 重连配置
+    RECONNECT_INTERVAL: 3000,
+    MAX_RECONNECT_ATTEMPTS: 5,
+  };
+
+  // DOM 元素
+  const els = {
+    widget: document.getElementById('voice-widget'),
+    toggle: document.getElementById('voice-toggle'),
+    dialog: document.getElementById('voice-dialog'),
+    close: document.getElementById('voice-close'),
+    micBtn: document.getElementById('voice-mic-btn'),
+    status: document.getElementById('voice-status'),
+    transcript: document.getElementById('voice-transcript'),
+    error: document.getElementById('voice-error'),
+    canvas: document.getElementById('voice-canvas'),
+    pulse: document.getElementById('voice-pulse'),
+  };
+
+  // 状态
+  let state = {
+    isOpen: false,
+    isConnected: false,
+    isListening: false,
+    isSpeaking: false,
+    ws: null,
+    audioContext: null,
+    mediaStream: null,
+    processor: null,
+    reconnectAttempts: 0,
+    reconnectTimer: null,
+    pingInterval: null,
+  };
+
+  // 音频播放队列
+  let audioQueue = [];
+  let isPlaying = false;
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // UI 控制
+  // ═══════════════════════════════════════════════════════════════════════
+
+  function openDialog() {
+    els.dialog.classList.add('active');
+    state.isOpen = true;
+    els.toggle.style.display = 'none';
+  }
+
+  function closeDialog() {
+    els.dialog.classList.remove('active');
+    state.isOpen = false;
+    els.toggle.style.display = 'flex';
+    stopListening();
+    disconnect();
+  }
+
+  function setStatus(status, message) {
+    els.status.textContent = message;
+    els.status.className = 'voice-status ' + status;
+  }
+
+  function showError(message) {
+    els.error.textContent = message;
+    setTimeout(() => { els.error.textContent = ''; }, 5000);
+  }
+
+  function addTranscript(text, isUser) {
+    const div = document.createElement('div');
+    div.className = isUser ? 'user' : 'assistant';
+    div.textContent = (isUser ? '你: ' : 'AI: ') + text;
+    els.transcript.appendChild(div);
+    els.transcript.scrollTop = els.transcript.scrollHeight;
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // WebSocket 连接
+  // ═══════════════════════════════════════════════════════════════════════
+
+  function connect() {
+    if (state.ws?.readyState === WebSocket.OPEN) return;
+
+    setStatus('', '正在连接...');
+
+    try {
+      state.ws = new WebSocket(CONFIG.WS_URL);
+
+      state.ws.onopen = () => {
+        state.isConnected = true;
+        state.reconnectAttempts = 0;
+        setStatus('', '已连接，点击麦克风开始');
+        startPing();
+      };
+
+      state.ws.onmessage = (event) => {
+        handleWsMessage(JSON.parse(event.data));
+      };
+
+      state.ws.onerror = (err) => {
+        console.error('WebSocket error:', err);
+        showError('连接出错，请重试');
+      };
+
+      state.ws.onclose = () => {
+        state.isConnected = false;
+        stopPing();
+        if (state.isOpen && state.reconnectAttempts < CONFIG.MAX_RECONNECT_ATTEMPTS) {
+          state.reconnectAttempts++;
+          setStatus('', `重新连接 (${state.reconnectAttempts}/${CONFIG.MAX_RECONNECT_ATTEMPTS})...`);
+          state.reconnectTimer = setTimeout(connect, CONFIG.RECONNECT_INTERVAL);
+        } else {
+          setStatus('', '连接已断开');
+        }
+      };
+    } catch (err) {
+      showError('无法连接到服务器');
+      console.error(err);
+    }
+  }
+
+  function disconnect() {
+    clearTimeout(state.reconnectTimer);
+    stopPing();
+    if (state.ws) {
+      state.ws.close();
+      state.ws = null;
+    }
+    state.isConnected = false;
+  }
+
+  function startPing() {
+    state.pingInterval = setInterval(() => {
+      if (state.ws?.readyState === WebSocket.OPEN) {
+        state.ws.send(JSON.stringify({ type: 'ping' }));
+      }
+    }, 30000);
+  }
+
+  function stopPing() {
+    clearInterval(state.pingInterval);
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // WebSocket 消息处理
+  // ═══════════════════════════════════════════════════════════════════════
+
+  function handleWsMessage(data) {
+    switch (data.type) {
+      case 'response.audio.delta':
+        // 接收 AI 音频数据
+        audioQueue.push(data.delta);
+        if (!isPlaying) playNextAudio();
+        break;
+
+      case 'response.audio_transcript.delta':
+        // AI 文本流
+        // 可选择显示实时转录
+        break;
+
+      case 'user.transcript':
+        // 用户语音转录完成
+        addTranscript(data.transcript, true);
+        setStatus('speaking', 'AI 正在思考...');
+        break;
+
+      case 'input_audio_buffer.speech_started':
+        setStatus('listening', '正在聆听...');
+        els.pulse.classList.add('active');
+        break;
+
+      case 'input_audio_buffer.speech_stopped':
+        els.pulse.classList.remove('active');
+        break;
+
+      case 'response.done':
+        setStatus('', '点击麦克风继续对话');
+        break;
+
+      case 'error':
+        showError(data.message || '发生错误');
+        setStatus('', '点击麦克风重试');
+        break;
+
+      case 'pong':
+        // 心跳响应
+        break;
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // 音频采集 (麦克风)
+  // ═══════════════════════════════════════════════════════════════════════
+
+  async function startListening() {
+    try {
+      // 请求麦克风权限
+      state.mediaStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          sampleRate: CONFIG.SAMPLE_RATE,
+          channelCount: 1,
+          echoCancellation: true,
+          noiseSuppression: true,
+        }
+      });
+
+      // 创建音频上下文
+      state.audioContext = new AudioContext({ sampleRate: CONFIG.SAMPLE_RATE });
+      const source = state.audioContext.createMediaStreamSource(state.mediaStream);
+
+      // 创建脚本处理器
+      state.processor = state.audioContext.createScriptProcessor(CONFIG.BUFFER_SIZE, 1, 1);
+
+      state.processor.onaudioprocess = (e) => {
+        if (!state.isListening || !state.ws) return;
+
+        // 获取 PCM 数据
+        const inputData = e.inputBuffer.getChannelData(0);
+
+        // 转换为 16-bit PCM
+        const pcmData = floatTo16BitPCM(inputData);
+
+        // Base64 编码并发送
+        const base64Audio = arrayBufferToBase64(pcmData.buffer);
+        state.ws.send(JSON.stringify({
+          type: 'input_audio_buffer.append',
+          audio: base64Audio,
+        }));
+      };
+
+      // 连接音频节点
+      source.connect(state.processor);
+      state.processor.connect(state.audioContext.destination);
+
+      state.isListening = true;
+      els.micBtn.classList.add('listening');
+      els.toggle.classList.add('listening');
+      setStatus('listening', '正在聆听...');
+
+      // 发送 commit 以开始处理
+      setTimeout(() => {
+        if (state.ws?.readyState === WebSocket.OPEN) {
+          state.ws.send(JSON.stringify({ type: 'input_audio_buffer.commit' }));
+        }
+      }, 100);
+
+    } catch (err) {
+      console.error('Failed to start listening:', err);
+      showError('无法访问麦克风，请检查权限设置');
+    }
+  }
+
+  function stopListening() {
+    state.isListening = false;
+    els.micBtn.classList.remove('listening');
+    els.toggle.classList.remove('listening');
+    els.pulse.classList.remove('active');
+
+    if (state.processor) {
+      state.processor.disconnect();
+      state.processor = null;
+    }
+    if (state.mediaStream) {
+      state.mediaStream.getTracks().forEach(t => t.stop());
+      state.mediaStream = null;
+    }
+    if (state.audioContext) {
+      state.audioContext.close();
+      state.audioContext = null;
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // 音频播放 (AI 回复)
+  // ═══════════════════════════════════════════════════════════════════════
+
+  async function playNextAudio() {
+    if (audioQueue.length === 0) {
+      isPlaying = false;
+      return;
+    }
+
+    isPlaying = true;
+    const base64Audio = audioQueue.shift();
+
+    try {
+      // 解码 base64 PCM16 数据
+      const pcmData = base64ToArrayBuffer(base64Audio);
+      const floatData = pcm16ToFloat(new Int16Array(pcmData));
+
+      // 创建音频缓冲区
+      const audioCtx = new AudioContext({ sampleRate: 24000 }); // DashScope 输出 24kHz
+      const buffer = audioCtx.createBuffer(1, floatData.length, 24000);
+      buffer.copyToChannel(floatData, 0);
+
+      // 播放
+      const source = audioCtx.createBufferSource();
+      source.buffer = buffer;
+      source.connect(audioCtx.destination);
+
+      source.onended = () => {
+        audioCtx.close();
+        playNextAudio();
+      };
+
+      source.start();
+      setStatus('speaking', 'AI 正在说话...');
+
+    } catch (err) {
+      console.error('Audio playback error:', err);
+      playNextAudio();
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // 音频格式转换工具
+  // ═══════════════════════════════════════════════════════════════════════
+
+  function floatTo16BitPCM(input) {
+    const output = new Int16Array(input.length);
+    for (let i = 0; i < input.length; i++) {
+      const s = Math.max(-1, Math.min(1, input[i]));
+      output[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+    }
+    return output;
+  }
+
+  function pcm16ToFloat(input) {
+    const output = new Float32Array(input.length);
+    for (let i = 0; i < input.length; i++) {
+      const int = input[i];
+      output[i] = int >= 0x8000 ? -(0x10000 - int) / 0x8000 : int / 0x7FFF;
+    }
+    return output;
+  }
+
+  function arrayBufferToBase64(buffer) {
+    const bytes = new Uint8Array(buffer);
+    let binary = '';
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
+  }
+
+  function base64ToArrayBuffer(base64) {
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // 可视化效果
+  // ═══════════════════════════════════════════════════════════════════════
+
+  function initVisualizer() {
+    const canvas = els.canvas;
+    const ctx = canvas.getContext('2d');
+    const bars = 20;
+    const barWidth = canvas.width / bars;
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (state.isListening) {
+        ctx.fillStyle = 'var(--teal-light)';
+        for (let i = 0; i < bars; i++) {
+          const height = Math.random() * 40 + 10;
+          const x = i * barWidth + barWidth / 4;
+          const y = (canvas.height - height) / 2;
+          ctx.fillRect(x, y, barWidth / 2, height);
+        }
+      } else if (isPlaying) {
+        ctx.fillStyle = 'var(--amber-light)';
+        for (let i = 0; i < bars; i++) {
+          const height = Math.random() * 60 + 20;
+          const x = i * barWidth + barWidth / 4;
+          const y = (canvas.height - height) / 2;
+          ctx.fillRect(x, y, barWidth / 2, height);
+        }
+      } else {
+        ctx.fillStyle = 'rgba(255,255,255,0.1)';
+        for (let i = 0; i < bars; i++) {
+          const x = i * barWidth + barWidth / 4;
+          const y = canvas.height / 2 - 2;
+          ctx.fillRect(x, y, barWidth / 2, 4);
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // 事件绑定
+  // ═══════════════════════════════════════════════════════════════════════
+
+  els.toggle.addEventListener('click', () => {
+    openDialog();
+    connect();
+  });
+
+  els.close.addEventListener('click', closeDialog);
+
+  els.dialog.addEventListener('click', (e) => {
+    if (e.target === els.dialog) closeDialog();
+  });
+
+  els.micBtn.addEventListener('click', () => {
+    if (state.isListening) {
+      stopListening();
+      setStatus('', '点击麦克风继续');
+    } else {
+      if (!state.isConnected) {
+        connect();
+      }
+      startListening();
+    }
+  });
+
+  // 初始化可视化
+  initVisualizer();
+
+  // 检测浏览器支持
+  if (!navigator.mediaDevices?.getUserMedia) {
+    els.widget.style.display = 'none';
+    console.log('WebRTC not supported');
+  }
+
+})();
+
+/* Sound waves - 动态生成更自然的音频波形 */
+(function(){
+  function mkWave(id,n){var w=document.getElementById(id);if(!w)return;for(var i=0;i<n;i++){var b=document.createElement('span');b.style.setProperty('--h',(12+Math.random()*36)+'px');b.style.animationDelay=(i*.04)+'s';b.style.animationDuration=(.8+Math.random()*.8)+'s';w.appendChild(b)}}
+  mkWave('hero-wave',80);
+})();
 </script>
 </body>
 </html>
