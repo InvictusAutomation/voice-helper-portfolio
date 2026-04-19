@@ -209,6 +209,69 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
   .phase-timeline::before{display:none};.market-table{font-size:.72rem}
   #walker{width:200px;height:350px}
 }
+
+/* ═══════════════════════════════════════════════ */
+/* Matrix 2D Chart - 自主性×存在感 矩阵图表      */
+/* ═══════════════════════════════════════════════ */
+.matrix-chart-wrap{position:relative;margin:28px 0;border-radius:16px;border:1px solid rgba(13,148,136,.18);background:linear-gradient(145deg,rgba(15,30,56,.8),rgba(10,22,40,.9));overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.matrix-header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.15)}
+.matrix-title{font-family:var(--fh);font-size:.95rem;color:var(--teal-light);letter-spacing:.04em}
+.matrix-switch{display:flex;gap:4px;background:rgba(255,255,255,.05);border-radius:8px;padding:3px}
+.matrix-btn{padding:7px 18px;border:none;border-radius:6px;font-family:var(--fm);font-size:.72rem;font-weight:500;cursor:pointer;transition:all .3s ease;color:var(--text-dim);background:transparent;letter-spacing:.06em;text-transform:uppercase}
+.matrix-btn.active{color:#fff;background:var(--teal);box-shadow:0 2px 12px rgba(13,148,136,.3)}
+.matrix-body{position:relative;width:100%;aspect-ratio:1/1;min-height:420px;max-height:560px;display:flex}
+.matrix-plot{position:relative;flex:1;min-height:0}
+.matrix-y-axis-wrap{width:36px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;border-right:1px solid rgba(255,255,255,.08);padding:0 2px;gap:4px}
+.matrix-y-axis-label{font-family:var(--fh);font-size:.6rem;color:var(--text-dim);letter-spacing:.02em;display:flex;flex-direction:column;align-items:center;gap:0;line-height:1.5}
+.matrix-y-arrow-up,.matrix-y-arrow-down{display:block;font-size:.7rem;line-height:1}
+.matrix-y-arrow-up{color:var(--teal-light);opacity:.5;order:-1}/* 在场在上 */
+.matrix-y-arrow-down{color:var(--amber-light);opacity:.5;order:3}/* 无感在下 */
+.matrix-canvas-layer{position:absolute;inset:0;z-index:1}
+.matrix-labels{position:absolute;inset:0;z-index:2;pointer-events:none}
+.matrix-axis-x{position:absolute;bottom:10px;left:0;right:0;text-align:center;white-space:nowrap;font-family:var(--fh);font-size:.72rem;color:var(--text-dim);letter-spacing:.06em;display:flex;align-items:center;justify-content:center;gap:8px}
+.matrix-axis-x::before{content:'←';color:var(--amber-light);opacity:.5}
+.matrix-axis-x::after{content:'→';color:var(--teal-light);opacity:.5}
+.matrix-quadrant-text{position:absolute;z-index:3;pointer-events:none;transition:opacity .6s ease,color .6s ease}
+.matrix-quadrant-text.q-tl{top:8%;left:5%}
+.matrix-quadrant-text.q-tr{top:8%;right:auto;left:52%}
+.matrix-quadrant-text.q-bl{bottom:12%;left:5%}
+.matrix-quadrant-text.q-br{bottom:12%;right:auto;left:52%}
+.matrix-q-title{font-family:var(--fh);font-size:.82rem;font-weight:600;margin-bottom:6px;line-height:1.3}
+.matrix-q-desc{font-size:.72rem;line-height:1.55;color:rgba(255,255,255,.45);max-width:200px}
+.matrix-q-title.teal{color:var(--teal-light)}.matrix-q-title.amber{color:var(--amber-light)}
+/* dots layer */
+.matrix-dots-layer{position:absolute;inset:0;z-index:4}
+.matrix-dot{position:absolute;cursor:pointer;transition:all .4s cubic-bezier(.23,1,.32,1);transform:translate(-50%,-50%) scale(0);opacity:0}
+.matrix-dot.show{transform:translate(-50%,-50%) scale(1);opacity:1}
+.matrix-dot:hover{z-index:10;filter:brightness(1.3)}
+.matrix-dot-marker{width:10px;height:10px;border-radius:50%;border:2px solid;box-sizing:border-box}
+.matrix-dot-label{position:absolute;left:14px;top:-6px;white-space:nowrap;font-size:.68rem;font-weight:500;pointer-events:none;opacity:0;transform:translateY(4px);transition:all .3s ease;text-shadow:0 1px 8px rgba(0,0,0,.8)}
+.matrix-dot.show .matrix-dot-label{opacity:1;transform:translateY(0)}
+.matrix-dot.highlight .matrix-dot-label{font-weight:700;font-size:.74rem}
+/* dot colors by quadrant */
+.dot-teal .matrix-dot-marker{border-color:var(--teal-light);background:rgba(20,184,166,.25)}
+.dot-amber .matrix-dot-marker{border-color:var(--amber-light);background:rgba(245,158,11,.25)}
+.dot-mix-a .matrix-dot-marker{border-color:var(--teal-light);background:rgba(13,148,136,.5)}
+.dot-mix-b .matrix-dot-marker{border-color:var(--amber-light);background:rgba(245,158,11,.5)}
+/* highlight / target dot */
+.dot-target .matrix-dot-marker{width:14px;height:14px;border-width:2.5px;border-color:#fff;background:var(--teal);box-shadow:0 0 18px rgba(13,148,136,.6),0 0 40px rgba(13,148,136,.2);animation:targetPulse 2.5s ease-in-out infinite}
+@keyframes targetPulse{0%,100%{box-shadow:0 0 18px rgba(13,148,136,.6),0 0 40px rgba(13,148,136,.2)}50%{box-shadow:0 0 26px rgba(13,148,136,.8),0 0 56px rgba(13,148,136,.35)}}
+/* crosshair lines on canvas */
+.matrix-cross-v,.matrix-cross-h{position:absolute;z-index:2;pointer-events:none;transition:opacity .5s ease}
+.matrix-cross-v{width:1px;height:100%;left:50%;top:0;background:linear-gradient(to bottom,transparent,var(--teal-light),transparent);opacity:.08}
+.matrix-cross-h{height:1px;width:100%;top:50%;left:0;background:linear-gradient(to right,transparent,var(--amber-light),transparent);opacity:.08}
+.matrix-footnote{text-align:center;font-size:.7rem;color:var(--text-dim);margin-top:10px;letter-spacing:.04em;opacity:.6}
+@media(max-width:768px){
+  .matrix-body{min-height:340px;max-height:400px;flex-direction:column}
+  .matrix-y-axis-wrap{width:100%;height:auto;border-right:none;border-bottom:1px solid rgba(255,255,255,.08);padding:4px 12px;flex-direction:row;gap:8px}
+  .matrix-y-arrow-up{order:-1;font-size:.6rem}
+  .matrix-y-arrow-down{order:3;font-size:.6rem}
+  .matrix-y-axis-label{font-size:.58rem;flex-direction:row;align-items:center;gap:4px}
+  .matrix-q-desc{font-size:.65rem;max-width:140px}
+  .matrix-q-title{font-size:.75rem}
+  .matrix-dot-label{font-size:.6rem}
+  .matrix-axis-x,.matrix-axis-y{font-size:.65rem}
+}
 </style>
 </head>
 <body>
@@ -230,7 +293,7 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 
 <section id="hero" class="scene scene-hero" data-scene="hero">
   <div class="chapter-card"><span class="ch-num">Chapter 01</span><h2>About Me</h2></div>
-  <p class="reveal" style="font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--teal-light);margin-bottom:20px">我是陈厚瑄，这是我的故事</p>
+
   <div class="hero-name-en reveal" style="transition-delay:.1s">Rock Chen</div>
   <div class="hero-name-zh reveal" style="transition-delay:.2s">陈厚瑄</div>
   <p class="hero-subtitle reveal" style="transition-delay:.35s">AI 产品经理，技术产品人。探索下一代智能产品。</p>
@@ -245,58 +308,38 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 <section id="whoami" class="scene" data-scene="whoami">
   <div class="chapter-card"><span class="ch-num">Chapter 02</span><h2>Who I Am</h2></div>
   <div class="scene-content">
-    <h2 class="reveal">我是谁？</h2>
-    <p class="reveal" style="color:var(--text-dim);margin-bottom:32px">视频中的我，以及文字里的我。</p>
-    
+
     <!-- 视频部分 -->
     <div class="video-wrapper reveal">
       <video controls preload="metadata" poster="">
-        <source src="remotion-videos/output/rock-chen-intro.mp4" type="video/mp4">
+        <source src="assets/rock-chen-intro.mp4" type="video/mp4">
         您的浏览器不支持视频播放。
       </video>
     </div>
     <div class="video-caption reveal">Rock Chen 个人简介 · 30s · Remotion 制作</div>
-    
+    <p style="font-size:.68rem;color:var(--text-dim);opacity:.4;text-align:center;margin-top:6px;line-height:1.6">
+      视频素材来源：<a href="https://www.jimmyspa.com/tw" target="_blank" style="color:rgba(20,184,166,.55)">几米 Jimmy Liao</a> ·
+      <a href="https://www.timeout.com/madrid/art/jimmy-liao-the-essential-and-the-invisible" target="_blank" style="color:rgba(20,184,136,.55)">TimeOut Madrid</a> ·
+      <a href="https://blog.picturebookmakers.com/post/jimmy-liao-part-2" target="_blank" style="color:rgba(20,184,136,.55)">Picturebook Makers</a> ·
+      <a href="https://giphy.com/gifs/phineas-and-ferb-SHQPfVrV7OpLW" target="_blank" style="color:rgba(245,158,11,.55)">GIPHY / Phineas and Ferb</a> ·
+      <a href="https://medium.com/@upbeatmailnandhini13/phineas-and-ferb-6406dcbbc075" target="_blank" style="color:rgba(245,158,11,.55)">Medium</a>
+    </p>
+
     <div class="section-divider"></div>
-    
-    <!-- 原 Perspective 内容 -->
-    <div class="insight-card ic-teal reveal-left">
-      <h3>🔍 我的世界观</h3>
-      <p>我始终相信：<strong>技术应该服务于人性，而非反之</strong>。在AI浪潮中，我们要做的不是创造更智能的机器，而是创造更好的生活体验。这种视角让我在技术狂热中保持冷静，始终从"人"的需求出发思考问题。</p>
-    </div>
-    
-    <div class="insight-card ic-amber reveal-right">
-      <h3>🎯 方法论：产品思维 + 工程直觉</h3>
-      <p>我有一套独特的工作方法论：</p>
-      <ul>
-        <li><strong>从核心矛盾出发</strong>：先找到最本质的问题，而不是表面症状</li>
-        <li><strong>技术边界思维</strong>：了解什么能做，什么不能做，什么现在不能但未来可能</li>
-        <li><strong>持续验证假设</strong>：小步快跑，数据驱动，避免完美主义陷阱</li>
-        <li><strong>人本设计</strong>：永远以最终用户的使用体验为衡量标准</li>
-      </ul>
-    </div>
-    
-    <div class="insight-card ic-teal reveal">
-      <h3>🌍 简历之外的经历</h3>
-      <p>除了工作履历，还有这些经历塑造了我：</p>
-      <div style="margin-top:20px">
-        <div style="margin-bottom:16px;padding-left:20px;border-left:2px solid var(--amber-light);">
-          <h4 style="font-size:1rem;color:var(--amber-light);margin-bottom:4px">新加坡实地项目经历</h4>
-          <p style="font-size:.88rem;color:var(--text-dim);margin-bottom:8px">赴新加坡参与IoT传感器方案评估，深入了解全球化供应链和不同国家的技术落地差异。</p>
-        </div>
-        <div style="margin-bottom:16px;padding-left:20px;border-left:2px solid var(--teal-light);">
-          <h4 style="font-size:1rem;color:var(--teal-light);margin-bottom:4px">跨学科教育背景</h4>
-          <p style="font-size:.88rem;color:var(--text-dim);margin-bottom:8px">国际贸易学士 + 商业分析硕士，让我既有商业全局视野，又有数据分析硬技能。</p>
-        </div>
-        <div style="margin-bottom:16px;padding-left:20px;border-left:2px solid var(--amber-light);">
-          <h4 style="font-size:1rem;color:var(--amber-light);margin-bottom:4px">独立开发者视角</h4>
-          <p style="font-size:.88rem;color:var(--text-dim);margin-bottom:8px">从0到1构建Voice Helper的经历，让我深刻理解了产品全生命周期——从想法到落地，从代码到用户。</p>
-        </div>
-      </div>
-    </div>
-    
-    <div class="quote-float reveal" style="margin-top:40px">
-      "我曾见过AI技术如何从实验室走向现实，也见过好产品如何从痛点中诞生。这段旅程教会我最重要的事：真正的创新不在于技术的复杂度，而在于对人的理解深度。"
+
+    <div class="reveal" style="margin-top:20px;display:flex;flex-direction:column;gap:18px;max-width:640px">
+      <p style="font-size:.95rem;line-height:1.7;color:var(--text-secondary)">
+        <strong style="color:var(--teal-light)">对真实的偏执</strong> —— 坚持独立思考，不直接接受别人喂来的结论。遇到任何判断，先追溯原始数据和推导链路，自己走到信息源头去验证。
+      </p>
+      <p style="font-size:.95rem;line-height:1.7;color:var(--text-secondary)">
+        <strong style="color:var(--amber-light)">避免低水平工作</strong> —— 不做无法获取信息的、非系统性的试错。每投入精力先问：这次尝试能产出什么可复用的认知？让每次失败都留下经验资产。
+      </p>
+      <p style="font-size:.95rem;line-height:1.7;color:var(--text-secondary)">
+        <strong style="color:var(--teal-light)">逃避无复利与不可扩展</strong> —— 追求系统性做事，追求能长期产生复利的成果。优先投资可复用的能力而非一次性交付物，从更大的价值图谱中寻找目标。
+      </p>
+      <p style="font-size:.95rem;line-height:1.7;color:var(--text-secondary)">
+        <strong style="color:var(--amber-light)">避免陷入局部最优</strong> —— 处理具体事务时时常抽离，画一张更大的图来审视方向。主动寻求跨领域输入，警惕忙碌感掩盖了方向性的偏差。
+      </p>
     </div>
   </div>
 </section>
@@ -316,32 +359,103 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
     <div class="section-divider"></div>
     <h3 class="reveal" style="font-family:var(--fh);font-size:1.5rem;color:var(--teal-light);margin-bottom:16px">为什么做这个？</h3>
     <div class="insight-card ic-teal reveal-left">
-      <h3>🔍 市场痛点：人永远是发起者（Initiator）</h3>
-      <p>自 GPT 发布以来，所有 AI 产品都有一个结构性缺陷：</p>
-      <table class="market-table">
-        <tr><th>产品类型</th><th>代表产品</th><th>触发方式</th><th>本质问题</th></tr>
-        <tr><td>边栏 Copilot</td><td>Microsoft Copilot / Claude</td><td>用户点开边栏</td><td>被动工具，不在场</td></tr>
-        <tr><td>AI 通话</td><td>ChatGPT 语音 / 豆包</td><td>用户先开口</td><td>轮流说话，无主动性</td></tr>
-        <tr><td>穿戴设备</td><td>Humane AI Pin / Rabbit r1</td><td>用户行为触发</td><td>感知弱，交互浅</td></tr>
-        <tr><td>语音助手</td><td>Siri / Google Assistant</td><td>唤醒词触发</td><td>规则型，无上下文</td></tr>
-        <tr><td>情感语音 AI</td><td>Hume AI EVI</td><td>用户先开口</td><td>有情感感知但无主动触发</td></tr>
-      </table>
+      <h3>🔍 市场痛点：我们何时能拥有一个"在场"的AI伙伴</h3>
+      <p>各种 Copilot 产品始终没有做到我心中的 Copilot。我用两个维度来拆解这个问题：</p>
+    </div>
+
+    <div class="framework-grid" style="margin:24px 0">
+      <div class="fw-card reveal-left" style="transition-delay:.1s">
+        <h4 style="color:var(--teal-light);font-family:var(--fh);font-size:1.15rem;margin-bottom:10px">什么是「高自主性」？</h4>
+        <p style="font-size:.85rem;line-height:1.7;color:rgba(255,255,255,.65)">现有的 AI 产品，无论形态如何，<strong>人永远是发起者</strong>——用户点开边栏、先开口说话、按下唤醒词，AI 才会响应。</p>
+        <div style="margin-top:12px;padding-left:16px;border-left:2px solid var(--teal-light)">
+          <p style="font-size:.82rem;line-height:1.6;color:var(--text-dim)">真正的自主性不是"用户说了 AI 就做"，而是<strong>AI 自己判断什么时候该出现、该说什么</strong>——像真正关心你的人一样，在你需要时主动出现，在你不希望被打扰时安静待命。</p>
+        </div>
+      </div>
+      <div class="fw-card reveal-right" style="transition-delay:.2s">
+        <h4 style="color:var(--amber-light);font-family:var(--fh);font-size:1.15rem;margin-bottom:10px">什么是「高存在感」？</h4>
+        <p style="font-size:.85rem;line-height:1.7;color:rgba(255,255,255,.65)">存在感是 AI 用各种方式向用户提示它的<strong>"在线"与"在场"</strong>——让人感觉到这个 AI 是"活着"的。</p>
+        <div style="margin-top:12px;padding-left:16px;border-left:2px solid var(--amber-light)">
+          <p style="font-size:.82rem;line-height:1.6;color:var(--text-dim)">一个只会发文字消息、从不说话的 AI，无论多智能都没有存在感。<strong>语音交互、情感表达、实时反馈</strong>——这些才是存在感的载体。Hume EVI 听得懂情绪，ChatGPT Voice 能流畅对话，它们在存在感上已经走得很远，但仍然缺了另一半：主动性。</p>
+        </div>
+      </div>
     </div>
     <div class="reveal-right" style="margin:24px 0;position:relative">
-      <img src="design/autonomy-presence-matrix.png" alt="自主性×存在感矩阵" style="width:100%;border-radius:14px;border:1px solid rgba(13,148,136,.2);box-shadow:0 20px 60px rgba(0,0,0,.4);display:block">
-      <p style="text-align:center;font-size:.75rem;color:var(--text-dim);margin-top:10px;letter-spacing:.04em">自主性 × 存在感 二维分析框架 — 从 Proxy 到 Agent 的产品进化方向</p>
+      <div class="matrix-chart-wrap" id="matrix-chart">
+        <div class="matrix-header">
+          <span class="matrix-title">以自主性、存在感两个维度，拆解市面上的 Copilot 产品</span>
+          <div class="matrix-switch">
+            <button class="matrix-btn active" data-view="text" onclick="matrixSwitch('text')">四种 Copilot</button>
+            <button class="matrix-btn" data-view="dots" onclick="matrixSwitch('dots')">产品定位</button>
+          </div>
+        </div>
+        <div class="matrix-body">
+          <!-- 左侧纵轴标签 -->
+          <div class="matrix-y-axis-wrap">
+            <div class="matrix-y-axis-label">
+              <span class="matrix-y-arrow-up">↑</span>
+              在<br>场<br>/<br>存<br>在<br>感
+              <div style="height:12px"></div>
+              无<br>感<br>/<br>隐<br>形
+              <span class="matrix-y-arrow-down">↓</span>
+            </div>
+          </div>
+          <!-- 图表绘图区 -->
+          <div class="matrix-plot">
+            <!-- 背景十字线 -->
+            <div class="matrix-cross-v"></div>
+            <div class="matrix-cross-h"></div>
+            <!-- SVG 坐标轴 -->
+            <svg class="matrix-canvas-layer" viewBox="0 0 400 400" preserveAspectRatio="none">
+              <!-- 四个象限背景 -->
+              <rect x="4" y="4" width="192" height="192" fill="rgba(13,148,136,.04)" rx="8"/>
+              <rect x="204" y="4" width="192" height="192" fill="rgba(245,158,11,.03)" rx="8"/>
+              <rect x="4" y="204" width="192" height="192" fill="rgba(245,158,11,.02)" rx="8"/>
+              <rect x="204" y="204" width="192" height="192" fill="rgba(13,148,136,.02)" rx="8"/>
+              <!-- 坐标轴线 -->
+              <line x1="200" y1="6" x2="200" y2="394" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+              <line x1="6" y1="200" x2="394" y2="200" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+              <!-- 箭头 -->
+              <polygon points="200,2 196,10 204,10" fill="var(--teal-light)"/>
+              <polygon points="398,200 390,196 390,204" fill="var(--amber-light)"/>
+            </svg>
+            <!-- 坐标轴标签（横轴在底部） -->
+            <div class="matrix-labels">
+              <div class="matrix-axis-x">被动响应 Proxy &nbsp;&nbsp;&nbsp; 主动行动 Agent</div>
+            </div>
+          <!-- 象限文字层（默认显示） -->
+          <div class="matrix-quadrant-text q-tl">
+            <div class="matrix-q-title teal">Ⅰ 高自主 × 弱存在</div>
+            <div class="matrix-q-desc">代表：Friend AI、AI 项链等<br>全信像佩戴式 AI，过度感知环境<br>与用户对话，自动记笔记<br><br>核心矛盾：<strong>主动骚扰 vs 无双效讨论</strong></div>
+          </div>
+          <div class="matrix-quadrant-text q-tr">
+            <div class="matrix-q-title amber">Ⅱ 高自主 × 强存在 → 目标</div>
+            <div class="matrix-q-desc">将两个维度的优势结合：<br>• <strong>高存在感</strong> → 语音交互、情感表达，让用户感觉 AI "活着"<br>• <strong>高自主性</strong> → 主动发起，Inner Thoughts 心跳机制<br><br>关键挑战：高存在 = 高干预风险<br>必须在「对的时候」用「对的方式」表达</div>
+          </div>
+          <div class="matrix-quadrant-text q-bl">
+            <div class="matrix-q-title teal" style="color:rgba(255,255,255,.45)">Ⅲ 低自主 × 弱存在</div>
+            <div class="matrix-q-desc" style="opacity:.5">Siri / Google Assistant<br>唤醒词触发 → 规则匹配 → 固定回复<br>无语音自然度、无情感表达<br>本质是命令行界面，没有"活着"的感觉</div>
+          </div>
+          <div class="matrix-quadrant-text q-br">
+            <div class="matrix-q-title amber">Ⅳ 弱自主 × 强存在</div>
+            <div class="matrix-q-desc">Hume EVI / ChatGPT Voice / 豆包<br>流畅的语音交互 + 情感感知<br>用户能感觉到 AI 是"在场"的、有温度的<br><br>核心缺陷：仍然是<strong>被动响应</strong><br>它们"活着"，但不会主动走向你<br>Agent = 有自己目标，自己决定何时出现</div>
+          </div>
+          <!-- 描点层（默认隐藏） -->
+          <div class="matrix-dots-layer" id="matrix-dots-layer"></div>
+          </div><!-- /.matrix-plot -->
+        </div>
+      </div>
     </div>
     <div class="insight-card ic-amber reveal-right">
       <h3>💡 核心洞察：自主性 × 存在感矩阵</h3>
-      <p>右上角仍然是空白的——即使最新的 Hume EVI 也只解决了"存在感"（情感感知），没有解决"主动性"。Voice Helper 要填补这个空白：<strong>高主动 × 高存在</strong>。</p>
+      <p>右上角仍然是空白的——即使最新的 Hume EVI 做到了很强的存在感（情感语音交互），但 AI 仍然不会主动走向用户。Voice Helper 要填补这个空白：<strong>一个既"活着"（强存在感）、又主动（高自主性）的 AI 伙伴</strong>。</p>
     </div>
     <div class="insight-card ic-teal reveal">
       <h3>📚 理论支撑</h3>
       <ul>
-        <li><strong>Inner Thoughts Framework</strong> (Liu et al., CHI 2025)：AI 应持续产生内心独白，寻找合适的时机表达想法</li>
-        <li><strong>Human-centered PCA</strong> (Deng et al., 2024)：可预测性、可控性、适当性三原则</li>
-        <li><strong>ComPeer</strong> (Liu et al., 2024)：轻量级低压力主动开启，消息 &lt;30 字</li>
-        <li><strong>心流理论</strong>：最好的互动是精准出现</li>
+        <li><strong>Inner Thoughts Framework</strong> (Liu et al., CHI 2025)：AI 应持续产生内心独白，寻找合适的时机表达想法——不是等用户问才答，而是自己判断"现在该不该说"。这为 Voice Helper 的主动性提供了核心理论依据。</li>
+        <li><strong>Human-centered PCA</strong> (Deng et al., 2024)：可预测性、可控性、适当性三原则——AI 的主动行为必须让用户感到"可控"，否则会引发焦虑。这直接指导了 Voice Helper 主动温度旋钮的设计。</li>
+        <li><strong>ComPeer</strong> (Liu et al., 2024)：轻量级低压力主动开启，消息 &lt;30 字——证明了用户并不排斥 AI 的主动行为，关键是"低压力"和"恰到好处"。</li>
+        <li><strong>心流理论</strong> (Csikszentmihalyi)：最好的互动是精准出现——在用户需要时恰好出现，不打扰也不缺席，这是存在感的最佳状态。</li>
       </ul>
     </div>
     <div class="section-divider"></div>
@@ -458,8 +572,7 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 
 
 <section class="scene scene-epilogue" data-scene="epilogue">
-  <div class="chapter-card" style="align-items:center;justify-content:center"><span class="ch-num">End</span><h2 style="text-align:center">Let's Connect</h2></div>
-  <h2 class="reveal" style="font-size:clamp(2rem,4vw,3rem);margin-bottom:16px">一起构建下一代人机交互</h2>
+  <h2 class="reveal" style="font-size:clamp(2rem,4vw,3rem);margin-bottom:16px">一起构建，下一代激发人类美好知性的人机交互</h2>
   <p class="reveal" style="color:var(--text-dim);max-width:480px;margin-bottom:32px">无论是 AI 产品探索、技术合作还是单纯交流想法，都欢迎联系我。</p>
   <div class="epilogue-links reveal">
     <a href="mailto:rockchen2025@outlook.com" class="btn-outline">📧 Email</a>
@@ -1049,6 +1162,81 @@ document.getElementById('dl-modal').addEventListener('click',function(e){if(e.ta
     console.log('WebRTC not supported');
   }
 
+})();
+
+/* ═══════════════════════════════════════════════ */
+/* Matrix 2D Chart - 矩阵图表视图切换逻辑       */
+/* ═══════════════════════════════════════════════ */
+(function(){
+  var currentView = 'text';
+  var dotsLayer = document.getElementById('matrix-dots-layer');
+
+  // 产品/玩家描点数据 (x: 自主性 0-100, y: 存在感 0-100)
+  // 坐标系：x=200 是中心(50%), y=200 是中心(50%), 左下=0
+  var dotData = [
+    { name: 'Siri / Google Assistant', x: 18, y: 22, cls: 'dot-teal' },
+    { name: 'MS Copilot',             x: 35, y: 30, cls: 'dot-teal' },
+    { name: 'ChatGPT Voice',           x: 30, y: 75, cls: 'dot-amber' },
+    { name: 'Hume EVI',               x: 32, y: 80, cls: 'dot-amber' },
+    { name: '豆包',                    x: 34, y: 72, cls: 'dot-amber' },
+    { name: 'Friend AI 项链',          x: 78, y: 28, cls: 'dot-mix-a' },
+    { name: 'AI Pin / Rabbit r1',      x: 55, y: 38, cls: 'dot-mix-b' },
+    // 目标位置 - 高亮
+    { name: 'Voice Helper → 目标',     x: 82, y: 80, cls: 'dot-target', highlight: true }
+  ];
+
+  function buildDots() {
+    dotsLayer.innerHTML = '';
+    dotData.forEach(function(d) {
+      var el = document.createElement('div');
+      el.className = 'matrix-dot ' + d.cls;
+      // x=0→左边缘(4%), x=100→右边缘(96%)
+      var px = 4 + d.x * 0.92;
+      // SVG viewBox y是向下增大的，y=0在上，y=100在下
+      // 存在感越高应该越靠上（y值越小）
+      var py = 4 + (100 - d.y) * 0.92;
+      el.style.left = px + '%';
+      el.style.top = py + '%';
+      if (d.highlight) el.classList.add('highlight');
+      el.innerHTML = '<div class="matrix-dot-marker"></div><span class="matrix-dot-label" style="color:' + (d.cls.indexOf('teal')>-1 ? 'var(--teal-light)' : d.cls.indexOf('amber')>-1 ? 'var(--amber-light)' : '#fff') + '">' + d.name + '</span>';
+      dotsLayer.appendChild(el);
+    });
+  }
+
+  window.matrixSwitch = function(view) {
+    if (view === currentView) return;
+    currentView = view;
+
+    // 更新按钮状态
+    document.querySelectorAll('.matrix-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.view === view);
+    });
+
+    var texts = document.querySelectorAll('.matrix-quadrant-text');
+    var dots = document.querySelectorAll('.matrix-dot');
+
+    if (view === 'dots') {
+      // 文字淡出
+      texts.forEach(function(t){ t.style.opacity='0.08'; t.style.color='rgba(255,255,255,.12)'; });
+      // 构建并显示描点（如果还没构建过）
+      if (!dotsLayer.children.length) buildDots();
+      // 描点逐个浮现，带错开延迟
+      dots.forEach(function(d,i){
+        d.classList.remove('show');
+        setTimeout(function(){ d.classList.add('show'); }, i * 80);
+      });
+    } else {
+      // 描点淡出
+      dots.forEach(function(d){ d.classList.remove('show'); });
+      // 文字淡入
+      texts.forEach(function(t){ t.style.opacity='1'; t.style.color=''; });
+    }
+  };
+
+  // 初始化：确保文字层可见、描点层为空
+  buildDots();
+  // 初始隐藏所有点
+  document.querySelectorAll('.matrix-dot').forEach(function(d){ d.classList.remove('show'); });
 })();
 
 /* Sound waves - 动态生成更自然的音频波形 */
