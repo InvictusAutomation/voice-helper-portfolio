@@ -221,16 +221,35 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 .matrix-btn.active{color:#fff;background:var(--teal);box-shadow:0 2px 12px rgba(13,148,136,.3)}
 .matrix-body{position:relative;width:100%;aspect-ratio:1/1;min-height:420px;max-height:560px;display:flex}
 .matrix-plot{position:relative;flex:1;min-height:0}
-.matrix-y-axis-wrap{width:36px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;border-right:1px solid rgba(255,255,255,.08);padding:0 2px;gap:4px}
-.matrix-y-axis-label{font-family:var(--fh);font-size:.6rem;color:var(--text-dim);letter-spacing:.02em;display:flex;flex-direction:column;align-items:center;gap:0;line-height:1.5}
-.matrix-y-arrow-up,.matrix-y-arrow-down{display:block;font-size:.7rem;line-height:1}
-.matrix-y-arrow-up{color:var(--teal-light);opacity:.5;order:-1}/* 在场在上 */
-.matrix-y-arrow-down{color:var(--amber-light);opacity:.5;order:3}/* 无感在下 */
-.matrix-canvas-layer{position:absolute;inset:0;z-index:1}
-.matrix-labels{position:absolute;inset:0;z-index:2;pointer-events:none}
-.matrix-axis-x{position:absolute;bottom:10px;left:0;right:0;text-align:center;white-space:nowrap;font-family:var(--fh);font-size:.72rem;color:var(--text-dim);letter-spacing:.06em;display:flex;align-items:center;justify-content:center;gap:8px}
-.matrix-axis-x::before{content:'←';color:var(--amber-light);opacity:.5}
-.matrix-axis-x::after{content:'→';color:var(--teal-light);opacity:.5}
+.matrix-y-axis-wrap{width:36px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;border-right:1px solid rgba(255,255,255,.08);padding:0 2px;gap:4px;height:100%;overflow:hidden}
+/* 纵轴标签容器：上下两半严格对齐 SVG 象限（各占50%） */
+.matrix-y-axis-label{font-family:var(--fh);font-size:.6rem;color:var(--text-dim);letter-spacing:.02em;display:flex;flex-direction:column;align-items:center;gap:0;height:100%}
+.matrix-y-half{display:flex;flex-direction:column;align-items:center;flex:1;justify-content:center;gap:2px}
+/* 末端箭头（纵轴顶端▲蓝绿 / 横轴右端▶黄色） */
+.matrix-axis-end-arrow{font-size:.7rem;font-weight:700;line-height:1;flex-shrink:0}
+.matrix-y-end-arrow{color:var(--teal-light)}
+.matrix-x-end-arrow{color:var(--amber-light)}
+/* 纵轴箭头（蓝绿色） */
+.matrix-y-arrow{display:block;font-size:.55rem;color:var(--teal-light);line-height:1;margin:2px 0}
+/* 纵轴标题：存在感（放在最顶部） */
+.matrix-y-title{display:flex;flex-direction:column;align-items:center;font-family:var(--fh);font-size:1.17rem;color:var(--teal-light);letter-spacing:.08em;font-weight:600;line-height:1.4;border-bottom:1px solid rgba(20,184,166,.25);padding-bottom:6px;margin-bottom:2px}
+/* 横轴标签区：绝对定位，紧贴 SVG 底部 */
+.matrix-labels{position:absolute;left:0;right:0;bottom:0;z-index:2;pointer-events:none}
+/* 横轴主行：文字+箭头，左右均分 */
+.matrix-x-main-row{display:flex;width:100%;align-items:center}
+/* 横轴半区 */
+.matrix-x-half{display:flex;align-items:center;gap:6px;padding:0 14px 4px;white-space:nowrap;font-family:var(--fh);font-size:.7rem;color:var(--text-dim);letter-spacing:.02em;flex:1}
+/* 左半 — 箭头左、文字右 */
+.matrix-x-left{justify-content:flex-start}
+/* 右半 — 文字左、箭头右 */
+.matrix-x-right{justify-content:flex-end}
+/* 横轴箭头 */
+.matrix-x-arrow{font-size:.55rem;font-weight:700;color:var(--teal-light)}
+.matrix-x-arrow-right{color:var(--amber-light)}
+/* 横轴标题行（靠右） */
+.matrix-x-title-row{width:100%;display:flex;align-items:center;justify-content:flex-end;border-top:1px solid rgba(20,184,166,.25);padding:3px 14px 5px}
+/* 横轴标题 */
+.matrix-x-title{font-family:var(--fh);font-size:1.17rem;color:var(--amber-light);letter-spacing:.08em;font-weight:600}
 .matrix-quadrant-text{position:absolute;z-index:3;pointer-events:none;transition:opacity .6s ease,color .6s ease}
 .matrix-quadrant-text.q-tl{top:8%;left:5%}
 .matrix-quadrant-text.q-tr{top:8%;right:auto;left:52%}
@@ -329,16 +348,16 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 
     <div class="reveal" style="margin-top:20px;display:flex;flex-direction:column;gap:18px;max-width:640px">
       <p style="font-size:.95rem;line-height:1.7;color:var(--text-secondary)">
-        <strong style="color:var(--teal-light)">对真实的偏执</strong> —— 坚持独立思考，不直接接受别人喂来的结论。遇到任何判断，先追溯原始数据和推导链路，自己走到信息源头去验证。
+        <strong style="color:var(--teal-light)">我有...对真实的偏执</strong> —— 坚持独立思考，不直接接受别人喂来的结论。遇到任何判断，先追溯原始数据和推导链路，自己走到信息源头去验证。
       </p>
       <p style="font-size:.95rem;line-height:1.7;color:var(--text-secondary)">
-        <strong style="color:var(--amber-light)">避免低水平工作</strong> —— 不做无法获取信息的、非系统性的试错。每投入精力先问：这次尝试能产出什么可复用的认知？让每次失败都留下经验资产。
+        <strong style="color:var(--amber-light)">我努力...避免低水平工作</strong> —— 不做无法获取信息的、非系统性的试错。每投入精力先问：这次尝试能产出什么可复用的认知？让每次失败都留下经验资产。
       </p>
       <p style="font-size:.95rem;line-height:1.7;color:var(--text-secondary)">
-        <strong style="color:var(--teal-light)">逃避无复利与不可扩展</strong> —— 追求系统性做事，追求能长期产生复利的成果。优先投资可复用的能力而非一次性交付物，从更大的价值图谱中寻找目标。
+        <strong style="color:var(--teal-light)">我总是在...逃避无复利与不可扩展</strong> —— 追求系统性做事，追求能长期产生复利的成果。优先投资可复用的能力而非一次性交付物，从更大的价值图谱中寻找目标。
       </p>
       <p style="font-size:.95rem;line-height:1.7;color:var(--text-secondary)">
-        <strong style="color:var(--amber-light)">避免陷入局部最优</strong> —— 处理具体事务时时常抽离，画一张更大的图来审视方向。主动寻求跨领域输入，警惕忙碌感掩盖了方向性的偏差。
+        <strong style="color:var(--amber-light)">我一直设法...避免陷入局部最优</strong> —— 处理具体事务时时常抽离，画一张更大的图来审视方向。主动寻求跨领域输入，警惕忙碌感掩盖了方向性的偏差。
       </p>
     </div>
   </div>
@@ -347,7 +366,7 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 <section id="project" class="scene scene-warm" data-scene="project">
   <div class="chapter-card"><span class="ch-num">Chapter 03</span><h2>My Work: Voice Helper</h2></div>
   <div class="scene-content">
-    <h2 class="reveal">Voice Helper — 从洞察到落地</h2>
+    <h2 class="reveal">我的 AI Side Project：Voice Helper</h2>
     <p class="reveal" style="color:var(--text-dim);font-size:1.05rem;margin-bottom:12px">一个开源的语音 AI 助手 —— 如果 AI 能像真正关心你的人一样记住你说过的、理解你没说的、在你需要时主动出现。</p>
     <div class="reveal" style="margin:20px 0">
       <span class="vision-tag">主动式交互</span>
@@ -357,7 +376,7 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
       <span class="vision-tag">双模型混合架构</span>
     </div>
     <div class="section-divider"></div>
-    <h3 class="reveal" style="font-family:var(--fh);font-size:1.5rem;color:var(--teal-light);margin-bottom:16px">为什么做这个？</h3>
+    <h3 class="reveal" style="font-family:var(--fh);font-size:1.5rem;color:var(--teal-light);margin-bottom:16px">我为什么构建这个项目？</h3>
     <div class="insight-card ic-teal reveal-left">
       <h3>🔍 市场痛点：我们何时能拥有一个"在场"的AI伙伴</h3>
       <p>各种 Copilot 产品始终没有做到我心中的 Copilot。我用两个维度来拆解这个问题：</p>
@@ -389,14 +408,22 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
           </div>
         </div>
         <div class="matrix-body">
-          <!-- 左侧纵轴标签 -->
+          <!-- 左侧纵轴标签栏（含箭头 + 轴名 + 分区文字） -->
           <div class="matrix-y-axis-wrap">
+            <!-- 纵轴标题：存在感（在最顶部） -->
+            <span class="matrix-y-title">存<br>在<br>感</span>
             <div class="matrix-y-axis-label">
-              <span class="matrix-y-arrow-up">↑</span>
-              在<br>场<br>/<br>存<br>在<br>感
-              <div style="height:12px"></div>
-              无<br>感<br>/<br>隐<br>形
-              <span class="matrix-y-arrow-down">↓</span>
+              <!-- 上半：对应高存在（Ⅰ、Ⅱ象限） -->
+              <div class="matrix-y-half">
+                <!-- 顶端箭头：蓝绿色▲向上指（纵轴方向，放在"存"字上方）-->
+                <span class="matrix-axis-end-arrow matrix-y-end-arrow">▲</span>
+                在<br>场<br>/<br>存<br>在<br>感
+              </div>
+              <!-- 下半：对应弱存在（Ⅲ、Ⅳ象限） -->
+              <div class="matrix-y-half">
+                无<br>感<br>/<br>隐<br>形
+                <span class="matrix-y-arrow matrix-y-arrow-down">▼</span>
+              </div>
             </div>
           </div>
           <!-- 图表绘图区 -->
@@ -404,40 +431,52 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
             <!-- 背景十字线 -->
             <div class="matrix-cross-v"></div>
             <div class="matrix-cross-h"></div>
-            <!-- SVG 坐标轴 -->
+            <!-- SVG 坐标轴：仅象限背景 + 中心分隔线，不含箭头和轴名 -->
             <svg class="matrix-canvas-layer" viewBox="0 0 400 400" preserveAspectRatio="none">
-              <!-- 四个象限背景 -->
-              <rect x="4" y="4" width="192" height="192" fill="rgba(13,148,136,.04)" rx="8"/>
-              <rect x="204" y="4" width="192" height="192" fill="rgba(245,158,11,.03)" rx="8"/>
-              <rect x="4" y="204" width="192" height="192" fill="rgba(245,158,11,.02)" rx="8"/>
-              <rect x="204" y="204" width="192" height="192" fill="rgba(13,148,136,.02)" rx="8"/>
-              <!-- 坐标轴线 -->
-              <line x1="200" y1="6" x2="200" y2="394" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
-              <line x1="6" y1="200" x2="394" y2="200" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
-              <!-- 箭头 -->
-              <polygon points="200,2 196,10 204,10" fill="var(--teal-light)"/>
-              <polygon points="398,200 390,196 390,204" fill="var(--amber-light)"/>
+              <!-- 四个象限背景：右半=高自主(amber)，上=高存在(加深) -->
+              <rect x="200" y="4" width="196" height="196" fill="rgba(245,158,11,.06)" rx="8"/>
+              <rect x="200" y="200" width="196" height="196" fill="rgba(245,158,11,.03)" rx="8"/>
+              <rect x="4" y="4" width="192" height="192" fill="rgba(13,148,136,.05)" rx="8"/>
+              <rect x="4" y="200" width="192" height="196" fill="rgba(13,148,136,.025)" rx="8"/>
+              <!-- 中心分隔线（仅垂线，无箭头） -->
+              <line x1="200" y1="4" x2="200" y2="396" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+              <line x1="4" y1="200" x2="396" y2="200" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
             </svg>
-            <!-- 坐标轴标签（横轴在底部） -->
+            <!-- 横轴标签栏：贴底布局，镜像纵轴 -->
             <div class="matrix-labels">
-              <div class="matrix-axis-x">被动响应 Proxy &nbsp;&nbsp;&nbsp; 主动行动 Agent</div>
-            </div>
+              <div class="matrix-x-main-row">
+                <!-- 左半：对应低自主象限 — 箭头左、文字右 -->
+                <div class="matrix-x-half matrix-x-left">
+                  <span class="matrix-x-arrow">◀</span>
+                  <span style="opacity:.45">Proxy: 低自主 / 规则驱动</span>
+                </div>
+                <!-- 右半：对应高自主象限 — 文字左、箭头右 -->
+                <div class="matrix-x-half matrix-x-right">
+                  <span style="font-weight:600;color:var(--amber-light)">Agent：高自主 / 主动行动</span>
+                  <span class="matrix-x-arrow matrix-x-arrow-right">▶</span>
+                </div>
+              </div>
+              <!-- 横轴标题行（靠右） -->
+              <div class="matrix-x-title-row">
+                <span class="matrix-x-title">自主性</span>
+              </div>
+            </div><!-- /.matrix-labels -->
           <!-- 象限文字层（默认显示） -->
           <div class="matrix-quadrant-text q-tl">
-            <div class="matrix-q-title teal">Ⅰ 高自主 × 弱存在</div>
-            <div class="matrix-q-desc">代表：Friend AI、AI 项链等<br>全信像佩戴式 AI，过度感知环境<br>与用户对话，自动记笔记<br><br>核心矛盾：<strong>主动骚扰 vs 无双效讨论</strong></div>
+            <div class="matrix-q-title teal">Ⅰ 低自主 × 强存在</div>
+            <div class="matrix-q-desc">Hume EVI / ChatGPT Voice / 豆包<br>流畅的语音交互 + 情感感知<br>用户能感觉到 AI 是"在场"的、有温度的<br><br>核心缺陷：<strong>仍然是被动响应</strong><br>它们"活着"，但不会主动走向你<br>Agent = 有自己目标，自己决定何时出现</div>
           </div>
           <div class="matrix-quadrant-text q-tr">
             <div class="matrix-q-title amber">Ⅱ 高自主 × 强存在 → 目标</div>
             <div class="matrix-q-desc">将两个维度的优势结合：<br>• <strong>高存在感</strong> → 语音交互、情感表达，让用户感觉 AI "活着"<br>• <strong>高自主性</strong> → 主动发起，Inner Thoughts 心跳机制<br><br>关键挑战：高存在 = 高干预风险<br>必须在「对的时候」用「对的方式」表达</div>
           </div>
           <div class="matrix-quadrant-text q-bl">
-            <div class="matrix-q-title teal" style="color:rgba(255,255,255,.45)">Ⅲ 低自主 × 弱存在</div>
-            <div class="matrix-q-desc" style="opacity:.5">Siri / Google Assistant<br>唤醒词触发 → 规则匹配 → 固定回复<br>无语音自然度、无情感表达<br>本质是命令行界面，没有"活着"的感觉</div>
+            <div class="matrix-q-title teal" style="opacity:.45">Ⅲ 低自主 × 弱存在</div>
+            <div class="matrix-q-desc" style="opacity:.4">Siri / Google Assistant<br>唤醒词触发 → 规则匹配 → 固定回复<br>无语音自然度、无情感表达<br>本质是命令行界面，没有"活着"的感觉</div>
           </div>
           <div class="matrix-quadrant-text q-br">
-            <div class="matrix-q-title amber">Ⅳ 弱自主 × 强存在</div>
-            <div class="matrix-q-desc">Hume EVI / ChatGPT Voice / 豆包<br>流畅的语音交互 + 情感感知<br>用户能感觉到 AI 是"在场"的、有温度的<br><br>核心缺陷：仍然是<strong>被动响应</strong><br>它们"活着"，但不会主动走向你<br>Agent = 有自己目标，自己决定何时出现</div>
+            <div class="matrix-q-title amber">Ⅳ 高自主 × 弱存在</div>
+            <div class="matrix-q-desc">代表：Friend AI、AI 项链等<br>全信像佩戴式 AI，过度感知环境<br>与用户对话，自动记笔记<br><br>核心矛盾：<strong>主动骚扰 vs 无双效讨论</strong></div>
           </div>
           <!-- 描点层（默认隐藏） -->
           <div class="matrix-dots-layer" id="matrix-dots-layer"></div>
@@ -459,7 +498,6 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
       </ul>
     </div>
     <div class="section-divider"></div>
-    <h3 class="reveal" style="font-family:var(--fh);font-size:1.5rem;color:var(--amber-light);margin-bottom:16px">怎么做的？</h3>
     <div class="framework-grid">
       <div class="fw-card reveal-left"><h4>🎙️ 语音交互层</h4><p>OpenAI/DashScope Realtime API 实现超低延迟语音对话，端到端延迟 &lt;1.5s。</p></div>
       <div class="fw-card reveal" style="transition-delay:.15s"><h4>🧠 Inner Thoughts Engine</h4><p>三层管线：记忆扫描 → 思维生成+动机评估 → 表达规划。AI 持续产生内心独白。</p></div>
@@ -475,8 +513,7 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
       <div class="phase-node"><div class="phase-dot">③</div><div class="phase-name">Phase 3</div><div class="phase-desc">个性化情感感知<br>性格配置</div></div>
     </div>
     <div class="quote-float reveal" style="margin-top:40px">
-      Voice Helper 是我从需求调研到开发上线的第一个完整作品。
-      这段经历让我深刻体会到：真正好的产品不是堆砌功能，而是对用户痛点的深刻理解 + 对技术边界的清晰认知 + 一点点"让世界变得更好一点"的理想主义。
+      Voice Helper 是我从需求调研到开发上线的第一个完整作品，我试着在我摸索出来的定位上，逐步解决各种技术和产品的困难，同时也在深化对 AI 应用、人机交互的理解，认同：好产品=用户痛点的深刻理解 + 对技术边界的清晰认知 + 一点点"让世界变得更好一点"的理想主义。
     </div>
   </div>
 </section>
@@ -487,7 +524,7 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
   <div class="chapter-card"><span class="ch-num">Chapter 04</span><h2>Resume</h2></div>
   <div class="scene-content">
     <h2 class="reveal">我的职涯旅程</h2>
-    <p class="reveal" style="color:var(--text-dim);margin-bottom:28px">从数据分析到产品管理，从跨国合作到AI落地，这是一段持续探索技术边界的旅程。</p>
+    <p class="reveal" style="color:var(--text-dim);margin-bottom:28px">持续进化的产品经理，见证且参与AI从工具变成一种组织和提供产品服务的方式，心底有想法的火不断越烧越旺。</p>
     <div class="resume-layout reveal">
       <div class="resume-pdf-area">
         <div class="resume-pdf-frame" id="resume-frame-container">
@@ -575,9 +612,9 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
   <h2 class="reveal" style="font-size:clamp(2rem,4vw,3rem);margin-bottom:16px">一起构建，下一代激发人类美好知性的人机交互</h2>
   <p class="reveal" style="color:var(--text-dim);max-width:480px;margin-bottom:32px">无论是 AI 产品探索、技术合作还是单纯交流想法，都欢迎联系我。</p>
   <div class="epilogue-links reveal">
-    <a href="mailto:rockchen2025@outlook.com" class="btn-outline">📧 Email</a>
-    <a href="https://github.com/rockchenhq" target="_blank" class="btn-outline">⚡ GitHub</a>
-    <a href="https://linkedin.com/in/rockchen-hx" target="_blank" class="btn-outline">💼 LinkedIn</a>
+    <a href="mailto:15210235027@163.com" class="btn-outline" onclick="event.preventDefault();navigator.clipboard.writeText('15210235027@163.com').then(()=>this.textContent='📧 已拷贝!');setTimeout(()=>this.textContent='📧 Email',2000)">📧 Email</a>
+    <a href="https://github.com/rockchenshigong" target="_blank" class="btn-outline">⚡ GitHub</a>
+    <a href="https://linkedin.com/in/chenhouhsuanrock/zh/" target="_blank" class="btn-outline">💼 LinkedIn</a>
   </div>
   <p style="margin-top:48px;font-size:.72rem;color:var(--text-dim);opacity:.4" class="reveal">© 2026 Rock Chen 陈厚瑄</p>
 </section>
@@ -1174,14 +1211,17 @@ document.getElementById('dl-modal').addEventListener('click',function(e){if(e.ta
   // 产品/玩家描点数据 (x: 自主性 0-100, y: 存在感 0-100)
   // 坐标系：x=200 是中心(50%), y=200 是中心(50%), 左下=0
   var dotData = [
+    // 左半：低自主 (teal系)
     { name: 'Siri / Google Assistant', x: 18, y: 22, cls: 'dot-teal' },
-    { name: 'MS Copilot',             x: 35, y: 30, cls: 'dot-teal' },
-    { name: 'ChatGPT Voice',           x: 30, y: 75, cls: 'dot-amber' },
-    { name: 'Hume EVI',               x: 32, y: 80, cls: 'dot-amber' },
-    { name: '豆包',                    x: 34, y: 72, cls: 'dot-amber' },
-    { name: 'Friend AI 项链',          x: 78, y: 28, cls: 'dot-mix-a' },
-    { name: 'AI Pin / Rabbit r1',      x: 55, y: 38, cls: 'dot-mix-b' },
-    // 目标位置 - 高亮
+    // 右下半：高自主 × 弱存在 (amber)
+    { name: 'Friend AI 项链',          x: 78, y: 28, cls: 'dot-amber' },
+    { name: 'AI Pin / Rabbit r1',      x: 55, y: 38, cls: 'dot-amber' },
+    // 左上半：低自主 × 强存在 (teal)
+    { name: 'Hume EVI',               x: 32, y: 80, cls: 'dot-teal' },
+    { name: 'ChatGPT Voice',           x: 30, y: 75, cls: 'dot-teal' },
+    { name: '豆包',                    x: 34, y: 72, cls: 'dot-teal' },
+    // 右上半：高自主 × 强存在 → 目标 (amber, 高亮)
+    { name: 'MS Copilot / Claude',      x: 35, y: 30, cls: 'dot-teal' },
     { name: 'Voice Helper → 目标',     x: 82, y: 80, cls: 'dot-target', highlight: true }
   ];
 
@@ -1198,7 +1238,7 @@ document.getElementById('dl-modal').addEventListener('click',function(e){if(e.ta
       el.style.left = px + '%';
       el.style.top = py + '%';
       if (d.highlight) el.classList.add('highlight');
-      el.innerHTML = '<div class="matrix-dot-marker"></div><span class="matrix-dot-label" style="color:' + (d.cls.indexOf('teal')>-1 ? 'var(--teal-light)' : d.cls.indexOf('amber')>-1 ? 'var(--amber-light)' : '#fff') + '">' + d.name + '</span>';
+      el.innerHTML = '<div class="matrix-dot-marker"></div><span class="matrix-dot-label" style="color:' + (d.x < 50 ? 'var(--teal-light)' : 'var(--amber-light)') + '">' + d.name + '</span>';
       dotsLayer.appendChild(el);
     });
   }
