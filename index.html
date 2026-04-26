@@ -751,9 +751,55 @@ function showNodePreview(el){document.querySelectorAll('.node-item').forEach(n=>
 function hideNodePreview(el){const pv=el.querySelector('.node-preview');if(pv)pv.classList.remove('visible');}
 document.querySelectorAll('.node-item').forEach(n=>{n.addEventListener('click',function(){document.querySelectorAll('.node-item').forEach(x=>x!==this&&x.classList.remove('active'));this.classList.toggle('active');const pv=this.querySelector('.node-preview');if(pv)pv.classList.toggle('visible',this.classList.contains('active'))});});
 (function(){let dl=parseInt(localStorage.getItem('rc_resume_dl')||'0');document.getElementById('download-count').textContent=dl})();
+/* 简历下载 API 地址 — 指向 Render 后端 */
+const SUBMIT_API_URL='https://voice-helper-api.onrender.com/api/submit';
 function openDownloadModal(){document.getElementById('dl-modal').classList.add('active');document.getElementById('form-area').style.display='block';document.getElementById('success-area').style.display='none'}
 function closeDownloadModal(){document.getElementById('dl-modal').classList.remove('active')}
-function submitDownload(){const ei=document.getElementById('dl-email');ei.classList.remove('error');const em=ei.value.trim();if(!em||!em.includes('@')){ei.classList.add('error');return}let ct=parseInt(localStorage.getItem('rc_resume_dl')||'0')+1;localStorage.setItem('rc_resume_dl',ct);document.getElementById('download-count').textContent=ct;document.getElementById('form-area').style.display='none';document.getElementById('success-area').style.display='block';const a=document.createElement('a');a.href='resume.pdf';a.download='陈厚瑄_简历_RockChen_2026.04.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(closeDownloadModal,2000)}
+async function submitDownload(){
+  const ei=document.getElementById('dl-email');ei.classList.remove('error');
+  const em=ei.value.trim();
+  if(!em||!em.includes('@')){ei.classList.add('error');return}
+  
+  /* 收集表单数据 */
+  const company=document.getElementById('dl-company').value.trim();
+  const submitBtn=document.querySelector('.form-submit');
+  const originalText=submitBtn.textContent;
+  
+  /* UI: 提交中 */
+  submitBtn.textContent='提交中...';
+  submitBtn.disabled=true;
+  submitBtn.style.opacity='.6';
+  
+  try {
+    /* 发送到飞书多维表格（经云函数中转） */
+    const resp=await fetch(SUBMIT_API_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:em,company:company||''}),
+    });
+    
+    if(!resp.ok){
+      const errData=await resp.json().catch(()=>({}));
+      throw new Error(errData.error||`HTTP ${resp.status}`);
+    }
+    
+    /* 成功：更新计数 + 触发下载 */
+    let ct=parseInt(localStorage.getItem('rc_resume_dl')||'0')+1;
+    localStorage.setItem('rc_resume_dl',ct);
+    document.getElementById('download-count').textContent=ct;
+    document.getElementById('form-area').style.display='none';
+    document.getElementById('success-area').style.display='block';
+    const a=document.createElement('a');
+    a.href='resume.pdf';a.download='陈厚瑄_简历_RockChen_2026.04.pdf';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    setTimeout(closeDownloadModal,2000);
+  }catch(err){
+    console.error('Submit failed:',err);
+    alert('提交失败，请稍后重试：'+err.message);
+    /* 恢复按钮状态 */
+    submitBtn.textContent=originalText;submitBtn.disabled=false;submitBtn.style.opacity='1';
+  }
+}
 document.getElementById('dl-modal').addEventListener('click',function(e){if(e.target===this)closeDownloadModal()});
 
 // ═══════════════════════════════════════════════════════════════════════
