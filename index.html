@@ -193,21 +193,157 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 #walker{position:fixed;z-index:5;pointer-events:none;width:320px;height:560px;top:55%;filter:drop-shadow(0 10px 30px rgba(0,0,0,.5));will-change:transform,left,top}
 #walker img{width:100%;height:100%;object-fit:contain;object-position:center bottom}
 #grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px}
-@media(max-width:900px){
-  #scene-nav{left:12px;top:12px;padding:6px 10px;flex-direction:column;align-items:flex-start;gap:4px;max-width:160px}
-  .nav-brand{display:none}.nav-links{flex-direction:column;gap:1px}
-  .nav-links li a{padding:5px 8px;font-size:.62rem}
-}
 @media(max-width:768px){
-  #scene-nav{display:none};.scene{padding:60px 24px};#timeline,#timeline-dots{display:none};
-  .chapter-card{position:relative;padding:20px 24px;align-items:flex-start;justify-content:flex-start};
-  .chapter-card h2{font-size:2.5rem};.scene-content h2{font-size:1.8rem};
-  .framework-grid{grid-template-columns:1fr};.epilogue-links{flex-direction:column;align-items:center};
-  .download-bar{flex-direction:column;gap:14px;padding:20px 24px};
-  .resume-layout{flex-direction:column};.resume-node-sidebar{width:100%;position:static};
+  #scene-nav{display:none};.scene{padding:48px 24px;text-align:center};#timeline,#timeline-dots{display:none};
+  .chapter-card{position:relative;padding:16px 0;align-items:center;justify-content:center;text-align:center};
+  .chapter-card h2{font-size:2rem};.scene-content h2{font-size:1.6rem;line-height:1.3};
+  .framework-grid{grid-template-columns:1fr;gap:16px}.epilogue-links{flex-direction:column;align-items:center};
+  .download-bar{flex-direction:column;gap:14px;padding:20px 20px};
+  .resume-layout{flex-direction:column;gap:24px}.resume-node-sidebar{width:100%;position:static};
   .node-preview{display:none};.phase-timeline{flex-direction:column;gap:16px};
   .phase-timeline::before{display:none};.market-table{font-size:.72rem}
-  #walker{width:200px;height:350px}
+  #walker{width:160px;height:280px}
+  .scene:not(.scene-hero):not(.scene-epilogue) .scene-content{text-align:left}
+  .scene:not(.scene-hero):not(.scene-epilogue){text-align:initial}
+  .scene-warm.scene-project .chapter-card{align-items:flex-end;text-align:right}
+  .quote-float{text-align:left}
+
+  /* ===== Hero 区域移动端优化 ===== */
+  .hero-name-en{font-size:clamp(2.2rem,9vw,3.6rem)}
+  .hero-name-zh{font-size:clamp(1.2rem,4.5vw,1.8rem);letter-spacing:.1em}
+  .hero-subtitle{font-size:.92rem;margin-top:12px}
+  .keyword-cloud{gap:8px;margin-top:28px;padding:0 8px}
+  .kw-tag{padding:6px 16px;font-size:.72rem}
+  .kw-tag-lg{padding:8px 22px;font-size:.85rem}
+  .hero-quote{font-size:.95rem;margin-top:24px;padding-left:14px;max-width:100%}
+  .scroll-indicator{bottom:24px}
+
+  /* ===== Who I Am 区域移动端优化 ===== */
+  .video-wrapper{border-radius:10px}
+  .video-caption{font-size:.76rem}
+
+  /* ===== Project 区域移动端优化 ===== */
+  .quote-float{font-size:.92rem;padding:20px 16px;margin:28px 0;border-left-width:1.5px}
+  .quote-float::before{font-size:2.6rem;top:-6px;left:12px}
+  .insight-card{padding:18px 14px;margin:12px 0;border-radius:10px}
+  .insight-card h3{font-size:.95rem;margin-bottom:8px}
+  .insight-card p{font-size:.78rem;line-height:1.65}
+  .fw-card{padding:18px 14px;border-radius:10px}
+  .fw-card h4{font-size:.98rem;margin-bottom:6px}
+  .fw-card p{font-size:.76rem;line-height:1.65}
+  .vision-tag{padding:4px 11px;font-size:.64rem;margin:2px}
+  .section-divider{margin:28px 0;width:40px}
+  .scene-content p[style*="font-size:.95rem"]{font-size:.84rem!important;line-height:1.65!important}
+  .scene-content p[style*="color:var(--text-dim);font-size:1.05rem"]{font-size:.9rem!important}
+
+  /* ===== Resume 区域移动端优化 ===== */
+  .resume-pdf-frame{min-height:60vh;border-radius:10px}
+  .db-btn{padding:10px 24px;font-size:.78rem}
+  .db-count{font-size:.72rem}
+  .modal-box{padding:28px 24px 24px;margin:0 16px}
+  .modal-title{font-size:1.15rem}
+
+  /* ===== Epilogue 区域移动端优化 ===== */
+  .btn-outline{padding:11px 26px;font-size:.8rem}
+
+  /* ===== Matrix 图表移动端增强 ===== */
+  .matrix-chart-wrap{margin:16px -4px;border-radius:12px;width:calc(100% + 8px)}
+  .matrix-header{padding:10px 14px;flex-wrap:wrap;gap:6px}
+  .matrix-title{font-size:.78rem;flex-basis:100%;line-height:1.45}
+  .matrix-switch{width:auto;margin:0 auto}
+  .matrix-btn{padding:5px 12px;font-size:.64rem}
+  /* 矩阵主体：去掉固定高宽限制，让宽度撑满后按比例自然展开 */
+  .matrix-body{aspect-ratio:1/.98;width:100%;min-height:unset;max-height:none;height:auto}
+  /* 纵轴保留在左侧（不改column），适当加宽确保文字不挤 */
+  .matrix-y-axis-wrap{width:32px;padding:0 3px}
+  .matrix-y-title{font-size:.82rem;padding-bottom:4px;line-height:1.35}
+  .matrix-y-axis-label{font-size:.56rem}
+  .matrix-y-half{gap:2px}
+  /* 象限文字：整体内移，避免贴边 */
+  .matrix-q-desc{font-size:.62rem;max-width:110px;line-height:1.4}
+  .matrix-q-title{font-size:.68rem;margin-bottom:4px}
+  .matrix-quadrant-text.q-tl{top:10%;left:6%}
+  .matrix-quadrant-text.q-tr{top:10%;left:53%}
+  .matrix-quadrant-text.q-bl{bottom:14%;left:6%}
+  .matrix-quadrant-text.q-br{bottom:14%;left:53%}
+  /* 描点标签：右偏移量减小，防止左侧截断 */
+  .matrix-dot-marker{width:8px;height:8px;border-width:1.5px}
+  .matrix-dot-label{font-size:.5rem;left:10px;top:-4px;padding-right:4px}
+  /* 横轴标签区缩小 */
+  .matrix-x-half{padding:0 8px 4px;font-size:.6rem}
+  .matrix-x-title{font-size:.82rem}
+
+  /* ===== Phase Timeline 移动端优化 ===== */
+  .phase-dot{width:40px;height:40px;font-size:.68rem}
+  .phase-name{font-size:.74rem}
+  .phase-desc{font-size:.66rem;max-width:120px}
+
+  /* ===== Table 移动端优化 ===== */
+  .market-table th,.market-table td{padding:8px 10px;font-size:.68rem;white-space:nowrap}
+
+  /* ===== Voice Widget 移动端微调 ===== */
+  .voice-dialog-content{padding:28px 20px}
+  .voice-header h3{font-size:1.25rem}
+  .voice-visualizer{height:80px;margin-bottom:18px}
+  .voice-mic-btn{width:62px;height:62px}
+  .voice-mic-btn svg{width:28px;height:28px}
+  .voice-transcript{font-size:.84rem;min-height:50px;max-height:100px;padding:12px}
+}
+
+/* ===== 超小屏手机适配 (≤480px) ===== */
+@media(max-width:480px){
+  .scene{padding:36px 16px 36px 20px}
+  .hero-name-en{font-size:clamp(1.8rem,10vw,2.8rem)}
+  .hero-name-zh{font-size:clamp(1.05rem,5vw,1.5rem);letter-spacing:.08em}
+  .hero-subtitle{font-size:.85rem;line-height:1.55}
+  .hero-quote{font-size:.88rem;padding-left:12px;margin-top:18px}
+  .keyword-cloud{gap:6px;margin-top:20px}
+  .kw-tag{padding:5px 14px;font-size:.68rem}
+  .kw-tag-lg{padding:7px 18px;font-size:.78rem}
+  .scene-content h2{font-size:1.4rem;margin-bottom:16px}
+  .quote-float{font-size:.92rem;padding:20px 16px;margin:24px 0}
+  .quote-float::before{font-size:2.5rem;top:-4px;left:10px}
+  .insight-card{padding:18px 14px}
+  .insight-card h3{font-size:.98rem;margin-bottom:8px}
+  .insight-card p{font-size:.78rem;line-height:1.65}
+  .fw-card{padding:18px 14px;border-radius:10px}
+  .fw-card h4{font-size:1rem;margin-bottom:6px}
+  .fw-card p{font-size:.76rem;line-height:1.65}
+  .vision-tag{padding:4px 10px;font-size:.64rem;margin:2px}
+  .section-divider{margin:28px 0;width:36px}
+  .scene-content p[style*="font-size:.95rem"]{font-size:.82rem!important;line-height:1.65!important}
+  .chapter-card{padding:14px 16px}
+  .chapter-card h2{font-size:1.7rem}
+  .phase-dot{width:36px;height:36px;font-size:.62rem}
+  .phase-name{font-size:.7rem;margin-bottom:2px}
+  .phase-desc{font-size:.62rem;max-width:110px}
+  .btn-outline{padding:10px 22px;font-size:.75rem}
+  .epilogue-links{gap:12px}
+  .download-bar{padding:16px 16px;gap:12px}
+  .db-btn{padding:9px 20px;font-size:.74rem}
+  .resume-pdf-frame{min-height:50vh}
+  .modal-box{padding:24px 18px 20px;border-radius:16px}
+  .modal-title{font-size:1.08rem}
+  .modal-subtitle{font-size:.76rem;margin-bottom:18px}
+  .form-input{padding:10px 14px;font-size:.86rem}
+  .form-submit{padding:11px;font-size:.82rem}
+  .matrix-header{padding:10px 12px}
+  .matrix-title{font-size:.76rem;line-height:1.4}
+  .matrix-btn{padding:5px 12px;font-size:.64rem}
+  /* 超小屏矩阵进一步微调：象限文字再内移 */
+  .matrix-y-axis-wrap{width:28px;padding:0 2px}
+  .matrix-body{aspect-ratio:1/.98;min-height:unset;max-height:none;height:auto}
+  .matrix-q-title{font-size:.64rem}
+  .matrix-q-desc{font-size:.58rem;max-width:95px;line-height:1.35}
+  .matrix-quadrant-text.q-tl{top:11%;left:5%}
+  .matrix-quadrant-text.q-tr{top:11%;left:54%}
+  .matrix-quadrant-text.q-bl{bottom:15%;left:5%}
+  .matrix-quadrant-text.q-br{bottom:15%;left:54%}
+  .matrix-dot-label{font-size:.48rem;left:8px;top:-3px}
+  .node-label{font-size:.78rem}
+  .market-table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .video-caption{font-size:.72rem}
+  .scroll-indicator{bottom:16px}
 }
 
 /* ═══════════════════════════════════════════════ */
@@ -281,15 +417,18 @@ body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overfl
 .matrix-cross-h{height:1px;width:100%;top:50%;left:0;background:linear-gradient(to right,transparent,var(--amber-light),transparent);opacity:.08}
 .matrix-footnote{text-align:center;font-size:.7rem;color:var(--text-dim);margin-top:10px;letter-spacing:.04em;opacity:.6}
 @media(max-width:768px){
-  .matrix-body{min-height:340px;max-height:400px;flex-direction:column}
-  .matrix-y-axis-wrap{width:100%;height:auto;border-right:none;border-bottom:1px solid rgba(255,255,255,.08);padding:4px 12px;flex-direction:row;gap:8px}
-  .matrix-y-arrow-up{order:-1;font-size:.6rem}
-  .matrix-y-arrow-down{order:3;font-size:.6rem}
-  .matrix-y-axis-label{font-size:.58rem;flex-direction:row;align-items:center;gap:4px}
-  .matrix-q-desc{font-size:.65rem;max-width:140px}
-  .matrix-q-title{font-size:.75rem}
-  .matrix-dot-label{font-size:.6rem}
-  .matrix-axis-x,.matrix-axis-y{font-size:.65rem}
+  /* 矩阵图：宽度撑满、按比例自然展开，无固定高限制 */
+  .matrix-body{aspect-ratio:1/.98;min-height:unset;max-height:none;height:auto}
+  .matrix-y-axis-wrap{width:32px;padding:0 3px}
+  .matrix-q-desc{font-size:.62rem;max-width:110px;line-height:1.4}
+  .matrix-q-title{font-size:.68rem}
+  .matrix-quadrant-text.q-tl{top:10%;left:6%}
+  .matrix-quadrant-text.q-tr{top:10%;left:53%}
+  .matrix-quadrant-text.q-bl{bottom:14%;left:6%}
+  .matrix-quadrant-text.q-br{bottom:14%;left:53%}
+  .matrix-dot-marker{width:8px;height:8px;border-width:1.5px}
+  .matrix-dot-label{font-size:.5rem;left:10px;top:-4px;padding-right:4px}
+  .matrix-axis-x,.matrix-axis-y{font-size:.6rem}
 }
 </style>
 </head>
